@@ -1,4 +1,5 @@
 import * as S from "./styles";
+import moment from 'moment';
 import { type TimeSlot } from "../../../types/time";
 
 interface TimeLabelProps {
@@ -11,11 +12,11 @@ const TimeLabel = ({ timeSlots }: TimeLabelProps) => {
   }
 
   return (
-    <ul>
+    <S.Wrapper>
       {timeSlots.map(({ startTime }) => {
-        return <S.Label key={startTime}>{startTime}</S.Label>;
+        return <S.Label key={startTime}>{moment(startTime, "HH:mm").format('hh:mm A')}</S.Label>;
       })}
-    </ul>
+    </S.Wrapper>
   );
 };
 

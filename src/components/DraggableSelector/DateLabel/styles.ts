@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const Wrapper = styled.ul`
   display: flex;
+  row-gap: 5px;
+  column-gap: 5px;
 `;
 
 export const Label = styled.li`
@@ -10,4 +12,6 @@ export const Label = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 12px;
+  font-family: 'Pretendard-Regular';
 `;

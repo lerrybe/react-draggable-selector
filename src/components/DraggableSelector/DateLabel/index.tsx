@@ -15,7 +15,7 @@ const DateLabel = ({ dates }: DateLabelProps) => {
       {dates.map((date, index) => {
         return (
           <S.Label key={`${date.getDate()}${index}`}>
-            {moment(date).format("MM.DD")}
+            {moment(date).format("M/D")}
           </S.Label>
         );
       })}

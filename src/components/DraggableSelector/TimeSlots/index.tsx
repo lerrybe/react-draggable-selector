@@ -28,7 +28,7 @@ const TimeSlots = ({
   const gridTemplateColumns: string = `repeat(${cols}, 60px)`;
 
   return (
-    <ul style={{ display: "grid", gridTemplateColumns, gridTemplateRows }}>
+    <S.Wrapper style={{ display: "grid", gridTemplateColumns, gridTemplateRows }}>
       {timeSlotMatrix[0]?.map((_, colIndex: number) =>
         timeSlotMatrix?.map((timeSlots, rowIndex: number) => {
           const selected = Boolean(
@@ -53,7 +53,7 @@ const TimeSlots = ({
           );
         })
       )}
-    </ul>
+    </S.Wrapper>
   );
 };
 

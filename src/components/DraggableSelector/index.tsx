@@ -114,7 +114,7 @@ export default function DraggableSelector({
       <div style={{ display: "flex" }}>
         {selectedDates && selectedTime?.startTime && selectedTime?.endTime && (
           <div>
-            <S.Label>시간</S.Label>
+            <S.Label />
             <TimeLabel timeSlots={timeSlotMatrix[0]} />
           </div>
         )}
