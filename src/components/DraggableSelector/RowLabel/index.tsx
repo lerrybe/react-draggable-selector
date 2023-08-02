@@ -6,7 +6,7 @@ interface RowLabelProps {
   timeSlots?: TimeSlot[];
 }
 
-const RowLabel = ({ timeSlots }: RowLabelProps) => {
+export default function RowLabel({ timeSlots }: RowLabelProps) {
   if (!timeSlots || timeSlots.length === 0) {
     return <></>;
   }
@@ -19,6 +19,4 @@ const RowLabel = ({ timeSlots }: RowLabelProps) => {
       })}
     </S.Wrapper>
   );
-};
-
-export default RowLabel;
+}

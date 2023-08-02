@@ -15,11 +15,7 @@ export const areTimeSlotsEqual = (a: TimeSlot, b: TimeSlot) => {
   );
 };
 
-function isTimeBetween(
-  target: TimeSlot,
-  start: TimeSlot,
-  end: TimeSlot,
-): boolean {
+const isTimeBetween = (target: TimeSlot, start: TimeSlot, end: TimeSlot) => {
   const standardDate = start.date;
   const endStartTime = dayjs(`${standardDate} ${end.startTime}`);
   const startStartTime = dayjs(`${standardDate} ${start.startTime}`);
@@ -30,7 +26,7 @@ function isTimeBetween(
     undefined,
     '[]',
   );
-}
+};
 
 export const getTimeSlotMatrix = ({
   dates,

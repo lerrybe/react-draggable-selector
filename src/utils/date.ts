@@ -9,13 +9,13 @@ export const getSortedDates = (dates: Date[]) => {
   return [...dates].sort((a, b) => a.getTime() - b.getTime());
 };
 
-export function isDateBetween(
+export const isDateBetween = (
   target: TimeSlot,
   start: TimeSlot,
   end: TimeSlot,
-): boolean {
+) => {
   const endDate = dayjs(end.date);
   const startDate = dayjs(start.date);
   const targetDate = dayjs(target.date);
   return targetDate.isBetween(startDate, endDate, 'day', '[]');
-}
+};

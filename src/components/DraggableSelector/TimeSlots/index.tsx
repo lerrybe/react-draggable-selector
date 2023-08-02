@@ -10,13 +10,13 @@ interface TimeSlotsProps {
   handleMouseEnter: (timeSlot: TimeSlot) => void;
 }
 
-const TimeSlots = ({
+export default function TimeSlots({
   handleMouseUp,
   handleMouseDown,
   handleMouseEnter,
   timeSlotMatrix,
   cachedSelectedTimeSlots,
-}: TimeSlotsProps) => {
+}: TimeSlotsProps) {
   if (!timeSlotMatrix) {
     return <></>;
   }
@@ -60,6 +60,4 @@ const TimeSlots = ({
       )}
     </S.Wrapper>
   );
-};
-
-export default TimeSlots;
+}

@@ -8,7 +8,7 @@ interface ColumnLabelProps {
 /*
   "ColumnLabel" component is used to display the "date or day" of the column.
 */
-const ColumnLabel = ({ dates }: ColumnLabelProps) => {
+export default function ColumnLabel({ dates }: ColumnLabelProps) {
   if (!dates || dates.length === 0) {
     return <></>;
   }
@@ -21,6 +21,4 @@ const ColumnLabel = ({ dates }: ColumnLabelProps) => {
       })}
     </S.Wrapper>
   );
-};
-
-export default ColumnLabel;
+}
