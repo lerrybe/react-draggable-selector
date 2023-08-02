@@ -1,32 +1,19 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
+
+import { isDateBetween } from './date.ts';
 import { type TimeSlot } from '../types/time';
 import { type DragEventStates, Selection } from '../types/event';
 
 /* MODULE EXTEND */
 dayjs.extend(isBetween);
 
-export const getSortedDates = (dates: Date[]) => {
-  return [...dates].sort((a, b) => a.getTime() - b.getTime());
-};
-
 export const areTimeSlotsEqual = (a: TimeSlot, b: TimeSlot) => {
   return (
     a.date === b.date && a.startTime === b.startTime && a.endTime === b.endTime
   );
 };
-
-function isDateBetween(
-  target: TimeSlot,
-  start: TimeSlot,
-  end: TimeSlot,
-): boolean {
-  const endDate = dayjs(end.date);
-  const startDate = dayjs(start.date);
-  const targetDate = dayjs(target.date);
-  return targetDate.isBetween(startDate, endDate, 'day', '[]');
-}
 
 function isTimeBetween(
   target: TimeSlot,

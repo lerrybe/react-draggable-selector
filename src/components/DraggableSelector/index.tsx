@@ -4,11 +4,11 @@ import { type Time, type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
 
 import {
-  getSortedDates,
   areTimeSlotsEqual,
   getTimeSlotMatrix,
   updateCachedSelectedTimeSlots,
 } from '../../utils/time';
+import { getSortedDates } from '../../utils/date.ts';
 
 import RowLabel from './RowLabel';
 import TimeSlots from './TimeSlots';
