@@ -4,20 +4,18 @@ import React, { useEffect, useState } from "react";
 import {
   type Time,
   type TimeSlot,
-  // type TimeSlotRecord,
 } from "../../types/time";
 import { type DragEventStates, Selection } from "../../types/event";
 
 import {
   areTimeSlotsEqual,
   getTimeSlotMatrix,
-  getTimeSlotRecord,
   updateCachedSelectedTimeSlots,
 } from "../../utils/time";
 
-import TimeLabel from "./TimeLabel";
-import DateLabel from "./DateLabel";
 import TimeSlots from "./TimeSlots";
+import RowLabel from "./RowLabel";
+import ColumnLabel from "./ColumnLabel";
 
 interface DraggableSelectorProps {
   selectedDates: Date[];
@@ -40,72 +38,68 @@ export default function DraggableSelector({
   });
 
   const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
-  // TODO: manage data with Record
-  // const [timeSlotRecord, setTimeSlotRecord] = useState<TimeSlotRecord>();
 
-  const actions = {
-    startSelection: (
-      startedTimeSlot: TimeSlot,
-      selectedTimeSlots: TimeSlot[]
-    ) => {
-      const selectedTimeSlot = selectedTimeSlots.find((slot) =>
-        areTimeSlotsEqual(startedTimeSlot, slot)
-      );
-      setDragEventStates((prev) => ({
-        ...prev,
-        startedTimeSlot: startedTimeSlot,
-        selectionType: selectedTimeSlot ? Selection.REMOVE : Selection.ADD,
-      }));
-    },
-    updateData: () => {
-      setSelectedTimeSlots(dragEventStates.cachedSelectedTimeSlots);
-      setDragEventStates((prev) => ({
-        ...prev,
-        selectionType: null,
-        startedTimeSlot: null,
-      }));
-    },
-    updateCachedSelectedTimeSlots: (endedTimeSlot: TimeSlot) => {
-      updateCachedSelectedTimeSlots({
-        endedTimeSlot,
-        timeSlotMatrix,
-        dragEventStates,
-        selectedTimeSlots,
-        setDragEventStates,
-      });
-    },
+  /* FUNCTIONS */
+  const startSelection = (
+    startedTimeSlot: TimeSlot,
+    selectedTimeSlots: TimeSlot[]
+  ) => {
+    const selectedTimeSlot = selectedTimeSlots.find((slot) =>
+      areTimeSlotsEqual(startedTimeSlot, slot)
+    );
+    setDragEventStates((prev) => ({
+      ...prev,
+      startedTimeSlot: startedTimeSlot,
+      selectionType: selectedTimeSlot ? Selection.REMOVE : Selection.ADD,
+    }));
+  };
+  const updateSlots = () => {
+    setSelectedTimeSlots(dragEventStates.cachedSelectedTimeSlots);
+    setDragEventStates((prev) => ({
+      ...prev,
+      selectionType: null,
+      startedTimeSlot: null,
+    }));
   };
 
-  const handlers = {
-    handleMouseUp: (endedTimeSlot: TimeSlot) => {
-      actions.updateCachedSelectedTimeSlots(endedTimeSlot);
-    },
-    handleMouseEnter: (endedTimeSlot: TimeSlot) => {
-      actions.updateCachedSelectedTimeSlots(endedTimeSlot);
-    },
-    handleMouseDown: (startedTimeSlot: TimeSlot) => {
-      actions.startSelection(startedTimeSlot, selectedTimeSlots);
-    },
+  const updateCache = (endedTimeSlot: TimeSlot) => {
+    updateCachedSelectedTimeSlots({
+      endedTimeSlot,
+      timeSlotMatrix,
+      dragEventStates,
+      selectedTimeSlots,
+      setDragEventStates,
+    });
+  };
+
+  /* HANDLERS */
+  const handleMouseUp = (endedTimeSlot: TimeSlot) => {
+    updateCache(endedTimeSlot);
+  };
+  const handleMouseEnter = (endedTimeSlot: TimeSlot) => {
+    updateCache(endedTimeSlot);
+  };
+  const handleMouseDown = (startedTimeSlot: TimeSlot) => {
+    startSelection(startedTimeSlot, selectedTimeSlots);
   };
 
   /* EFFECTS */
   useEffect(() => {
-    document.addEventListener("mouseup", actions.updateData);
+    document.addEventListener("mouseup", updateSlots);
     return () => {
-      document.removeEventListener("mouseup", actions.updateData);
+      document.removeEventListener("mouseup", updateSlots);
     };
-  }, [actions.updateData]);
+  }, [updateSlots]);
 
   useEffect(() => {
-    const record = getTimeSlotRecord({
+    const matrix = getTimeSlotMatrix({
       timeUnit: 30,
       dates: selectedDates,
       startTime: selectedTime?.startTime,
       endTime: selectedTime?.endTime,
     });
-    if (record) {
-      // setTimeSlotRecord(record);
-      setTimeSlotMatrix(getTimeSlotMatrix(record));
+    if (matrix) {
+      setTimeSlotMatrix(matrix);
     }
   }, [selectedDates, selectedTime?.startTime, selectedTime?.endTime]);
 
@@ -115,18 +109,18 @@ export default function DraggableSelector({
         {selectedDates && selectedTime?.startTime && selectedTime?.endTime && (
           <div>
             <S.Label />
-            <TimeLabel timeSlots={timeSlotMatrix[0]} />
+            <RowLabel timeSlots={timeSlotMatrix[0]} />
           </div>
         )}
         <div>
           {selectedDates &&
             selectedTime?.startTime &&
-            selectedTime?.endTime && <DateLabel dates={selectedDates} />}
+            selectedTime?.endTime && <ColumnLabel dates={selectedDates} />}
           <TimeSlots
             timeSlotMatrix={timeSlotMatrix}
-            handleMouseUp={handlers.handleMouseUp}
-            handleMouseDown={handlers.handleMouseDown}
-            handleMouseEnter={handlers.handleMouseEnter}
+            handleMouseUp={handleMouseUp}
+            handleMouseDown={handleMouseDown}
+            handleMouseEnter={handleMouseEnter}
             cachedSelectedTimeSlots={dragEventStates.cachedSelectedTimeSlots}
           />
         </div>

@@ -1,11 +1,11 @@
 import moment from "moment";
 import * as S from "./styles";
 
-interface DateLabelProps {
+interface ColumnLabelProps {
   dates?: Date[];
 }
 
-const DateLabel = ({ dates }: DateLabelProps) => {
+const ColumnLabel = ({ dates }: ColumnLabelProps) => {
   if (!dates || dates.length === 0) {
     return <></>;
   }
@@ -23,4 +23,4 @@ const DateLabel = ({ dates }: DateLabelProps) => {
   );
 };
 
-export default DateLabel;
+export default ColumnLabel;

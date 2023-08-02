@@ -1,6 +1,6 @@
 import moment from "moment";
+import { type TimeSlot } from "../types/time";
 import { type DragEventStates, Selection } from "../types/event";
-import { type TimeSlot, type TimeSlotRecord } from "../types/time";
 
 export const areTimeSlotsEqual = (a: TimeSlot, b: TimeSlot) => {
   return (
@@ -33,7 +33,7 @@ function isTimeBetween(
   );
 }
 
-export const getTimeSlotRecord = ({
+export const getTimeSlotMatrix = ({
                                     dates,
                                     timeUnit,
                                     endTime,
@@ -51,9 +51,9 @@ export const getTimeSlotRecord = ({
   const endHour = Number(endTime.split(":")[0]);
   const endMinute = Number(endTime.split(":")[1]);
 
-  const record: TimeSlotRecord = {};
+  const matrix: TimeSlot[][] = [];
   dates.forEach((date) => {
-    const times: Record<string, TimeSlot> = {};
+    const times: TimeSlot[] = [];
     // const key = moment(date).format("YYYY/MM/DD");
     const key = moment(date).format("YYYYMMDD");
     let hour = startHour;
@@ -73,11 +73,12 @@ export const getTimeSlotRecord = ({
       // console.log(key, formattedEndHour, formattedEndMinute);
       // console.log(new Date(`${key}/${formattedHour}:${formattedMinute}`));
 
-      times[`${formattedHour}:${formattedMinute}`] = {
+      times.push({
         date: key,
         startTime: `${formattedHour}:${formattedMinute}`,
         endTime: `${formattedEndHour}:${formattedEndMinute}`,
-      };
+        day: date.getDay(),
+      });
 
       minute += timeUnit;
       if (minute >= 60) {
@@ -85,20 +86,8 @@ export const getTimeSlotRecord = ({
         minute -= 60;
       }
     }
-    record[key] = times;
+    matrix.push(times);
   });
-  return record;
-};
-
-export const getTimeSlotMatrix = (timeSlotRecord: TimeSlotRecord) => {
-  const matrix: TimeSlot[][] = [];
-  for (const date in timeSlotRecord) {
-    const timeSlots = [];
-    for (const time in timeSlotRecord[date]) {
-      timeSlots.push(timeSlotRecord[date][time]);
-    }
-    matrix.push(timeSlots);
-  }
   return matrix;
 };
 

@@ -1,12 +1,14 @@
-import * as S from "./styles";
-import moment from 'moment';
-import { type TimeSlot } from "../../../types/time";
+// import dayjs from 'dayjs';
 
-interface TimeLabelProps {
+import * as S from "./styles";
+import { type TimeSlot } from "../../../types/time";
+import moment from 'moment';
+
+interface RowLabelProps {
   timeSlots?: TimeSlot[];
 }
 
-const TimeLabel = ({ timeSlots }: TimeLabelProps) => {
+const RowLabel = ({ timeSlots }: RowLabelProps) => {
   if (!timeSlots || timeSlots.length === 0) {
     return <></>;
   }
@@ -20,4 +22,4 @@ const TimeLabel = ({ timeSlots }: TimeLabelProps) => {
   );
 };
 
-export default TimeLabel;
+export default RowLabel;

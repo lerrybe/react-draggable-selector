@@ -7,6 +7,5 @@ export interface TimeSlot {
   date: string;
   startTime: string;
   endTime: string;
+  day: number;
 }
-
-export type TimeSlotRecord = Record<string, Record<string, TimeSlot>>;
