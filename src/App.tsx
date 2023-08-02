@@ -1,14 +1,44 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import './styles/global.css';
-import { Time, TimeSlot } from './types/time';
+import { TimeSlot } from './types/time';
 import DraggableSelector from './components/DraggableSelector';
 
+interface DraggableSelectorProps {
+  /* REQUIRED */
+  startTime: string;
+  endTime: string;
+  selectedDates: Date[];
+  selectedTimeSlots: TimeSlot[];
+  setSelectedTimeSlots: React.Dispatch<React.SetStateAction<TimeSlot[]>>;
+
+  /* OPTIONAL */
+  mode?: 'date' | 'day'; // opt, default: 'date'
+  timeUnit?: 5 | 10 | 15 | 20 | 30 | 60; // opt, default: 30
+  slotWidth?: number;
+  slotHeight?: number;
+  defaultSlotColor?: string;
+  selectedSlotColor?: string;
+  hoveredSlotColor?: string;
+  slotRowGap?: number;
+  slotColumnGap?: number;
+  slotBorderStyle?: string; // '1px solid color'
+
+  maxWidth?: number;
+  maxHeight?: number;
+
+  columnLabelMargin?: string;
+  columnLabelFontSize?: number;
+  columnLabelFontFamily?: string;
+  isColumnLabelVisible?: boolean;
+
+  rowLabelMargin?: string;
+  rowLabelFontSize?: number;
+  rowLabelFontFamily?: string;
+  isRowLabelVisible?: boolean;
+}
+
 function TimeSelector() {
-  const [selectedTime] = useState<Time>({
-    startTime: '10:00',
-    endTime: '15:30',
-  });
   const today = new Date();
   const [selectedDates] = useState<Date[]>([
     new Date(today.getFullYear(), today.getMonth(), today.getDate()),
@@ -31,7 +61,8 @@ function TimeSelector() {
   return (
     <>
       <DraggableSelector
-        selectedTime={selectedTime}
+        startTime={'10:00'}
+        endTime={'15:30'}
         selectedDates={selectedDates}
         selectedTimeSlots={selectedTimeSlots}
         setSelectedTimeSlots={setSelectedTimeSlots}

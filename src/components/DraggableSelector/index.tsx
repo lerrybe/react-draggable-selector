@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as S from './styles';
-import { type Time, type TimeSlot } from '../../types/time';
+import { type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
 
 import {
@@ -15,14 +15,42 @@ import TimeSlots from './TimeSlots';
 import ColumnLabel from './ColumnLabel';
 
 interface DraggableSelectorProps {
+  /* REQUIRED */
+  startTime: string;
+  endTime: string;
   selectedDates: Date[];
-  selectedTime: Time | null;
   selectedTimeSlots: TimeSlot[];
   setSelectedTimeSlots: React.Dispatch<React.SetStateAction<TimeSlot[]>>;
+
+  /* OPTIONAL */
+  mode?: 'date' | 'day'; // default: 'date'
+  timeUnit?: 5 | 10 | 15 | 20 | 30 | 60; // opt, default: 30
+  slotWidth?: number;
+  slotHeight?: number;
+  defaultSlotColor?: string;
+  selectedSlotColor?: string;
+  hoveredSlotColor?: string;
+  slotRowGap?: number;
+  slotColumnGap?: number;
+  slotBorderStyle?: string; // '1px solid #000'
+
+  maxWidth?: number;
+  maxHeight?: number;
+
+  columnLabelMargin?: string;
+  columnLabelFontSize?: number;
+  columnLabelFontFamily?: string;
+  isColumnLabelVisible?: boolean;
+
+  rowLabelMargin?: string;
+  rowLabelFontSize?: number;
+  rowLabelFontFamily?: string;
+  isRowLabelVisible?: boolean;
 }
 
 export default function DraggableSelector({
-  selectedTime,
+  startTime,
+  endTime,
   selectedDates,
   selectedTimeSlots,
   setSelectedTimeSlots,
@@ -104,29 +132,27 @@ export default function DraggableSelector({
     const matrix = getTimeSlotMatrix({
       timeUnit: 30,
       dates: getSortedDates(selectedDates),
-      startTime: selectedTime?.startTime,
-      endTime: selectedTime?.endTime,
+      startTime: startTime,
+      endTime: endTime,
     });
     if (matrix) {
       setTimeSlotMatrix(matrix);
     }
-  }, [selectedDates, selectedTime?.startTime, selectedTime?.endTime]);
+  }, [selectedDates, startTime, endTime]);
 
   return (
     <S.Wrapper>
       <div style={{ display: 'flex' }}>
-        {selectedDates && selectedTime?.endTime && selectedTime?.startTime && (
+        {selectedDates && startTime && endTime && (
           <div>
             <S.Label />
             <RowLabel timeSlots={timeSlotMatrix[0]} />
           </div>
         )}
         <div>
-          {selectedDates &&
-            selectedTime?.endTime &&
-            selectedTime?.startTime && (
-              <ColumnLabel dates={getSortedDates(selectedDates)} />
-            )}
+          {selectedDates && startTime && endTime && (
+            <ColumnLabel dates={getSortedDates(selectedDates)} />
+          )}
           <TimeSlots
             timeSlotMatrix={timeSlotMatrix}
             handleMouseUp={handleMouseUp}
