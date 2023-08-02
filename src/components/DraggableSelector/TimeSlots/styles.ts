@@ -9,7 +9,7 @@ export const Wrapper = styled.ul`
   column-gap: 5px;
 `;
 
-export const Slot = styled.li<SlotProps>(
+export const Slot = styled.div<SlotProps>(
   ({ selected }) => `
   background-color: ${selected ? "#a2d7b4" : "#f1f1f1"};
   // border: 0.5px solid #8C8D94;

@@ -54,6 +54,7 @@ export const getTimeSlotRecord = ({
   const record: TimeSlotRecord = {};
   dates.forEach((date) => {
     const times: Record<string, TimeSlot> = {};
+    // const key = moment(date).format("YYYY/MM/DD");
     const key = moment(date).format("YYYYMMDD");
     let hour = startHour;
     let minute = startMinute;
@@ -69,6 +70,8 @@ export const getTimeSlotRecord = ({
         formattedEndHour = (hour + 1).toString().padStart(2, "0");
         formattedEndMinute = (currEndMinute - 60).toString().padStart(2, "0");
       }
+      // console.log(key, formattedEndHour, formattedEndMinute);
+      // console.log(new Date(`${key}/${formattedHour}:${formattedMinute}`));
 
       times[`${formattedHour}:${formattedMinute}`] = {
         date: key,
