@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import * as S from './styles';
+import S from './ColumnLabel.module.css';
 
 interface ColumnLabelProps {
   dates?: Date[];
@@ -14,11 +14,15 @@ export default function ColumnLabel({ dates }: ColumnLabelProps) {
   }
 
   return (
-    <S.Wrapper>
+    <ul className={S.wrapper}>
       {dates.map(date => {
         const key = date.getDate();
-        return <S.Label key={key}>{dayjs(date).format('M/D')}</S.Label>;
+        return (
+          <li key={key} className={S.label}>
+            {dayjs(date).format('M/D')}
+          </li>
+        );
       })}
-    </S.Wrapper>
+    </ul>
   );
 }

@@ -1,4 +1,4 @@
-import * as S from './styles';
+import S from './TimeSlots.module.css';
 import { type TimeSlot } from '../../../types/time';
 import { areTimeSlotsEqual } from '../../../utils/time';
 
@@ -27,7 +27,8 @@ export default function TimeSlots({
   const gridTemplateColumns: string = `repeat(${cols}, 60px)`;
 
   return (
-    <S.Wrapper
+    <ul
+      className={S.wrapper}
       style={{ display: 'grid', gridTemplateColumns, gridTemplateRows }}
     >
       {timeSlotMatrix[0]?.map(
@@ -42,9 +43,11 @@ export default function TimeSlots({
               ),
             );
             return (
-              <S.Slot
-                selected={selected}
+              <div
                 key={key}
+                className={`${S.slot} ${
+                  selected ? S.selectedSlot : S.unSelectedSlot
+                }`}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
                 }}
@@ -54,10 +57,10 @@ export default function TimeSlots({
                 onMouseEnter={() => {
                   handleMouseEnter(targetSlot);
                 }}
-              />
+              ></div>
             );
           }),
       )}
-    </S.Wrapper>
+    </ul>
   );
 }

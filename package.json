@@ -11,9 +11,6 @@
     "build-storybook": "storybook build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
-  "dependencies": {
-    "styled-components": "^6.0.5"
-  },
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
@@ -28,7 +25,6 @@
     "@storybook/testing-library": "^0.0.14-next.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
-    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",

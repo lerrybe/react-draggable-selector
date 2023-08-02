@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import * as S from './styles';
+import S from './DraggableSelector.module.css';
 import { type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
 
@@ -18,8 +18,8 @@ interface DraggableSelectorProps {
   /* REQUIRED */
   startTime: string;
   endTime: string;
-  selectedDates: Date[];
-  selectedTimeSlots: TimeSlot[];
+  selectedDates: Date[]; // Required default value: []
+  selectedTimeSlots: TimeSlot[]; // Required default value: []
   setSelectedTimeSlots: React.Dispatch<React.SetStateAction<TimeSlot[]>>;
 
   /* OPTIONAL */
@@ -141,11 +141,11 @@ export default function DraggableSelector({
   }, [selectedDates, startTime, endTime]);
 
   return (
-    <S.Wrapper>
+    <div>
       <div style={{ display: 'flex' }}>
         {selectedDates && startTime && endTime && (
           <div>
-            <S.Label />
+            <li className={S.label} />
             <RowLabel timeSlots={timeSlotMatrix[0]} />
           </div>
         )}
@@ -162,6 +162,6 @@ export default function DraggableSelector({
           />
         </div>
       </div>
-    </S.Wrapper>
+    </div>
   );
 }

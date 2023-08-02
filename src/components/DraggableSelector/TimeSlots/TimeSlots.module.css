@@ -1,0 +1,22 @@
+.wrapper {
+  row-gap: 5px;
+  column-gap: 5px;
+}
+
+.slot {
+  cursor: pointer;
+  border: 1px solid transparent; /* 기본적으로는 투명한 border 를 지정 */
+  box-shadow: 0 0 0 0.5px transparent; /* 전달받은 slot 의 border 를 지정 */
+}
+
+.slot:hover {
+  background-color: #d4f1dd;
+}
+
+.unSelectedSlot {
+  background-color: #f1f1f1;
+}
+
+.selectedSlot {
+  background-color: #a2d7b4;
+}
