@@ -1,6 +1,11 @@
-import moment from 'moment';
+import React from 'react';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import { type TimeSlot } from '../types/time';
 import { type DragEventStates, Selection } from '../types/event';
+
+/* MODULE EXTEND */
+dayjs.extend(isBetween);
 
 export const getSortedDates = (dates: Date[]) => {
   return [...dates].sort((a, b) => a.getTime() - b.getTime());
@@ -17,9 +22,9 @@ function isDateBetween(
   start: TimeSlot,
   end: TimeSlot,
 ): boolean {
-  const endDate = moment(end.date);
-  const startDate = moment(start.date);
-  const targetDate = moment(target.date);
+  const endDate = dayjs(end.date);
+  const startDate = dayjs(start.date);
+  const targetDate = dayjs(target.date);
   return targetDate.isBetween(startDate, endDate, 'day', '[]');
 }
 
@@ -28,12 +33,15 @@ function isTimeBetween(
   start: TimeSlot,
   end: TimeSlot,
 ): boolean {
-  const endStartTime = moment(end.startTime, 'HH:mm');
-  const startStartTime = moment(start.startTime, 'HH:mm');
-  const targetStartTime = moment(target.startTime, 'HH:mm');
-  return (
-    targetStartTime.isSameOrAfter(startStartTime) &&
-    targetStartTime.isSameOrBefore(endStartTime)
+  const standardDate = start.date;
+  const endStartTime = dayjs(`${standardDate} ${end.startTime}`);
+  const startStartTime = dayjs(`${standardDate} ${start.startTime}`);
+  const targetStartTime = dayjs(`${standardDate} ${target.startTime}`);
+  return targetStartTime.isBetween(
+    startStartTime,
+    endStartTime,
+    undefined,
+    '[]',
   );
 }
 
@@ -58,8 +66,8 @@ export const getTimeSlotMatrix = ({
   const matrix: TimeSlot[][] = [];
   dates.forEach(date => {
     const times: TimeSlot[] = [];
-    // const key = moment(date).format("YYYY/MM/DD");
-    const key = moment(date).format('YYYYMMDD');
+    const key = dayjs(date).format('YYYYMMDD');
+
     let hour = startHour;
     let minute = startMinute;
     while (hour < endHour || (hour === endHour && minute < endMinute)) {
@@ -74,8 +82,6 @@ export const getTimeSlotMatrix = ({
         formattedEndHour = (hour + 1).toString().padStart(2, '0');
         formattedEndMinute = (currEndMinute - 60).toString().padStart(2, '0');
       }
-      // console.log(key, formattedEndHour, formattedEndMinute);
-      // console.log(new Date(`${key}/${formattedHour}:${formattedMinute}`));
 
       times.push({
         date: key,
@@ -116,13 +122,14 @@ export const updateCachedSelectedTimeSlots = ({
     startedTimeSlot && endedTimeSlot && selectionType
       ? endedTimeSlot
         ? timeSlotMatrix.reduce((acc, dayOfTimes) => {
-            const dateIsReversed = moment(endedTimeSlot.date).isBefore(
-              moment(startedTimeSlot.date),
+            const dateIsReversed = dayjs(endedTimeSlot.date).isBefore(
+              dayjs(startedTimeSlot.date),
             );
-            const timeIsReversed = moment(
-              endedTimeSlot.startTime,
-              'HH:mm',
-            ).isBefore(moment(startedTimeSlot.startTime, 'HH:mm'));
+            const standardDate = startedTimeSlot.date;
+            const timeIsReversed = dayjs(
+              `${standardDate} ${endedTimeSlot.startTime}`,
+            ).isBefore(dayjs(`${standardDate} ${startedTimeSlot.startTime}`));
+
             return acc.concat(
               dayOfTimes.filter(
                 t =>

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useCallback, useEffect, useState } from 'react';
 import * as S from './styles';
 import { type Time, type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
@@ -29,56 +28,69 @@ export default function DraggableSelector({
   setSelectedTimeSlots,
 }: DraggableSelectorProps) {
   /* STATES */
+  const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
   const [dragEventStates, setDragEventStates] = useState<DragEventStates>({
     selectionType: null,
     startedTimeSlot: null,
     cachedSelectedTimeSlots: [...selectedTimeSlots],
   });
 
-  const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
-
   /* FUNCTIONS */
-  const startSelection = (
-    startedTimeSlot: TimeSlot,
-    selectedTimeSlots: TimeSlot[],
-  ) => {
-    const selectedTimeSlot = selectedTimeSlots.find(slot =>
-      areTimeSlotsEqual(startedTimeSlot, slot),
-    );
-    setDragEventStates(prev => ({
-      ...prev,
-      startedTimeSlot: startedTimeSlot,
-      selectionType: selectedTimeSlot ? Selection.REMOVE : Selection.ADD,
-    }));
-  };
-  const updateSlots = () => {
+  const startSelection = useCallback(
+    (startedTimeSlot: TimeSlot, selectedTimeSlots: TimeSlot[]) => {
+      const selectedTimeSlot = selectedTimeSlots.find(slot =>
+        areTimeSlotsEqual(startedTimeSlot, slot),
+      );
+      setDragEventStates(prev => ({
+        ...prev,
+        startedTimeSlot: startedTimeSlot,
+        selectionType: selectedTimeSlot ? Selection.REMOVE : Selection.ADD,
+      }));
+    },
+    [],
+  );
+
+  const updateSlots = useCallback(() => {
     setSelectedTimeSlots(dragEventStates.cachedSelectedTimeSlots);
     setDragEventStates(prev => ({
       ...prev,
       selectionType: null,
       startedTimeSlot: null,
     }));
-  };
-  const updateCache = (endedTimeSlot: TimeSlot) => {
-    updateCachedSelectedTimeSlots({
-      endedTimeSlot,
-      timeSlotMatrix,
-      dragEventStates,
-      selectedTimeSlots,
-      setDragEventStates,
-    });
-  };
+  }, [dragEventStates.cachedSelectedTimeSlots, setSelectedTimeSlots]);
+
+  const updateCache = useCallback(
+    (endedTimeSlot: TimeSlot) => {
+      updateCachedSelectedTimeSlots({
+        endedTimeSlot,
+        timeSlotMatrix,
+        dragEventStates,
+        selectedTimeSlots,
+        setDragEventStates,
+      });
+    },
+    [dragEventStates, selectedTimeSlots, timeSlotMatrix],
+  );
 
   /* HANDLERS */
-  const handleMouseUp = (endedTimeSlot: TimeSlot) => {
-    updateCache(endedTimeSlot);
-  };
-  const handleMouseEnter = (endedTimeSlot: TimeSlot) => {
-    updateCache(endedTimeSlot);
-  };
-  const handleMouseDown = (startedTimeSlot: TimeSlot) => {
-    startSelection(startedTimeSlot, selectedTimeSlots);
-  };
+  const handleMouseUp = useCallback(
+    (endedTimeSlot: TimeSlot) => {
+      updateCache(endedTimeSlot);
+    },
+    [updateCache],
+  );
+  const handleMouseEnter = useCallback(
+    (endedTimeSlot: TimeSlot) => {
+      updateCache(endedTimeSlot);
+    },
+    [updateCache],
+  );
+  const handleMouseDown = useCallback(
+    (startedTimeSlot: TimeSlot) => {
+      startSelection(startedTimeSlot, selectedTimeSlots);
+    },
+    [selectedTimeSlots, startSelection],
+  );
 
   /* EFFECTS */
   useEffect(() => {
@@ -103,7 +115,7 @@ export default function DraggableSelector({
   return (
     <S.Wrapper>
       <div style={{ display: 'flex' }}>
-        {selectedDates && selectedTime?.startTime && selectedTime?.endTime && (
+        {selectedDates && selectedTime?.endTime && selectedTime?.startTime && (
           <div>
             <S.Label />
             <RowLabel timeSlots={timeSlotMatrix[0]} />
@@ -111,8 +123,8 @@ export default function DraggableSelector({
         )}
         <div>
           {selectedDates &&
-            selectedTime?.startTime &&
-            selectedTime?.endTime && (
+            selectedTime?.endTime &&
+            selectedTime?.startTime && (
               <ColumnLabel dates={getSortedDates(selectedDates)} />
             )}
           <TimeSlots

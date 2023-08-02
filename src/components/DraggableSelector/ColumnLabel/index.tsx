@@ -1,10 +1,13 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as S from './styles';
 
 interface ColumnLabelProps {
   dates?: Date[];
 }
 
+/*
+  "ColumnLabel" component is used to display the "date or day" of the column.
+*/
 const ColumnLabel = ({ dates }: ColumnLabelProps) => {
   if (!dates || dates.length === 0) {
     return <></>;
@@ -12,12 +15,9 @@ const ColumnLabel = ({ dates }: ColumnLabelProps) => {
 
   return (
     <S.Wrapper>
-      {dates.map((date, index) => {
-        return (
-          <S.Label key={`${date.getDate()}${index}`}>
-            {moment(date).format('M/D')}
-          </S.Label>
-        );
+      {dates.map(date => {
+        const key = date.getDate();
+        return <S.Label key={key}>{dayjs(date).format('M/D')}</S.Label>;
       })}
     </S.Wrapper>
   );

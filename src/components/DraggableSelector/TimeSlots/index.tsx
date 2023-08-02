@@ -23,7 +23,6 @@ const TimeSlots = ({
 
   const cols: number = timeSlotMatrix?.length;
   const rows: number = timeSlotMatrix[0]?.length;
-
   const gridTemplateRows: string = `repeat(${rows}, 30px)`;
   const gridTemplateColumns: string = `repeat(${cols}, 60px)`;
 
@@ -33,26 +32,29 @@ const TimeSlots = ({
     >
       {timeSlotMatrix[0]?.map(
         (_, colIndex: number) =>
-          timeSlotMatrix?.map((timeSlots, rowIndex: number) => {
+          timeSlotMatrix?.map(timeSlots => {
+            const targetSlot = timeSlots[colIndex];
+            const { date, startTime, endTime } = targetSlot;
+            const key = `${date}${startTime}${endTime}`;
             const selected = Boolean(
               cachedSelectedTimeSlots?.find(slot =>
-                areTimeSlotsEqual(slot, timeSlots[colIndex]),
+                areTimeSlotsEqual(slot, targetSlot),
               ),
             );
             return (
               <S.Slot
                 selected={selected}
-                key={`${rowIndex}-${colIndex}`}
+                key={key}
                 onMouseUp={() => {
-                  handleMouseUp(timeSlots[colIndex]);
+                  handleMouseUp(targetSlot);
                 }}
                 onMouseDown={() => {
-                  handleMouseDown(timeSlots[colIndex]);
+                  handleMouseDown(targetSlot);
                 }}
                 onMouseEnter={() => {
-                  handleMouseEnter(timeSlots[colIndex]);
+                  handleMouseEnter(targetSlot);
                 }}
-              ></S.Slot>
+              />
             );
           }),
       )}
