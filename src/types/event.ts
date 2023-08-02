@@ -1,8 +1,8 @@
-import { type TimeSlot } from "./time";
+import { type TimeSlot } from './time';
 
 export enum Selection {
-  ADD = "add",
-  REMOVE = "remove",
+  ADD = 'add',
+  REMOVE = 'remove',
 }
 
 export interface DragEventStates {

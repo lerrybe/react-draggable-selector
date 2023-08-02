@@ -1,7 +1,7 @@
 // import dayjs from 'dayjs';
 
-import * as S from "./styles";
-import { type TimeSlot } from "../../../types/time";
+import * as S from './styles';
+import { type TimeSlot } from '../../../types/time';
 import moment from 'moment';
 
 interface RowLabelProps {
@@ -16,7 +16,11 @@ const RowLabel = ({ timeSlots }: RowLabelProps) => {
   return (
     <S.Wrapper>
       {timeSlots.map(({ startTime }) => {
-        return <S.Label key={startTime}>{moment(startTime, "HH:mm").format('hh:mm A')}</S.Label>;
+        return (
+          <S.Label key={startTime}>
+            {moment(startTime, 'HH:mm').format('hh:mm A')}
+          </S.Label>
+        );
       })}
     </S.Wrapper>
   );

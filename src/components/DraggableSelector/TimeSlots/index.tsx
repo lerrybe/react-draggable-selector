@@ -1,6 +1,6 @@
-import * as S from "./styles";
-import { type TimeSlot } from "../../../types/time";
-import { areTimeSlotsEqual } from "../../../utils/time";
+import * as S from './styles';
+import { type TimeSlot } from '../../../types/time';
+import { areTimeSlotsEqual } from '../../../utils/time';
 
 interface TimeSlotsProps {
   timeSlotMatrix?: TimeSlot[][];
@@ -11,12 +11,12 @@ interface TimeSlotsProps {
 }
 
 const TimeSlots = ({
-                     handleMouseUp,
-                     handleMouseDown,
-                     handleMouseEnter,
-                     timeSlotMatrix,
-                     cachedSelectedTimeSlots,
-                   }: TimeSlotsProps) => {
+  handleMouseUp,
+  handleMouseDown,
+  handleMouseEnter,
+  timeSlotMatrix,
+  cachedSelectedTimeSlots,
+}: TimeSlotsProps) => {
   if (!timeSlotMatrix) {
     return <></>;
   }
@@ -28,30 +28,33 @@ const TimeSlots = ({
   const gridTemplateColumns: string = `repeat(${cols}, 60px)`;
 
   return (
-    <S.Wrapper style={{ display: "grid", gridTemplateColumns, gridTemplateRows }}>
-      {timeSlotMatrix[0]?.map((_, colIndex: number) =>
-        timeSlotMatrix?.map((timeSlots, rowIndex: number) => {
-          const selected = Boolean(
-            cachedSelectedTimeSlots?.find((slot) =>
-              areTimeSlotsEqual(slot, timeSlots[colIndex])
-            )
-          );
-          return (
-            <S.Slot
-              selected={selected}
-              key={`${rowIndex}-${colIndex}`}
-              onMouseUp={() => {
-                handleMouseUp(timeSlots[colIndex]);
-              }}
-              onMouseDown={() => {
-                handleMouseDown(timeSlots[colIndex]);
-              }}
-              onMouseEnter={() => {
-                handleMouseEnter(timeSlots[colIndex]);
-              }}
-            ></S.Slot>
-          );
-        })
+    <S.Wrapper
+      style={{ display: 'grid', gridTemplateColumns, gridTemplateRows }}
+    >
+      {timeSlotMatrix[0]?.map(
+        (_, colIndex: number) =>
+          timeSlotMatrix?.map((timeSlots, rowIndex: number) => {
+            const selected = Boolean(
+              cachedSelectedTimeSlots?.find(slot =>
+                areTimeSlotsEqual(slot, timeSlots[colIndex]),
+              ),
+            );
+            return (
+              <S.Slot
+                selected={selected}
+                key={`${rowIndex}-${colIndex}`}
+                onMouseUp={() => {
+                  handleMouseUp(timeSlots[colIndex]);
+                }}
+                onMouseDown={() => {
+                  handleMouseDown(timeSlots[colIndex]);
+                }}
+                onMouseEnter={() => {
+                  handleMouseEnter(timeSlots[colIndex]);
+                }}
+              ></S.Slot>
+            );
+          }),
       )}
     </S.Wrapper>
   );
