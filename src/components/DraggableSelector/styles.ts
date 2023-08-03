@@ -1,49 +1,76 @@
 import styled from 'styled-components';
 
-interface ContainerProps {}
+interface ContainerProps {
+  $width?: string;
+  $height?: string;
+  $maxWidth?: string;
+  $maxHeight?: string;
+  $scrollColor?: string;
+  $scrollBgColor?: string;
+  $scrollWidth?: string;
+}
 
 export const Container = styled.div<ContainerProps>(
-  ({}) => `  
+  ({
+    $width,
+    $height,
+    $maxWidth,
+    $maxHeight,
+    $scrollColor,
+    $scrollBgColor,
+    $scrollWidth,
+  }) => `  
   display: flex;
   overflow: auto;
   
-  // 스크롤 색상
+  &::-webkit-scrollbar {
+    width: ${$scrollWidth || '3px'};  /* WIDTH, HEIGHT */
+    height: ${$scrollWidth || '3px'};
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%; /* LENGTH */
+    background: ${$scrollColor || '#217af4'}; /* COLOR */
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: ${$scrollBgColor || 'rgba(33, 122, 244, .1)'};  /* BG COLOR */
+  }
 
-  // 전체 넓이와 높이 컨트롤
-  // props: width, height, maxWidth, maxHeight
-  width: 100%;
-  height: 500px;
+  width: ${$width || '100%'};
+  height: ${$height || '500px'};
+  max-width: ${$maxWidth || '100%'};
+  max-height: ${$maxHeight || '500px'};
 `,
 );
 
-interface LeftContainerProps {}
+interface LeftContainerProps {
+  $rowLabelWidth?: string;
+}
 
 export const LeftContainer = styled.div<LeftContainerProps>(
-  ({}) => `  
-  // 전체 width 제어, fixedTimeLabelWidth
-  width: 80px;
-  min-width: 80px;
+  ({ $rowLabelWidth }) => `  
+  width: ${$rowLabelWidth || '60px'};
+  min-width: ${$rowLabelWidth || '60px'};
 `,
 );
 
 interface RightContainerProps {}
 
 export const RightContainer = styled.div<RightContainerProps>(
-  ({}) => `  
-  // 전체 width 제어
+  () => `  
   width: auto;
   flex-grow: 1;
 `,
 );
 
 interface EmptySlotProps {
-  height?: number;
+  height?: string;
 }
 
 export const EmptySlot = styled.li<EmptySlotProps>(
   ({ height }) => `  
   width: 100%;
-  height: ${height || 30}px;
+  height: ${height || '30px'};
   
   display: flex;
   align-items: center;

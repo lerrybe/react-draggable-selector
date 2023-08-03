@@ -24,10 +24,50 @@ interface DraggableSelectorProps {
 
   /* OPTIONAL */
   timeUnit?: 5 | 10 | 15 | 20 | 30 | 60; // opt, default: 30
-  slotHeight?: number;
-  slotMinWidth?: number;
-  slotRowGap?: number;
-  slotColumnGap?: number;
+  slotHeight?: string;
+  slotMinWidth?: string;
+  slotRowGap?: string;
+  slotColumnGap?: string;
+  defaultSlotColor?: string;
+  selectedSlotColor?: string;
+  hoveredSlotColor?: string;
+  slotBorderStyle?: string;
+  slotBorderRadius?: string;
+  width?: string;
+  height?: string;
+  maxWidth?: string;
+  maxHeight?: string;
+
+  rowLabelWidth?: string;
+  isRowLabelInvisible?: boolean;
+  rowLabelsBgColor?: string;
+  rowLabelsBorderRadius?: string;
+  isColumnLabelInVisible?: boolean;
+  columnLabelsBgColor?: string;
+  columnLabelsBorderRadius?: string;
+
+  rowLabelsColor?: string;
+  rowLabelsFontWeight?: number;
+  rowLabelsMargin?: string;
+  rowLabelsFontSize?: string;
+  rowLabelsFontFamily?: string;
+  rowLabelBorderRadius?: string;
+  rowLabelBgColor?: string;
+  rowLabelPadding?: string;
+
+  columnLabelsColor?: string;
+  columnLabelsFontWeight?: number;
+  columnLabelsMargin?: string;
+  columnLabelsFontSize?: string;
+  columnLabelsFontFamily?: string;
+
+  columnLabelBorderRadius?: string;
+  columnLabelBgColor?: string;
+  columnLabelPadding?: string;
+
+  scrollColor?: string;
+  scrollBgColor?: string;
+  scrollWidth?: string;
 }
 
 export default function DraggableSelector({
@@ -42,6 +82,45 @@ export default function DraggableSelector({
   slotMinWidth,
   slotRowGap,
   slotColumnGap,
+  defaultSlotColor,
+  selectedSlotColor,
+  hoveredSlotColor,
+  slotBorderStyle,
+  slotBorderRadius,
+  width,
+  height,
+  maxWidth,
+  maxHeight,
+  rowLabelWidth,
+
+  isRowLabelInvisible,
+  rowLabelsBgColor,
+  rowLabelsBorderRadius,
+  isColumnLabelInVisible,
+  columnLabelsBgColor,
+  columnLabelsBorderRadius,
+
+  rowLabelsColor,
+  rowLabelsFontWeight,
+  rowLabelsMargin,
+  rowLabelsFontSize,
+  rowLabelsFontFamily,
+  rowLabelBorderRadius,
+  rowLabelBgColor,
+  rowLabelPadding,
+
+  columnLabelsColor,
+  columnLabelsFontWeight,
+  columnLabelsMargin,
+  columnLabelsFontSize,
+  columnLabelsFontFamily,
+  columnLabelBorderRadius,
+  columnLabelBgColor,
+  columnLabelPadding,
+
+  scrollColor,
+  scrollBgColor,
+  scrollWidth,
 }: DraggableSelectorProps) {
   /* STATES */
   const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
@@ -160,30 +239,68 @@ export default function DraggableSelector({
 
   return (
     <>
-      <S.Container>
+      <S.Container
+        $width={width}
+        $height={height}
+        $maxWidth={maxWidth}
+        $maxHeight={maxHeight}
+        $scrollColor={scrollColor}
+        $scrollBgColor={scrollBgColor}
+        $scrollWidth={scrollWidth}
+      >
         {selectedDates && startTime && endTime && (
           <>
-            <S.LeftContainer>
-              <S.EmptySlot height={slotHeight} />
-              <RowLabel
-                gap={slotRowGap}
-                slotHeight={slotHeight}
-                timeSlots={timeSlotMatrix[0]}
-              />
-            </S.LeftContainer>
+            {!isRowLabelInvisible && (
+              <S.LeftContainer $rowLabelWidth={rowLabelWidth}>
+                {!isColumnLabelInVisible && <S.EmptySlot height={slotHeight} />}
+                <RowLabel
+                  gap={slotRowGap}
+                  slotHeight={slotHeight}
+                  timeSlots={timeSlotMatrix[0]}
+                  rowLabelsBgColor={rowLabelsBgColor}
+                  rowLabelsBorderRadius={rowLabelsBorderRadius}
+                  rowLabelsColor={rowLabelsColor}
+                  rowLabelsFontWeight={rowLabelsFontWeight}
+                  rowLabelsMargin={rowLabelsMargin}
+                  rowLabelsFontSize={rowLabelsFontSize}
+                  rowLabelsFontFamily={rowLabelsFontFamily}
+                  rowLabelBorderRadius={rowLabelBorderRadius}
+                  rowLabelBgColor={rowLabelBgColor}
+                  rowLabelPadding={rowLabelPadding}
+                />
+              </S.LeftContainer>
+            )}
 
             <S.RightContainer>
-              <ColumnLabel
-                gap={slotColumnGap}
-                slotHeight={slotHeight}
-                slotMinWidth={slotMinWidth}
-                dates={getSortedDates(selectedDates)}
-              />
+              {!isColumnLabelInVisible && (
+                <ColumnLabel
+                  gap={slotColumnGap}
+                  slotHeight={slotHeight}
+                  slotMinWidth={slotMinWidth}
+                  dates={getSortedDates(selectedDates)}
+                  columnLabelsBgColor={columnLabelsBgColor}
+                  columnLabelsBorderRadius={columnLabelsBorderRadius}
+                  columnLabelsColor={columnLabelsColor}
+                  columnLabelsFontWeight={columnLabelsFontWeight}
+                  columnLabelsMargin={columnLabelsMargin}
+                  columnLabelsFontSize={columnLabelsFontSize}
+                  columnLabelsFontFamily={columnLabelsFontFamily}
+                  columnLabelBorderRadius={columnLabelBorderRadius}
+                  columnLabelBgColor={columnLabelBgColor}
+                  columnLabelPadding={columnLabelPadding}
+                />
+              )}
+
               <TimeSlots
                 slotRowGap={slotRowGap}
                 slotColumnGap={slotColumnGap}
                 slotHeight={slotHeight}
                 slotMinWidth={slotMinWidth}
+                hoveredSlotColor={hoveredSlotColor}
+                defaultSlotColor={defaultSlotColor}
+                selectedSlotColor={selectedSlotColor}
+                slotBorderStyle={slotBorderStyle}
+                slotBorderRadius={slotBorderRadius}
                 timeSlotMatrix={timeSlotMatrix}
                 handleMouseUp={handleMouseUp}
                 handleMouseDown={handleMouseDown}

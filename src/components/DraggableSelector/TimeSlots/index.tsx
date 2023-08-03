@@ -9,10 +9,16 @@ interface TimeSlotsProps {
   handleMouseDown: (timeSlot: TimeSlot) => void;
   handleMouseEnter: (timeSlot: TimeSlot) => void;
 
-  slotRowGap?: number;
-  slotColumnGap?: number;
-  slotMinWidth?: number;
-  slotHeight?: number;
+  slotRowGap?: string;
+  slotColumnGap?: string;
+  slotMinWidth?: string;
+  slotHeight?: string;
+
+  defaultSlotColor?: string;
+  selectedSlotColor?: string;
+  hoveredSlotColor?: string;
+  slotBorderStyle?: string;
+  slotBorderRadius?: string;
 }
 
 export default function TimeSlots({
@@ -26,6 +32,11 @@ export default function TimeSlots({
   slotColumnGap,
   slotMinWidth,
   slotHeight,
+  defaultSlotColor,
+  selectedSlotColor,
+  hoveredSlotColor,
+  slotBorderStyle,
+  slotBorderRadius,
 }: TimeSlotsProps) {
   if (!timeSlotMatrix) {
     return <></>;
@@ -38,10 +49,10 @@ export default function TimeSlots({
 
   return (
     <S.ItemsGrid
-      rows={gridTemplateRows}
-      cols={gridTemplateColumns}
-      rowgap={slotRowGap}
-      colgap={slotColumnGap}
+      $rows={gridTemplateRows}
+      $cols={gridTemplateColumns}
+      $rowGap={slotRowGap}
+      $columnGap={slotColumnGap}
     >
       {timeSlotMatrix[0]?.map(
         (_, colIndex: number) =>
@@ -58,8 +69,13 @@ export default function TimeSlots({
               <S.Item
                 key={key}
                 selected={selected}
-                width={slotMinWidth}
-                height={slotHeight}
+                $width={slotMinWidth}
+                $height={slotHeight}
+                $hoveredSlotColor={hoveredSlotColor}
+                $defaultSlotColor={defaultSlotColor}
+                $selectedSlotColor={selectedSlotColor}
+                $slotBorderStyle={slotBorderStyle}
+                $slotBorderRadius={slotBorderRadius}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
                 }}

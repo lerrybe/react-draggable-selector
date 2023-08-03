@@ -1,44 +1,7 @@
 import { useState } from 'react';
-
 import './styles/global.css';
 import { TimeSlot } from './types/time';
 import DraggableSelector from './components/DraggableSelector';
-
-/*
-interface DraggableSelectorProps {
-  // REQUIRED
-  startTime: string;
-  endTime: string;
-  selectedDates: Date[];
-  selectedTimeSlots: TimeSlot[];
-  setSelectedTimeSlots: React.Dispatch<React.SetStateAction<TimeSlot[]>>;
-
-  // OPTIONAL
-  mode?: 'date' | 'day'; // opt, default: 'date'
-  timeUnit?: 5 | 10 | 15 | 20 | 30 | 60; // opt, default: 30
-  slotWidth?: number;
-  slotHeight?: number;
-  defaultSlotColor?: string;
-  selectedSlotColor?: string;
-  hoveredSlotColor?: string;
-  slotRowGap?: number;
-  slotColumnGap?: number;
-  slotBorderStyle?: string; // '1px solid color'
-
-  maxWidth?: number;
-  maxHeight?: number;
-
-  columnLabelMargin?: string;
-  columnLabelFontSize?: number;
-  columnLabelFontFamily?: string;
-  isColumnLabelVisible?: boolean;
-
-  rowLabelMargin?: string;
-  rowLabelFontSize?: number;
-  rowLabelFontFamily?: string;
-  isRowLabelVisible?: boolean;
-}
- */
 
 function TimeSelector() {
   const today = new Date();
@@ -79,7 +42,8 @@ function TimeSelector() {
   return (
     <>
       <button onClick={erase}>지우기</button>
-      <button onClick={click}>버튼버튼</button>
+      <button onClick={click}>더하기</button>
+
       <DraggableSelector
         startTime={'09:30'}
         endTime={'15:00'}
@@ -87,10 +51,20 @@ function TimeSelector() {
         selectedTimeSlots={selectedTimeSlots}
         setSelectedTimeSlots={setSelectedTimeSlots}
         timeUnit={30}
-        slotRowGap={2}
-        slotColumnGap={2}
-        slotHeight={20}
-        slotMinWidth={30}
+        slotRowGap={'2px'}
+        slotColumnGap={'2px'}
+        slotHeight={'30px'}
+        slotMinWidth={'60px'}
+        hoveredSlotColor={'#023020'}
+        selectedSlotColor={'#000'}
+        defaultSlotColor={'#d77373'}
+        // slotBorderStyle={'1px solid #000'}
+        slotBorderRadius={'3px'}
+        rowLabelWidth={'100px'}
+        width={'500px'}
+        height={'200px'}
+        isRowLabelInvisible={false}
+        isColumnLabelInVisible={false}
       />
     </>
   );

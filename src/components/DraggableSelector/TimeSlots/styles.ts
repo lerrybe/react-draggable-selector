@@ -1,44 +1,61 @@
 import styled from 'styled-components';
 
 interface ItemsGridProps {
-  rows: string;
-  cols: string;
-  rowgap?: number;
-  colgap?: number;
+  $rows: string;
+  $cols: string;
+  $rowGap?: string;
+  $columnGap?: string;
 }
 
 export const ItemsGrid = styled.ul<ItemsGridProps>(
-  ({ rows, cols, rowgap, colgap }) => `
+  ({ $rows, $cols, $rowGap, $columnGap }) => `
   display: grid;
-  grid-template-rows: ${rows};
-  grid-template-columns: ${cols};
-  
-  row-gap: ${rowgap || 5}px;
-  column-gap: ${colgap || 5}px;
+  grid-template-rows: ${$rows};
+  grid-template-columns: ${$cols};
+  row-gap: ${$rowGap || $rowGap === '0' || $rowGap === '0px' ? $rowGap : '5px'};
+  column-gap: ${
+    $columnGap || $columnGap === '0' || $columnGap === '0px'
+      ? $columnGap
+      : '5px'
+  };
 `,
 );
 
 interface ItemProps {
   selected: boolean;
-
-  height?: number;
-  width?: number;
+  $height?: string;
+  $width?: string;
+  $defaultSlotColor?: string;
+  $selectedSlotColor?: string;
+  $hoveredSlotColor?: string;
+  $slotBorderStyle?: string;
+  $slotBorderRadius?: string;
 }
 
 export const Item = styled.div<ItemProps>(
-  ({ selected, width, height }) => `
-  background-color: ${selected ? '#a2d7b4' : '#f1f1f1'};
-  
-  // border: 1px solid transparent; /* 기본적으로는 투명한 border를 지정합니다. */
-  // box-shadow: 0 0 0 0.5px transparent;
-  cursor: pointer;
- 
+  ({
+    selected,
+    $width,
+    $height,
+    $defaultSlotColor,
+    $hoveredSlotColor,
+    $selectedSlotColor,
+    $slotBorderStyle,
+    $slotBorderRadius,
+  }) => `
+  background-color: ${
+    selected ? $selectedSlotColor || '#a2d7b4' : $defaultSlotColor || '#f1f1f1'
+  };
   width: 100%;
-  min-width: ${width || 30}px;  
-  height: ${height || 30}px;
+  min-width: ${$width || '30px'};  
+  height: ${$height || '30px'};
+  cursor: pointer;
+  box-sizing: border-box;
+  border: ${$slotBorderStyle || 'none'};
+  border-radius: ${$slotBorderRadius || '0px'};
   
   &:hover {
-    background-color: #d4f1dd;
+    background-color: ${$hoveredSlotColor || '#d4f1dd'};
   }
 `,
 );
