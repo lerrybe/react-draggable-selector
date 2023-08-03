@@ -43,7 +43,7 @@ interface EmptySlotProps {
 export const EmptySlot = styled.li<EmptySlotProps>(
   ({ height }) => `  
   width: 100%;
-  height: ${height ? height : '30px'};
+  height: ${height || 30}px;
   
   display: flex;
   align-items: center;

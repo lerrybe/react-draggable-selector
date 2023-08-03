@@ -3,18 +3,18 @@ import styled from 'styled-components';
 interface ItemsGridProps {
   rows: string;
   cols: string;
-  rowGap?: number;
-  columnGap?: number;
+  rowgap?: number;
+  colgap?: number;
 }
 
 export const ItemsGrid = styled.ul<ItemsGridProps>(
-  ({ rows, cols, rowGap, columnGap }) => `
+  ({ rows, cols, rowgap, colgap }) => `
   display: grid;
   grid-template-rows: ${rows};
   grid-template-columns: ${cols};
   
-  row-gap: ${rowGap || '5px'};
-  column-gap: ${columnGap || '5px'};
+  row-gap: ${rowgap || 5}px;
+  column-gap: ${colgap || 5}px;
 `,
 );
 
@@ -34,8 +34,8 @@ export const Item = styled.div<ItemProps>(
   cursor: pointer;
  
   width: 100%;
-  min-width: ${width ? width : '30px'};  
-  height: ${height ? height : '30px'};
+  min-width: ${width || 30}px;  
+  height: ${height || 30}px;
   
   &:hover {
     background-color: #d4f1dd;

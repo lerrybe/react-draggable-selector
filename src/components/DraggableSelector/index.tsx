@@ -23,30 +23,11 @@ interface DraggableSelectorProps {
   setSelectedTimeSlots: React.Dispatch<React.SetStateAction<TimeSlot[]>>;
 
   /* OPTIONAL */
-  mode?: 'date' | 'day'; // default: 'date'
   timeUnit?: 5 | 10 | 15 | 20 | 30 | 60; // opt, default: 30
-
-  slotWidth?: number;
   slotHeight?: number;
-  defaultSlotColor?: string;
-  selectedSlotColor?: string;
-  hoveredSlotColor?: string;
+  slotMinWidth?: number;
   slotRowGap?: number;
   slotColumnGap?: number;
-  slotBorderStyle?: string; // '1px solid #000'
-
-  maxWidth?: number;
-  maxHeight?: number;
-
-  columnLabelMargin?: string;
-  columnLabelFontSize?: number;
-  columnLabelFontFamily?: string;
-  isColumnLabelVisible?: boolean;
-
-  rowLabelMargin?: string;
-  rowLabelFontSize?: number;
-  rowLabelFontFamily?: string;
-  isRowLabelVisible?: boolean;
 }
 
 export default function DraggableSelector({
@@ -57,6 +38,10 @@ export default function DraggableSelector({
   setSelectedTimeSlots,
 
   timeUnit,
+  slotHeight,
+  slotMinWidth,
+  slotRowGap,
+  slotColumnGap,
 }: DraggableSelectorProps) {
   /* STATES */
   const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
@@ -179,13 +164,26 @@ export default function DraggableSelector({
         {selectedDates && startTime && endTime && (
           <>
             <S.LeftContainer>
-              <S.EmptySlot />
-              <RowLabel timeSlots={timeSlotMatrix[0]} />
+              <S.EmptySlot height={slotHeight} />
+              <RowLabel
+                gap={slotRowGap}
+                slotHeight={slotHeight}
+                timeSlots={timeSlotMatrix[0]}
+              />
             </S.LeftContainer>
 
             <S.RightContainer>
-              <ColumnLabel dates={getSortedDates(selectedDates)} />
+              <ColumnLabel
+                gap={slotColumnGap}
+                slotHeight={slotHeight}
+                slotMinWidth={slotMinWidth}
+                dates={getSortedDates(selectedDates)}
+              />
               <TimeSlots
+                slotRowGap={slotRowGap}
+                slotColumnGap={slotColumnGap}
+                slotHeight={slotHeight}
+                slotMinWidth={slotMinWidth}
                 timeSlotMatrix={timeSlotMatrix}
                 handleMouseUp={handleMouseUp}
                 handleMouseDown={handleMouseDown}

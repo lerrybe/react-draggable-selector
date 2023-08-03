@@ -40,8 +40,8 @@ export default function TimeSlots({
     <S.ItemsGrid
       rows={gridTemplateRows}
       cols={gridTemplateColumns}
-      rowGap={slotRowGap}
-      columnGap={slotColumnGap}
+      rowgap={slotRowGap}
+      colgap={slotColumnGap}
     >
       {timeSlotMatrix[0]?.map(
         (_, colIndex: number) =>

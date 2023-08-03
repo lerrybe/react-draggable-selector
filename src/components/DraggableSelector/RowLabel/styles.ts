@@ -8,7 +8,7 @@ export const Items = styled.ul<Items>(
   ({ gap }) => `
   display: flex;
   flex-direction: column;
-  row-gap: ${gap ? gap : '5px'};
+  row-gap: ${gap || 5}px;
 `,
 );
 
@@ -19,7 +19,7 @@ interface ItemProps {
 export const Item = styled.li<ItemProps>(
   ({ height }) => `
   width: 100%;
-  height: ${height ? height : '30px'};
+  height: ${height || 30}px;
 
   display: flex;
   justify-content: center;

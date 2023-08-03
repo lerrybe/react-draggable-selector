@@ -87,6 +87,10 @@ function TimeSelector() {
         selectedTimeSlots={selectedTimeSlots}
         setSelectedTimeSlots={setSelectedTimeSlots}
         timeUnit={30}
+        slotRowGap={2}
+        slotColumnGap={2}
+        slotHeight={20}
+        slotMinWidth={30}
       />
     </>
   );
