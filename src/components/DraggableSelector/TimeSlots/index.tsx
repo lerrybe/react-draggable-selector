@@ -1,4 +1,4 @@
-import S from './TimeSlots.module.css';
+import * as S from './styles';
 import { type TimeSlot } from '../../../types/time';
 import { areTimeSlotsEqual } from '../../../utils/time';
 
@@ -8,6 +8,15 @@ interface TimeSlotsProps {
   handleMouseUp: (timeSlot: TimeSlot) => void;
   handleMouseDown: (timeSlot: TimeSlot) => void;
   handleMouseEnter: (timeSlot: TimeSlot) => void;
+
+  slotWidth?: number;
+  slotHeight?: number;
+  defaultSlotColor?: string;
+  selectedSlotColor?: string;
+  hoveredSlotColor?: string;
+  slotRowGap?: number;
+  slotColumnGap?: number;
+  slotBorderStyle?: string; // '1px solid #000'
 }
 
 export default function TimeSlots({
@@ -15,8 +24,15 @@ export default function TimeSlots({
   handleMouseDown,
   handleMouseEnter,
   timeSlotMatrix,
-  cachedSelectedTimeSlots,
-}: TimeSlotsProps) {
+  cachedSelectedTimeSlots, // slotWidth,
+  // slotHeight,
+} // defaultSlotColor,
+// selectedSlotColor,
+// hoveredSlotColor,
+// slotRowGap,
+// slotColumnGap,
+// slotBorderStyle,
+: TimeSlotsProps) {
   if (!timeSlotMatrix) {
     return <></>;
   }
@@ -27,10 +43,7 @@ export default function TimeSlots({
   const gridTemplateColumns: string = `repeat(${cols}, 60px)`;
 
   return (
-    <ul
-      className={S.wrapper}
-      style={{ display: 'grid', gridTemplateColumns, gridTemplateRows }}
-    >
+    <S.ItemsGrid rows={gridTemplateRows} cols={gridTemplateColumns}>
       {timeSlotMatrix[0]?.map(
         (_, colIndex: number) =>
           timeSlotMatrix?.map(timeSlots => {
@@ -43,11 +56,9 @@ export default function TimeSlots({
               ),
             );
             return (
-              <div
+              <S.Item
                 key={key}
-                className={`${S.slot} ${
-                  selected ? S.selectedSlot : S.unSelectedSlot
-                }`}
+                selected={selected}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
                 }}
@@ -57,10 +68,10 @@ export default function TimeSlots({
                 onMouseEnter={() => {
                   handleMouseEnter(targetSlot);
                 }}
-              ></div>
+              ></S.Item>
             );
           }),
       )}
-    </ul>
+    </S.ItemsGrid>
   );
 }

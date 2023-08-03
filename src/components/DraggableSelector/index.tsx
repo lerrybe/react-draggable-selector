@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import S from './DraggableSelector.module.css';
+import * as S from './styles';
 import { type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
 
@@ -25,6 +25,7 @@ interface DraggableSelectorProps {
   /* OPTIONAL */
   mode?: 'date' | 'day'; // default: 'date'
   timeUnit?: 5 | 10 | 15 | 20 | 30 | 60; // opt, default: 30
+
   slotWidth?: number;
   slotHeight?: number;
   defaultSlotColor?: string;
@@ -173,11 +174,11 @@ export default function DraggableSelector({
   }, [selectedDates, startTime, endTime, timeUnit]);
 
   return (
-    <div>
-      <div style={{ display: 'flex' }}>
+    <>
+      <S.Container>
         {selectedDates && startTime && endTime && (
           <div>
-            <li className={S.label} />
+            <S.EmptySlot />
             <RowLabel timeSlots={timeSlotMatrix[0]} />
           </div>
         )}
@@ -193,7 +194,7 @@ export default function DraggableSelector({
             cachedSelectedTimeSlots={dragEventStates.cachedSelectedTimeSlots}
           />
         </div>
-      </div>
-    </div>
+      </S.Container>
+    </>
   );
 }

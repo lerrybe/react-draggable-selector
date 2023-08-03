@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import S from './RowLabel.module.css';
+import * as S from './styles';
 import { type TimeSlot } from '../../../types/time';
 
 interface RowLabelProps {
@@ -12,15 +12,11 @@ export default function RowLabel({ timeSlots }: RowLabelProps) {
   }
 
   return (
-    <ul className={S.wrapper}>
+    <S.Items>
       {timeSlots.map(({ date, startTime, endTime }) => {
         const dayjsDate = dayjs(`${date} ${startTime}:${endTime}`);
-        return (
-          <li key={startTime} className={S.label}>
-            {dayjsDate.format('hh:mm A')}
-          </li>
-        );
+        return <S.Item key={startTime}>{dayjsDate.format('hh:mm A')}</S.Item>;
       })}
-    </ul>
+    </S.Items>
   );
 }

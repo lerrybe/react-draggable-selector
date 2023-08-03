@@ -1,10 +1,12 @@
-.wrapper {
+import styled from 'styled-components';
+
+export const Items = styled.ul`
   display: flex;
   row-gap: 5px;
   column-gap: 5px;
-}
+`;
 
-.label {
+export const Item = styled.li`
   width: 60px;
   height: 30px;
   display: flex;
@@ -12,4 +14,4 @@
   align-items: center;
   font-size: 12px;
   font-family: 'Pretendard-Regular';
-}
+`;
