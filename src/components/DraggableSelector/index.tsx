@@ -68,6 +68,9 @@ interface DraggableSelectorProps {
   scrollColor?: string;
   scrollBgColor?: string;
   scrollWidth?: string;
+
+  dateFormat?: string;
+  timeFormat?: string;
 }
 
 export default function DraggableSelector({
@@ -121,6 +124,9 @@ export default function DraggableSelector({
   scrollColor,
   scrollBgColor,
   scrollWidth,
+
+  dateFormat,
+  timeFormat,
 }: DraggableSelectorProps) {
   /* STATES */
   const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
@@ -254,6 +260,7 @@ export default function DraggableSelector({
               <S.LeftContainer $rowLabelWidth={rowLabelWidth}>
                 {!isColumnLabelInVisible && <S.EmptySlot height={slotHeight} />}
                 <RowLabel
+                  timeFormat={timeFormat}
                   gap={slotRowGap}
                   slotHeight={slotHeight}
                   timeSlots={timeSlotMatrix[0]}
@@ -274,6 +281,7 @@ export default function DraggableSelector({
             <S.RightContainer>
               {!isColumnLabelInVisible && (
                 <ColumnLabel
+                  dateFormat={dateFormat}
                   gap={slotColumnGap}
                   slotHeight={slotHeight}
                   slotMinWidth={slotMinWidth}

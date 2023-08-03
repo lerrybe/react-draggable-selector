@@ -17,6 +17,7 @@ interface ColumnLabelProps {
   columnLabelBorderRadius?: string;
   columnLabelBgColor?: string;
   columnLabelPadding?: string;
+  dateFormat?: string;
 }
 
 /*
@@ -37,6 +38,7 @@ export default function ColumnLabel({
   columnLabelBorderRadius,
   columnLabelBgColor,
   columnLabelPadding,
+  dateFormat,
 }: ColumnLabelProps) {
   if (!dates || dates.length === 0) {
     return <></>;
@@ -62,7 +64,7 @@ export default function ColumnLabel({
               $columnLabelBgColor={columnLabelBgColor}
               $columnLabelBorderRadius={columnLabelBorderRadius}
             >
-              {dayjs(date).format('M/D')}
+              {dayjs(date).format(dateFormat || 'M/D')}
             </S.Label>
           </S.Item>
         );

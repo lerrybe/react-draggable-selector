@@ -17,6 +17,8 @@ interface RowLabelProps {
   rowLabelBorderRadius?: string;
   rowLabelBgColor?: string;
   rowLabelPadding?: string;
+
+  timeFormat?: string;
 }
 
 export default function RowLabel({
@@ -33,6 +35,7 @@ export default function RowLabel({
   rowLabelBgColor,
   rowLabelBorderRadius,
   rowLabelPadding,
+  timeFormat,
 }: RowLabelProps) {
   if (!timeSlots || timeSlots.length === 0) {
     return <></>;
@@ -58,7 +61,7 @@ export default function RowLabel({
               $rowLabelBgColor={rowLabelBgColor}
               $rowLabelBorderRadius={rowLabelBorderRadius}
             >
-              {dayjsDate.format('hh:mm A')}
+              {dayjsDate.format(timeFormat || 'hh:mm A')}
             </S.Label>
           </S.Item>
         );
