@@ -8,7 +8,7 @@ import {
   getTimeSlotMatrix,
   updateCachedSelectedTimeSlots,
 } from '../../utils/time';
-import { getSortedDates } from '../../utils/date.ts';
+import { changeDateStringFormat, getSortedDates } from '../../utils/date.ts';
 
 import RowLabel from './RowLabel';
 import TimeSlots from './TimeSlots';
@@ -54,6 +54,8 @@ export default function DraggableSelector({
   selectedDates,
   selectedTimeSlots,
   setSelectedTimeSlots,
+
+  timeUnit,
 }: DraggableSelectorProps) {
   /* STATES */
   const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
@@ -77,7 +79,6 @@ export default function DraggableSelector({
     },
     [],
   );
-
   const updateSlots = useCallback(() => {
     setSelectedTimeSlots(dragEventStates.cachedSelectedTimeSlots);
     setDragEventStates(prev => ({
@@ -86,7 +87,6 @@ export default function DraggableSelector({
       startedTimeSlot: null,
     }));
   }, [dragEventStates.cachedSelectedTimeSlots, setSelectedTimeSlots]);
-
   const updateCache = useCallback(
     (endedTimeSlot: TimeSlot) => {
       updateCachedSelectedTimeSlots({
@@ -121,6 +121,38 @@ export default function DraggableSelector({
   );
 
   /* EFFECTS */
+
+  /* DATA INITIALIZE for OPTIONS */
+  useEffect(() => {
+    setSelectedTimeSlots([]);
+    setDragEventStates({
+      selectionType: null,
+      startedTimeSlot: null,
+      cachedSelectedTimeSlots: [],
+    });
+  }, [startTime, endTime, timeUnit]);
+
+  /* filter timeSlots if dates changed */
+  useEffect(() => {
+    // If the date of the corresponding slot is not in the selectedDates
+    // it is removed while rotating the elements in the selectedTimeSlot array.
+    const filteredTimeSlots = selectedTimeSlots.filter(slot => {
+      return selectedDates.some(date => {
+        const standardDate = new Date(changeDateStringFormat(slot.date));
+        return (
+          standardDate.getFullYear() === date.getFullYear() &&
+          standardDate.getMonth() === date.getMonth() &&
+          standardDate.getDate() === date.getDate()
+        );
+      });
+    });
+    setSelectedTimeSlots(filteredTimeSlots);
+    setDragEventStates(prev => ({
+      ...prev,
+      cachedSelectedTimeSlots: filteredTimeSlots,
+    }));
+  }, [selectedDates]);
+
   useEffect(() => {
     document.addEventListener('mouseup', updateSlots);
     return () => {
@@ -130,7 +162,7 @@ export default function DraggableSelector({
 
   useEffect(() => {
     const matrix = getTimeSlotMatrix({
-      timeUnit: 30,
+      timeUnit: timeUnit || 30,
       dates: getSortedDates(selectedDates),
       startTime: startTime,
       endTime: endTime,
@@ -138,7 +170,7 @@ export default function DraggableSelector({
     if (matrix) {
       setTimeSlotMatrix(matrix);
     }
-  }, [selectedDates, startTime, endTime]);
+  }, [selectedDates, startTime, endTime, timeUnit]);
 
   return (
     <div>

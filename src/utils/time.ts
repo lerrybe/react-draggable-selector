@@ -2,7 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
-import { isDateBetween } from './date.ts';
+import { getDay, isDateBetween } from './date.ts';
 import { type TimeSlot } from '../types/time';
 import { type DragEventStates, Selection } from '../types/event';
 
@@ -70,7 +70,7 @@ export const getTimeSlotMatrix = ({
         date: key,
         startTime: `${formattedHour}:${formattedMinute}`,
         endTime: `${formattedEndHour}:${formattedEndMinute}`,
-        day: date.getDay(),
+        day: getDay(date.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6),
       });
 
       minute += timeUnit;
