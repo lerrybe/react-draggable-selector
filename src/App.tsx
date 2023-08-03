@@ -82,7 +82,7 @@ function TimeSelector() {
       <button onClick={click}>버튼버튼</button>
       <DraggableSelector
         startTime={'09:30'}
-        endTime={'12:00'}
+        endTime={'15:00'}
         selectedDates={selectedDates}
         selectedTimeSlots={selectedTimeSlots}
         setSelectedTimeSlots={setSelectedTimeSlots}

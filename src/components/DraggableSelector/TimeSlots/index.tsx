@@ -9,14 +9,10 @@ interface TimeSlotsProps {
   handleMouseDown: (timeSlot: TimeSlot) => void;
   handleMouseEnter: (timeSlot: TimeSlot) => void;
 
-  slotWidth?: number;
-  slotHeight?: number;
-  defaultSlotColor?: string;
-  selectedSlotColor?: string;
-  hoveredSlotColor?: string;
   slotRowGap?: number;
   slotColumnGap?: number;
-  slotBorderStyle?: string; // '1px solid #000'
+  slotMinWidth?: number;
+  slotHeight?: number;
 }
 
 export default function TimeSlots({
@@ -24,26 +20,29 @@ export default function TimeSlots({
   handleMouseDown,
   handleMouseEnter,
   timeSlotMatrix,
-  cachedSelectedTimeSlots, // slotWidth,
-  // slotHeight,
-} // defaultSlotColor,
-// selectedSlotColor,
-// hoveredSlotColor,
-// slotRowGap,
-// slotColumnGap,
-// slotBorderStyle,
-: TimeSlotsProps) {
+  cachedSelectedTimeSlots,
+
+  slotRowGap,
+  slotColumnGap,
+  slotMinWidth,
+  slotHeight,
+}: TimeSlotsProps) {
   if (!timeSlotMatrix) {
     return <></>;
   }
 
   const cols: number = timeSlotMatrix?.length;
   const rows: number = timeSlotMatrix[0]?.length;
-  const gridTemplateRows: string = `repeat(${rows}, 30px)`;
-  const gridTemplateColumns: string = `repeat(${cols}, 60px)`;
+  const gridTemplateRows: string = `repeat(${rows}, 1fr)`;
+  const gridTemplateColumns: string = `repeat(${cols}, 1fr)`;
 
   return (
-    <S.ItemsGrid rows={gridTemplateRows} cols={gridTemplateColumns}>
+    <S.ItemsGrid
+      rows={gridTemplateRows}
+      cols={gridTemplateColumns}
+      rowGap={slotRowGap}
+      columnGap={slotColumnGap}
+    >
       {timeSlotMatrix[0]?.map(
         (_, colIndex: number) =>
           timeSlotMatrix?.map(timeSlots => {
@@ -59,6 +58,8 @@ export default function TimeSlots({
               <S.Item
                 key={key}
                 selected={selected}
+                width={slotMinWidth}
+                height={slotHeight}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
                 }}

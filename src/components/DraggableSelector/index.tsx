@@ -177,23 +177,26 @@ export default function DraggableSelector({
     <>
       <S.Container>
         {selectedDates && startTime && endTime && (
-          <div>
-            <S.EmptySlot />
-            <RowLabel timeSlots={timeSlotMatrix[0]} />
-          </div>
+          <>
+            <S.LeftContainer>
+              <S.EmptySlot />
+              <RowLabel timeSlots={timeSlotMatrix[0]} />
+            </S.LeftContainer>
+
+            <S.RightContainer>
+              <ColumnLabel dates={getSortedDates(selectedDates)} />
+              <TimeSlots
+                timeSlotMatrix={timeSlotMatrix}
+                handleMouseUp={handleMouseUp}
+                handleMouseDown={handleMouseDown}
+                handleMouseEnter={handleMouseEnter}
+                cachedSelectedTimeSlots={
+                  dragEventStates.cachedSelectedTimeSlots
+                }
+              />
+            </S.RightContainer>
+          </>
         )}
-        <div>
-          {selectedDates && startTime && endTime && (
-            <ColumnLabel dates={getSortedDates(selectedDates)} />
-          )}
-          <TimeSlots
-            timeSlotMatrix={timeSlotMatrix}
-            handleMouseUp={handleMouseUp}
-            handleMouseDown={handleMouseDown}
-            handleMouseEnter={handleMouseEnter}
-            cachedSelectedTimeSlots={dragEventStates.cachedSelectedTimeSlots}
-          />
-        </div>
       </S.Container>
     </>
   );
