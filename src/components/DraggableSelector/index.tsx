@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as S from './styles';
+import '../../styles/global.css';
 
 import {
   areTimeSlotsEqual,

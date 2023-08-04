@@ -1,3 +1,3 @@
-import TimeSelector from './App';
+import DraggableSelector from './components/DraggableSelector';
 
-export { TimeSelector };
+export { DraggableSelector };
