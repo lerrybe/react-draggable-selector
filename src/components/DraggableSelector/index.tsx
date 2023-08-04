@@ -90,318 +90,337 @@ interface DraggableSelectorProps {
   scrollBgColor?: string;
 }
 
-export default function DraggableSelector({
-  dates,
-  endTime,
-  startTime,
-  selectedTimeSlots,
-  setSelectedTimeSlots,
+const DraggableSelector = React.memo(
+  ({
+    dates,
+    endTime,
+    startTime,
+    selectedTimeSlots,
+    setSelectedTimeSlots,
 
-  mode,
-  language,
-  timeUnit,
-  dateFormat,
-  timeFormat,
+    mode,
+    language,
+    timeUnit,
+    dateFormat,
+    timeFormat,
 
-  width,
-  height,
-  margin,
-  padding,
-  minWidth,
-  maxWidth,
-  minHeight,
-  maxHeight,
-  slotHeight,
-  slotMinWidth,
-  slotRowGap,
-  slotColumnGap,
-  slotBorderStyle,
-  slotBorderRadius,
-  defaultSlotColor,
-  hoveredSlotColor,
-  selectedSlotColor,
-  disabledSlotColor,
+    width,
+    height,
+    margin,
+    padding,
+    minWidth,
+    maxWidth,
+    minHeight,
+    maxHeight,
+    slotHeight,
+    slotMinWidth,
+    slotRowGap,
+    slotColumnGap,
+    slotBorderStyle,
+    slotBorderRadius,
+    defaultSlotColor,
+    hoveredSlotColor,
+    selectedSlotColor,
+    disabledSlotColor,
 
-  rowLabelBgColor,
-  rowLabelPadding,
-  rowLabelBorderRadius,
-  rowLabelWidth,
-  rowLabelsColor,
-  rowLabelsMargin,
-  rowLabelsBgColor,
-  rowLabelsFontSize,
-  rowLabelsFontFamily,
-  rowLabelsFontWeight,
-  rowLabelsBorderRadius,
-  isRowLabelInvisible,
+    rowLabelBgColor,
+    rowLabelPadding,
+    rowLabelBorderRadius,
+    rowLabelWidth,
+    rowLabelsColor,
+    rowLabelsMargin,
+    rowLabelsBgColor,
+    rowLabelsFontSize,
+    rowLabelsFontFamily,
+    rowLabelsFontWeight,
+    rowLabelsBorderRadius,
+    isRowLabelInvisible,
 
-  columnLabelBgColor,
-  columnLabelPadding,
-  columnLabelBorderRadius,
-  columnLabelsColor,
-  columnLabelsMargin,
-  columnLabelsBgColor,
-  columnLabelsFontSize,
-  columnLabelsFontFamily,
-  columnLabelsFontWeight,
-  columnLabelsBorderRadius,
-  isColumnLabelInVisible,
+    columnLabelBgColor,
+    columnLabelPadding,
+    columnLabelBorderRadius,
+    columnLabelsColor,
+    columnLabelsMargin,
+    columnLabelsBgColor,
+    columnLabelsFontSize,
+    columnLabelsFontFamily,
+    columnLabelsFontWeight,
+    columnLabelsBorderRadius,
+    isColumnLabelInVisible,
 
-  scrollWidth,
-  scrollColor,
-  scrollBgColor,
-}: DraggableSelectorProps) {
-  /* ----- STATES ----- */
-  const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
-  const [dragEventStates, setDragEventStates] = useState<DragEventStates>({
-    selectionType: null,
-    startedTimeSlot: null,
-    cachedSelectedTimeSlots: [...selectedTimeSlots],
-  });
-  const [selectedDates, setSelectedDates] = useState<Date[]>(
-    removeDuplicatesAndSortByDate(dates),
-  );
-  const [mockTimeSlotMatrix, setMockTimeSlotMatrix] = useState<TimeSlot[][]>(
-    [],
-  );
-  const [timeSlotMatrixByDay, setTimeSlotMatrixByDay] = useState<TimeSlot[][]>(
-    [],
-  );
-  /* ----- STATES ----- */
+    scrollWidth,
+    scrollColor,
+    scrollBgColor,
+  }: DraggableSelectorProps) => {
+    /* ----- STATES ----- */
+    const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
+    const [dragEventStates, setDragEventStates] = useState<DragEventStates>({
+      selectionType: null,
+      startedTimeSlot: null,
+      cachedSelectedTimeSlots: [...selectedTimeSlots],
+    });
+    const [selectedDates, setSelectedDates] = useState<Date[]>(
+      removeDuplicatesAndSortByDate(dates),
+    );
+    const [mockTimeSlotMatrix, setMockTimeSlotMatrix] = useState<TimeSlot[][]>(
+      [],
+    );
+    const [timeSlotMatrixByDay, setTimeSlotMatrixByDay] = useState<
+      TimeSlot[][]
+    >([]);
+    /* ----- STATES ----- */
 
-  /* ----- FUNC related with SELECTION & UPDATING ----- */
-  const startSelection = useCallback(
-    (startedTimeSlot: TimeSlot, selectedTimeSlots: TimeSlot[]) => {
-      const selectedTimeSlot = selectedTimeSlots.find(slot =>
-        areTimeSlotsEqual(startedTimeSlot, slot, mode || DEFAULT_MODE),
-      );
+    /* ----- FUNC related with SELECTION & UPDATING ----- */
+    const startSelection = useCallback(
+      (startedTimeSlot: TimeSlot, selectedTimeSlots: TimeSlot[]) => {
+        const selectedTimeSlot = selectedTimeSlots.find(slot =>
+          areTimeSlotsEqual(startedTimeSlot, slot, mode || DEFAULT_MODE),
+        );
+        setDragEventStates(prev => ({
+          ...prev,
+          startedTimeSlot: startedTimeSlot,
+          selectionType: selectedTimeSlot ? Selection.REMOVE : Selection.ADD,
+        }));
+      },
+      [mode],
+    );
+
+    const updateSlots = useCallback(() => {
+      setSelectedTimeSlots(dragEventStates.cachedSelectedTimeSlots);
       setDragEventStates(prev => ({
         ...prev,
-        startedTimeSlot: startedTimeSlot,
-        selectionType: selectedTimeSlot ? Selection.REMOVE : Selection.ADD,
+        selectionType: null,
+        startedTimeSlot: null,
       }));
-    },
-    [mode],
-  );
+    }, [dragEventStates.cachedSelectedTimeSlots, setSelectedTimeSlots]);
 
-  const updateSlots = useCallback(() => {
-    setSelectedTimeSlots(dragEventStates.cachedSelectedTimeSlots);
-    setDragEventStates(prev => ({
-      ...prev,
-      selectionType: null,
-      startedTimeSlot: null,
-    }));
-  }, [dragEventStates.cachedSelectedTimeSlots, setSelectedTimeSlots]);
+    const updateCache = useCallback(
+      (endedTimeSlot: TimeSlot) => {
+        if (mode === 'day') {
+          updateCachedSelectedTimeSlots({
+            mode: 'day',
+            endedTimeSlot,
+            timeSlotMatrix: mockTimeSlotMatrix,
+            dragEventStates,
+            selectedTimeSlots,
+            setDragEventStates,
+            timeSlotMatrixByDay,
+          });
+        } else {
+          updateCachedSelectedTimeSlots({
+            mode: 'date',
+            endedTimeSlot,
+            timeSlotMatrix,
+            dragEventStates,
+            selectedTimeSlots,
+            setDragEventStates,
+            timeSlotMatrixByDay,
+          });
+        }
+      },
+      [mode, dragEventStates, selectedTimeSlots, timeSlotMatrix],
+    );
+    /* ----- FUNC related with SELECTION & UPDATING ----- */
 
-  const updateCache = useCallback(
-    (endedTimeSlot: TimeSlot) => {
-      if (mode === 'day') {
-        updateCachedSelectedTimeSlots({
-          mode: 'day',
-          endedTimeSlot,
-          timeSlotMatrix: mockTimeSlotMatrix,
-          dragEventStates,
-          selectedTimeSlots,
-          setDragEventStates,
-          timeSlotMatrixByDay,
-        });
-      } else {
-        updateCachedSelectedTimeSlots({
-          mode: 'date',
-          endedTimeSlot,
-          timeSlotMatrix,
-          dragEventStates,
-          selectedTimeSlots,
-          setDragEventStates,
-          timeSlotMatrixByDay,
-        });
-      }
-    },
-    [dragEventStates, selectedTimeSlots, timeSlotMatrix],
-  );
-  /* ----- FUNC related with SELECTION & UPDATING ----- */
+    /* ----- EVENT HANDLERS ----- */
+    const handleMouseUp = useCallback(
+      (endedTimeSlot: TimeSlot) => {
+        updateCache(endedTimeSlot);
+      },
+      [updateCache],
+    );
+    const handleMouseEnter = useCallback(
+      (endedTimeSlot: TimeSlot) => {
+        updateCache(endedTimeSlot);
+      },
+      [updateCache],
+    );
+    const handleMouseDown = useCallback(
+      (startedTimeSlot: TimeSlot) => {
+        startSelection(startedTimeSlot, selectedTimeSlots);
+      },
+      [selectedTimeSlots, startSelection],
+    );
+    /* ----- EVENT HANDLERS ----- */
 
-  /* ----- EVENT HANDLERS ----- */
-  const handleMouseUp = useCallback(
-    (endedTimeSlot: TimeSlot) => {
-      updateCache(endedTimeSlot);
-    },
-    [updateCache],
-  );
-  const handleMouseEnter = useCallback(
-    (endedTimeSlot: TimeSlot) => {
-      updateCache(endedTimeSlot);
-    },
-    [updateCache],
-  );
-  const handleMouseDown = useCallback(
-    (startedTimeSlot: TimeSlot) => {
-      startSelection(startedTimeSlot, selectedTimeSlots);
-    },
-    [selectedTimeSlots, startSelection],
-  );
-  /* ----- EVENT HANDLERS ----- */
+    /* ----- EFFECTS ----- */
+    useEffect(() => {
+      setSelectedDates(removeDuplicatesAndSortByDate(dates));
+    }, [dates]);
 
-  /* ----- EFFECTS ----- */
-  useEffect(() => {
-    setSelectedDates(removeDuplicatesAndSortByDate(dates));
-  }, [dates]);
-
-  // Initialize data when options changed
-  useEffect(() => {
-    setSelectedTimeSlots([]);
-    setDragEventStates({
-      selectionType: null,
-      startedTimeSlot: null,
-      cachedSelectedTimeSlots: [],
-    });
-  }, [mode, startTime, endTime, timeUnit]);
-
-  // Remove timeSlots if date is not in the selectedDates
-  useEffect(() => {
-    const filteredTimeSlots = selectedTimeSlots.filter(slot => {
-      return selectedDates.some(date => {
-        const standardDate = new Date(slot.date);
-        return (
-          standardDate.getFullYear() === date.getFullYear() &&
-          standardDate.getMonth() === date.getMonth() &&
-          standardDate.getDate() === date.getDate()
-        );
+    // Initialize data when options changed
+    useEffect(() => {
+      setDragEventStates({
+        selectionType: null,
+        startedTimeSlot: null,
+        cachedSelectedTimeSlots: [],
       });
-    });
-    setSelectedTimeSlots(filteredTimeSlots);
-    setDragEventStates(prev => ({
-      ...prev,
-      cachedSelectedTimeSlots: filteredTimeSlots,
-    }));
-  }, [selectedDates]);
+      setSelectedTimeSlots([]);
+    }, [mode, startTime, endTime, timeUnit]);
 
-  useEffect(() => {
-    const matrix = getTimeSlotMatrix({
-      timeUnit: timeUnit || DEFAULT_TIMEUNIT,
-      dates: selectedDates,
-      startTime: startTime,
-      endTime: endTime,
-    });
-    if (matrix) {
-      setTimeSlotMatrix(matrix);
-    }
-  }, [mode, startTime, endTime, timeUnit, selectedDates]);
+    useEffect(() => {
+      if (mode === 'day') {
+        setDragEventStates({
+          selectionType: null,
+          startedTimeSlot: null,
+          cachedSelectedTimeSlots: [],
+        });
+        setSelectedTimeSlots([]);
+      }
+    }, [mode, dates]);
 
-  useEffect(() => {
-    const sortedMatrix = getTimeSlotMatrixByDay(timeSlotMatrix);
-    if (sortedMatrix) {
-      setTimeSlotMatrixByDay(sortedMatrix);
-    }
-  }, [timeSlotMatrix]);
+    // Remove timeSlots if date is not in the selectedDates
+    useEffect(() => {
+      const filteredTimeSlots = selectedTimeSlots.filter(slot => {
+        return selectedDates.some(date => {
+          const standardDate = new Date(slot.date);
+          return (
+            standardDate.getFullYear() === date.getFullYear() &&
+            standardDate.getMonth() === date.getMonth() &&
+            standardDate.getDate() === date.getDate()
+          );
+        });
+      });
+      setSelectedTimeSlots(filteredTimeSlots);
+      setDragEventStates(prev => ({
+        ...prev,
+        cachedSelectedTimeSlots: filteredTimeSlots,
+      }));
+    }, [selectedDates]);
 
-  useEffect(() => {
-    const mockMatrix = getTimeSlotMatrix({
-      timeUnit: timeUnit || DEFAULT_TIMEUNIT,
-      dates: removeDuplicatesAndSortByDate(sampleDates),
-      startTime: startTime,
-      endTime: endTime,
-    });
-    if (mockMatrix) {
-      setMockTimeSlotMatrix(mockMatrix);
-    }
-  }, [mode, startTime, endTime, timeUnit, selectedDates]);
+    useEffect(() => {
+      const matrix = getTimeSlotMatrix({
+        timeUnit: timeUnit || DEFAULT_TIMEUNIT,
+        dates: selectedDates,
+        startTime: startTime,
+        endTime: endTime,
+      });
+      if (matrix) {
+        setTimeSlotMatrix(matrix);
+      }
+    }, [mode, startTime, endTime, timeUnit, selectedDates]);
 
-  useEffect(() => {
-    document.addEventListener('mouseup', updateSlots);
-    return () => {
-      document.removeEventListener('mouseup', updateSlots);
-    };
-  }, [updateSlots]);
-  /* ----- EFFECTS ----- */
+    useEffect(() => {
+      const sortedMatrix = getTimeSlotMatrixByDay(timeSlotMatrix);
+      if (sortedMatrix) {
+        setTimeSlotMatrixByDay(sortedMatrix);
+      }
+    }, [timeSlotMatrix]);
 
-  return (
-    <>
-      <S.Container
-        $width={width}
-        $height={height}
-        $margin={margin}
-        $padding={padding}
-        $minWidth={minWidth}
-        $maxWidth={maxWidth}
-        $minHeight={minHeight}
-        $maxHeight={maxHeight}
-        $scrollWidth={scrollWidth}
-        $scrollColor={scrollColor}
-        $scrollBgColor={scrollBgColor}
-      >
-        {selectedDates && startTime && endTime && (
-          <>
-            {!isRowLabelInvisible && (
-              <S.LeftContainer $rowLabelWidth={rowLabelWidth}>
-                {!isColumnLabelInVisible && <S.EmptySlot height={slotHeight} />}
-                <RowLabel
-                  gap={slotRowGap}
-                  slotHeight={slotHeight}
-                  timeFormat={timeFormat}
-                  timeSlots={timeSlotMatrix[0]}
-                  rowLabelsColor={rowLabelsColor}
-                  rowLabelsMargin={rowLabelsMargin}
-                  rowLabelBgColor={rowLabelBgColor}
-                  rowLabelPadding={rowLabelPadding}
-                  rowLabelsBgColor={rowLabelsBgColor}
-                  rowLabelsFontSize={rowLabelsFontSize}
-                  rowLabelsFontWeight={rowLabelsFontWeight}
-                  rowLabelsFontFamily={rowLabelsFontFamily}
-                  rowLabelBorderRadius={rowLabelBorderRadius}
-                  rowLabelsBorderRadius={rowLabelsBorderRadius}
-                />
-              </S.LeftContainer>
-            )}
+    useEffect(() => {
+      const mockMatrix = getTimeSlotMatrix({
+        timeUnit: timeUnit || DEFAULT_TIMEUNIT,
+        dates: removeDuplicatesAndSortByDate(sampleDates),
+        startTime: startTime,
+        endTime: endTime,
+      });
+      if (mockMatrix) {
+        setMockTimeSlotMatrix(mockMatrix);
+      }
+    }, [mode, startTime, endTime, timeUnit, selectedDates]);
 
-            <S.RightContainer>
-              {!isColumnLabelInVisible && (
-                <ColumnLabel
-                  dates={selectedDates}
-                  dateFormat={dateFormat}
-                  mode={mode || DEFAULT_MODE}
-                  language={language || DEFAULT_LANG}
-                  gap={slotColumnGap}
-                  slotHeight={slotHeight}
-                  slotMinWidth={slotMinWidth}
-                  columnLabelsColor={columnLabelsColor}
-                  columnLabelsMargin={columnLabelsMargin}
-                  columnLabelBgColor={columnLabelBgColor}
-                  columnLabelPadding={columnLabelPadding}
-                  columnLabelsBgColor={columnLabelsBgColor}
-                  columnLabelsFontSize={columnLabelsFontSize}
-                  columnLabelsFontFamily={columnLabelsFontFamily}
-                  columnLabelsFontWeight={columnLabelsFontWeight}
-                  columnLabelBorderRadius={columnLabelBorderRadius}
-                  columnLabelsBorderRadius={columnLabelsBorderRadius}
-                />
+    useEffect(() => {
+      document.addEventListener('mouseup', updateSlots);
+      return () => {
+        document.removeEventListener('mouseup', updateSlots);
+      };
+    }, [updateSlots]);
+    /* ----- EFFECTS ----- */
+
+    console.log(selectedTimeSlots);
+
+    return (
+      <>
+        <S.Container
+          $width={width}
+          $height={height}
+          $margin={margin}
+          $padding={padding}
+          $minWidth={minWidth}
+          $maxWidth={maxWidth}
+          $minHeight={minHeight}
+          $maxHeight={maxHeight}
+          $scrollWidth={scrollWidth}
+          $scrollColor={scrollColor}
+          $scrollBgColor={scrollBgColor}
+        >
+          {selectedDates && startTime && endTime && (
+            <>
+              {!isRowLabelInvisible && (
+                <S.LeftContainer $rowLabelWidth={rowLabelWidth}>
+                  {!isColumnLabelInVisible && (
+                    <S.EmptySlot height={slotHeight} />
+                  )}
+                  <RowLabel
+                    gap={slotRowGap}
+                    slotHeight={slotHeight}
+                    timeFormat={timeFormat}
+                    timeSlots={timeSlotMatrix[0]}
+                    rowLabelsColor={rowLabelsColor}
+                    rowLabelsMargin={rowLabelsMargin}
+                    rowLabelBgColor={rowLabelBgColor}
+                    rowLabelPadding={rowLabelPadding}
+                    rowLabelsBgColor={rowLabelsBgColor}
+                    rowLabelsFontSize={rowLabelsFontSize}
+                    rowLabelsFontWeight={rowLabelsFontWeight}
+                    rowLabelsFontFamily={rowLabelsFontFamily}
+                    rowLabelBorderRadius={rowLabelBorderRadius}
+                    rowLabelsBorderRadius={rowLabelsBorderRadius}
+                  />
+                </S.LeftContainer>
               )}
-              <TimeSlots
-                slotRowGap={slotRowGap}
-                slotHeight={slotHeight}
-                mode={mode || DEFAULT_MODE}
-                slotMinWidth={slotMinWidth}
-                slotColumnGap={slotColumnGap}
-                timeSlotMatrix={timeSlotMatrix}
-                slotBorderStyle={slotBorderStyle}
-                hoveredSlotColor={hoveredSlotColor}
-                defaultSlotColor={defaultSlotColor}
-                slotBorderRadius={slotBorderRadius}
-                selectedSlotColor={selectedSlotColor}
-                disabledSlotColor={disabledSlotColor}
-                mockTimeSlotMatrix={mockTimeSlotMatrix}
-                timeSlotMatrixByDay={timeSlotMatrixByDay}
-                handleMouseUp={handleMouseUp}
-                handleMouseDown={handleMouseDown}
-                handleMouseEnter={handleMouseEnter}
-                cachedSelectedTimeSlots={
-                  dragEventStates.cachedSelectedTimeSlots
-                }
-              />
-            </S.RightContainer>
-          </>
-        )}
-      </S.Container>
-    </>
-  );
-}
+
+              <S.RightContainer>
+                {!isColumnLabelInVisible && (
+                  <ColumnLabel
+                    dates={selectedDates}
+                    dateFormat={dateFormat}
+                    mode={mode || DEFAULT_MODE}
+                    language={language || DEFAULT_LANG}
+                    gap={slotColumnGap}
+                    slotHeight={slotHeight}
+                    slotMinWidth={slotMinWidth}
+                    columnLabelsColor={columnLabelsColor}
+                    columnLabelsMargin={columnLabelsMargin}
+                    columnLabelBgColor={columnLabelBgColor}
+                    columnLabelPadding={columnLabelPadding}
+                    columnLabelsBgColor={columnLabelsBgColor}
+                    columnLabelsFontSize={columnLabelsFontSize}
+                    columnLabelsFontFamily={columnLabelsFontFamily}
+                    columnLabelsFontWeight={columnLabelsFontWeight}
+                    columnLabelBorderRadius={columnLabelBorderRadius}
+                    columnLabelsBorderRadius={columnLabelsBorderRadius}
+                  />
+                )}
+                <TimeSlots
+                  slotRowGap={slotRowGap}
+                  slotHeight={slotHeight}
+                  mode={mode || DEFAULT_MODE}
+                  slotMinWidth={slotMinWidth}
+                  slotColumnGap={slotColumnGap}
+                  timeSlotMatrix={timeSlotMatrix}
+                  slotBorderStyle={slotBorderStyle}
+                  hoveredSlotColor={hoveredSlotColor}
+                  defaultSlotColor={defaultSlotColor}
+                  slotBorderRadius={slotBorderRadius}
+                  selectedSlotColor={selectedSlotColor}
+                  disabledSlotColor={disabledSlotColor}
+                  mockTimeSlotMatrix={mockTimeSlotMatrix}
+                  timeSlotMatrixByDay={timeSlotMatrixByDay}
+                  handleMouseUp={handleMouseUp}
+                  handleMouseDown={handleMouseDown}
+                  handleMouseEnter={handleMouseEnter}
+                  cachedSelectedTimeSlots={
+                    dragEventStates.cachedSelectedTimeSlots
+                  }
+                />
+              </S.RightContainer>
+            </>
+          )}
+        </S.Container>
+      </>
+    );
+  },
+);
+
+export default DraggableSelector;
