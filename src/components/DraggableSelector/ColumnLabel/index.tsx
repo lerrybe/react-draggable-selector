@@ -1,8 +1,11 @@
 import dayjs from 'dayjs';
 import * as S from './styles';
+import { getIterableDays } from '../../../utils/date.ts';
 
 interface ColumnLabelProps {
   dates?: Date[];
+  mode: 'date' | 'day';
+  language: 'en' | 'ko';
 
   gap?: string;
   slotHeight?: string;
@@ -39,6 +42,8 @@ export default function ColumnLabel({
   columnLabelBgColor,
   columnLabelPadding,
   dateFormat,
+  mode,
+  language,
 }: ColumnLabelProps) {
   if (!dates || dates.length === 0) {
     return <></>;
@@ -55,20 +60,40 @@ export default function ColumnLabel({
       $columnLabelsFontSize={columnLabelsFontSize}
       $columnLabelsFontFamily={columnLabelsFontFamily}
     >
-      {dates.map(date => {
-        const key = date.getDate();
-        return (
-          <S.Item key={key} $height={slotHeight} $width={slotMinWidth}>
-            <S.Label
-              $padding={columnLabelPadding}
-              $columnLabelBgColor={columnLabelBgColor}
-              $columnLabelBorderRadius={columnLabelBorderRadius}
-            >
-              {dayjs(date).format(dateFormat || 'M/D')}
-            </S.Label>
-          </S.Item>
-        );
-      })}
+      {mode === 'day' ? (
+        <>
+          {getIterableDays(language).map(day => {
+            return (
+              <S.Item key={day} $height={slotHeight} $width={slotMinWidth}>
+                <S.Label
+                  $padding={columnLabelPadding}
+                  $columnLabelBgColor={columnLabelBgColor}
+                  $columnLabelBorderRadius={columnLabelBorderRadius}
+                >
+                  {day}
+                </S.Label>
+              </S.Item>
+            );
+          })}
+        </>
+      ) : (
+        <>
+          {dates.map(date => {
+            const key = date.getDate();
+            return (
+              <S.Item key={key} $height={slotHeight} $width={slotMinWidth}>
+                <S.Label
+                  $padding={columnLabelPadding}
+                  $columnLabelBgColor={columnLabelBgColor}
+                  $columnLabelBorderRadius={columnLabelBorderRadius}
+                >
+                  {dayjs(date).format(dateFormat || 'M/D')}
+                </S.Label>
+              </S.Item>
+            );
+          })}
+        </>
+      )}
     </S.Items>
   );
 }

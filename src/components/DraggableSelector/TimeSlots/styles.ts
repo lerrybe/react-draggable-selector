@@ -23,6 +23,7 @@ export const ItemsGrid = styled.ul<ItemsGridProps>(
 
 interface ItemProps {
   selected: boolean;
+  $selectDisabled: boolean;
   $height?: string;
   $width?: string;
   $defaultSlotColor?: string;
@@ -35,6 +36,7 @@ interface ItemProps {
 export const Item = styled.div<ItemProps>(
   ({
     selected,
+    $selectDisabled,
     $width,
     $height,
     $defaultSlotColor,
@@ -57,5 +59,9 @@ export const Item = styled.div<ItemProps>(
   &:hover {
     background-color: ${$hoveredSlotColor || '#d4f1dd'};
   }
+
+  ${$selectDisabled ? 'background-color: gray;' : ''}
+  ${$selectDisabled ? 'cursor: not-allowed;' : ''}
+  ${$selectDisabled ? '&:hover { background-color: gray; }' : ''} 
 `,
 );

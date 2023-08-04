@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as S from './styles';
+
+import { sampleDates } from '../../data/date.ts';
 import { type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
 
@@ -8,7 +10,11 @@ import {
   getTimeSlotMatrix,
   updateCachedSelectedTimeSlots,
 } from '../../utils/time';
-import { changeDateStringFormat, getSortedDates } from '../../utils/date.ts';
+import {
+  changeDateStringFormat,
+  getSortedDates,
+  getTimeSlotMatrixSortedByDay,
+} from '../../utils/date.ts';
 
 import RowLabel from './RowLabel';
 import TimeSlots from './TimeSlots';
@@ -71,6 +77,8 @@ interface DraggableSelectorProps {
 
   dateFormat?: string;
   timeFormat?: string;
+  mode?: 'date' | 'day';
+  language?: 'en' | 'ko';
 }
 
 export default function DraggableSelector({
@@ -127,6 +135,9 @@ export default function DraggableSelector({
 
   dateFormat,
   timeFormat,
+
+  mode,
+  language,
 }: DraggableSelectorProps) {
   /* STATES */
   const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
@@ -135,12 +146,18 @@ export default function DraggableSelector({
     startedTimeSlot: null,
     cachedSelectedTimeSlots: [...selectedTimeSlots],
   });
+  const [sortedTimeSlotMatrixByDay, setSortedTimeSlotMatrixByDay] = useState<
+    TimeSlot[][]
+  >([]);
+  const [mockTimeSlotMatrix, setMockTimeSlotMatrix] = useState<TimeSlot[][]>(
+    [],
+  );
 
   /* FUNCTIONS */
   const startSelection = useCallback(
     (startedTimeSlot: TimeSlot, selectedTimeSlots: TimeSlot[]) => {
       const selectedTimeSlot = selectedTimeSlots.find(slot =>
-        areTimeSlotsEqual(startedTimeSlot, slot),
+        areTimeSlotsEqual(startedTimeSlot, slot, mode || 'date'),
       );
       setDragEventStates(prev => ({
         ...prev,
@@ -148,7 +165,7 @@ export default function DraggableSelector({
         selectionType: selectedTimeSlot ? Selection.REMOVE : Selection.ADD,
       }));
     },
-    [],
+    [mode],
   );
   const updateSlots = useCallback(() => {
     setSelectedTimeSlots(dragEventStates.cachedSelectedTimeSlots);
@@ -160,13 +177,27 @@ export default function DraggableSelector({
   }, [dragEventStates.cachedSelectedTimeSlots, setSelectedTimeSlots]);
   const updateCache = useCallback(
     (endedTimeSlot: TimeSlot) => {
-      updateCachedSelectedTimeSlots({
-        endedTimeSlot,
-        timeSlotMatrix,
-        dragEventStates,
-        selectedTimeSlots,
-        setDragEventStates,
-      });
+      if (mode === 'day') {
+        updateCachedSelectedTimeSlots({
+          mode: 'day',
+          endedTimeSlot,
+          timeSlotMatrix: mockTimeSlotMatrix,
+          dragEventStates,
+          selectedTimeSlots,
+          setDragEventStates,
+          sortedTimeSlotMatrixByDay,
+        });
+      } else {
+        updateCachedSelectedTimeSlots({
+          mode: 'date',
+          endedTimeSlot,
+          timeSlotMatrix,
+          dragEventStates,
+          selectedTimeSlots,
+          setDragEventStates,
+          sortedTimeSlotMatrixByDay,
+        });
+      }
     },
     [dragEventStates, selectedTimeSlots, timeSlotMatrix],
   );
@@ -194,6 +225,7 @@ export default function DraggableSelector({
   /* EFFECTS */
 
   /* DATA INITIALIZE for OPTIONS */
+  /* 선택된 것들 초기화 */
   useEffect(() => {
     setSelectedTimeSlots([]);
     setDragEventStates({
@@ -201,9 +233,10 @@ export default function DraggableSelector({
       startedTimeSlot: null,
       cachedSelectedTimeSlots: [],
     });
-  }, [startTime, endTime, timeUnit]);
+  }, [startTime, endTime, timeUnit, mode]);
 
   /* filter timeSlots if dates changed */
+  /* 일 삭제할 때마다 맞지않는 슬롯들 삭제해주기 */
   useEffect(() => {
     // If the date of the corresponding slot is not in the selectedDates
     // it is removed while rotating the elements in the selectedTimeSlot array.
@@ -241,7 +274,39 @@ export default function DraggableSelector({
     if (matrix) {
       setTimeSlotMatrix(matrix);
     }
-  }, [selectedDates, startTime, endTime, timeUnit]);
+  }, [selectedDates, startTime, endTime, timeUnit, mode]);
+
+  useEffect(() => {
+    const sortedMatrix = getTimeSlotMatrixSortedByDay(timeSlotMatrix);
+    if (sortedMatrix) {
+      setSortedTimeSlotMatrixByDay(sortedMatrix);
+    }
+  }, [timeSlotMatrix]);
+
+  useEffect(() => {
+    const mockMatrix = getTimeSlotMatrix({
+      timeUnit: timeUnit || 30,
+      dates: getSortedDates(sampleDates),
+      startTime: startTime,
+      endTime: endTime,
+    });
+    if (mockMatrix) {
+      setMockTimeSlotMatrix(mockMatrix);
+    }
+  }, [selectedDates, startTime, endTime, timeUnit, mode]);
+
+  console.log(
+    'timeSlotMatrix',
+    timeSlotMatrix,
+    'mockTimeSlotMatrix',
+    mockTimeSlotMatrix,
+    'sortedTimeSlotMatrixByDay',
+    sortedTimeSlotMatrixByDay,
+    'selectedTimeSlots',
+    selectedTimeSlots,
+    'cachedSelectedTimeSlots',
+    dragEventStates.cachedSelectedTimeSlots,
+  );
 
   return (
     <>
@@ -281,6 +346,8 @@ export default function DraggableSelector({
             <S.RightContainer>
               {!isColumnLabelInVisible && (
                 <ColumnLabel
+                  mode={mode || 'date'}
+                  language={language || 'en'}
                   dateFormat={dateFormat}
                   gap={slotColumnGap}
                   slotHeight={slotHeight}
@@ -298,8 +365,8 @@ export default function DraggableSelector({
                   columnLabelPadding={columnLabelPadding}
                 />
               )}
-
               <TimeSlots
+                mode={mode || 'date'}
                 slotRowGap={slotRowGap}
                 slotColumnGap={slotColumnGap}
                 slotHeight={slotHeight}
@@ -310,6 +377,8 @@ export default function DraggableSelector({
                 slotBorderStyle={slotBorderStyle}
                 slotBorderRadius={slotBorderRadius}
                 timeSlotMatrix={timeSlotMatrix}
+                mockTimeSlotMatrix={mockTimeSlotMatrix}
+                sortedTimeSlotMatrixByDay={sortedTimeSlotMatrixByDay}
                 handleMouseUp={handleMouseUp}
                 handleMouseDown={handleMouseDown}
                 handleMouseEnter={handleMouseEnter}

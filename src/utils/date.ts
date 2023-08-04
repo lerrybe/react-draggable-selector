@@ -37,3 +37,39 @@ export const getDay = (dayNumber: 0 | 1 | 2 | 3 | 4 | 5 | 6) => {
 
   return DAY[dayNumber];
 };
+
+export const getIterableDays = (version: 'en' | 'ko') => {
+  const DAYS = {
+    en: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
+    ko: ['일', '월', '화', '수', '목', '금', '토'],
+  };
+
+  return DAYS[version];
+};
+
+export const getDayNum = (day: Day) => {
+  const DAY_NUM = {
+    SUN: 0,
+    MON: 1,
+    TUE: 2,
+    WED: 3,
+    THU: 4,
+    FRI: 5,
+    SAT: 6,
+  };
+
+  return DAY_NUM[day];
+};
+
+export const getTimeSlotMatrixSortedByDay = (matrix: TimeSlot[][]) => {
+  if (!matrix || matrix.length === 0) return;
+
+  const sortedMatrix: TimeSlot[][] = [[], [], [], [], [], [], []];
+  matrix?.forEach((timeSlots: TimeSlot[]) => {
+    timeSlots?.forEach((timeSlot: TimeSlot) => {
+      const dayNum = getDayNum(timeSlot.day);
+      sortedMatrix[dayNum].push(timeSlot);
+    });
+  });
+  return sortedMatrix;
+};

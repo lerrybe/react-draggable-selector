@@ -2,17 +2,29 @@ import React from 'react';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 
-import { getDay, isDateBetween } from './date.ts';
+import { getDay, getDayNum, isDateBetween } from './date.ts';
 import { type TimeSlot } from '../types/time';
 import { type DragEventStates, Selection } from '../types/event';
 
 /* MODULE EXTEND */
 dayjs.extend(isBetween);
 
-export const areTimeSlotsEqual = (a: TimeSlot, b: TimeSlot) => {
-  return (
-    a.date === b.date && a.startTime === b.startTime && a.endTime === b.endTime
-  );
+export const areTimeSlotsEqual = (
+  a: TimeSlot,
+  b: TimeSlot,
+  mode: 'date' | 'day',
+) => {
+  if (mode === 'day') {
+    return (
+      a.day === b.day && a.endTime === b.endTime && a.startTime === b.startTime
+    );
+  } else {
+    return (
+      a.date === b.date &&
+      a.endTime === b.endTime &&
+      a.startTime === b.startTime
+    );
+  }
 };
 
 const isTimeBetween = (target: TimeSlot, start: TimeSlot, end: TimeSlot) => {
@@ -85,13 +97,17 @@ export const getTimeSlotMatrix = ({
 };
 
 export const updateCachedSelectedTimeSlots = ({
+  mode,
   endedTimeSlot,
   timeSlotMatrix,
   dragEventStates,
   selectedTimeSlots,
   setDragEventStates,
+  sortedTimeSlotMatrixByDay,
 }: {
+  mode: 'date' | 'day';
   timeSlotMatrix: TimeSlot[][];
+  sortedTimeSlotMatrixByDay: TimeSlot[][];
   selectedTimeSlots: TimeSlot[];
   endedTimeSlot: TimeSlot | null;
   dragEventStates: DragEventStates;
@@ -132,20 +148,51 @@ export const updateCachedSelectedTimeSlots = ({
         : [startedTimeSlot]
       : [];
 
-  const nextDraft =
-    selectionType === Selection.ADD
-      ? Array.from(
-          new Set([...selectedTimeSlots, ...updatedCachedSelectedTimeSlots]),
-        )
-      : selectionType === Selection.REMOVE
-      ? selectedTimeSlots.filter(
-          a =>
-            !updatedCachedSelectedTimeSlots.find(b => areTimeSlotsEqual(a, b)),
-        )
-      : [...selectedTimeSlots];
+  if (mode === 'date') {
+    const nextCache =
+      selectionType === Selection.ADD
+        ? Array.from(
+            new Set([...selectedTimeSlots, ...updatedCachedSelectedTimeSlots]),
+          )
+        : selectionType === Selection.REMOVE
+        ? selectedTimeSlots.filter(a => {
+            return !updatedCachedSelectedTimeSlots.find(b =>
+              areTimeSlotsEqual(a, b, mode),
+            );
+          })
+        : [...selectedTimeSlots];
 
-  setDragEventStates(prev => ({
-    ...prev,
-    cachedSelectedTimeSlots: nextDraft,
-  }));
+    setDragEventStates(prev => ({
+      ...prev,
+      cachedSelectedTimeSlots: nextCache,
+    }));
+  } else {
+    const cachedSelectedAllTimeSlots: TimeSlot[] = [];
+    updatedCachedSelectedTimeSlots.forEach(slot => {
+      const target = sortedTimeSlotMatrixByDay[getDayNum(slot.day)];
+      target?.forEach(t => {
+        if (areTimeSlotsEqual(slot, t, 'day')) {
+          cachedSelectedAllTimeSlots.push(t);
+        }
+      });
+    });
+
+    const nextCache =
+      selectionType === Selection.ADD
+        ? Array.from(
+            new Set([...selectedTimeSlots, ...cachedSelectedAllTimeSlots]),
+          )
+        : selectionType === Selection.REMOVE
+        ? selectedTimeSlots.filter(a => {
+            return !cachedSelectedAllTimeSlots.find(b =>
+              areTimeSlotsEqual(a, b, mode),
+            );
+          })
+        : [...selectedTimeSlots];
+
+    setDragEventStates(prev => ({
+      ...prev,
+      cachedSelectedTimeSlots: nextCache,
+    }));
+  }
 };

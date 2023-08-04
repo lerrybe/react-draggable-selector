@@ -6,10 +6,12 @@ import DraggableSelector from './components/DraggableSelector';
 function TimeSelector() {
   const today = new Date();
   const [selectedDates, setSelectedDates] = useState<Date[]>([
-    // new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2),
+    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 8),
+    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 9),
+    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 10),
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3),
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4),
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 5),
   ]);
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<TimeSlot[]>([]);
@@ -39,11 +41,26 @@ function TimeSelector() {
     setCount(count - 1);
   };
 
+  const [mode, setMode] = useState<'day' | 'date'>('date');
+
   return (
     <>
       <button onClick={erase}>지우기</button>
       <button onClick={click}>더하기</button>
-
+      <button
+        onClick={() => {
+          setMode('day');
+        }}
+      >
+        day
+      </button>
+      <button
+        onClick={() => {
+          setMode('date');
+        }}
+      >
+        date
+      </button>
       <DraggableSelector
         startTime={'09:30'}
         endTime={'15:00'}
@@ -61,10 +78,12 @@ function TimeSelector() {
         // slotBorderStyle={'1px solid #000'}
         slotBorderRadius={'3px'}
         rowLabelWidth={'100px'}
-        width={'500px'}
-        height={'200px'}
+        width={'100%'}
+        height={'auto'}
         isRowLabelInvisible={false}
         isColumnLabelInVisible={false}
+        mode={mode}
+        language={'ko'}
       />
     </>
   );
