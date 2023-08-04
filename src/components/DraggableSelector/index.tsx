@@ -244,6 +244,7 @@ const DraggableSelector = React.memo(
     /* ----- EVENT HANDLERS ----- */
 
     /* ----- EFFECTS ----- */
+    // Initialize and remove duplicated data when dates changed
     useEffect(() => {
       setSelectedDates(removeDuplicatesAndSortByDate(dates));
     }, [dates]);
@@ -258,6 +259,7 @@ const DraggableSelector = React.memo(
       setSelectedTimeSlots([]);
     }, [mode, startTime, endTime, timeUnit]);
 
+    // Initialize data when dates changed
     useEffect(() => {
       if (mode === 'day') {
         setDragEventStates({
@@ -288,6 +290,7 @@ const DraggableSelector = React.memo(
       }));
     }, [selectedDates]);
 
+    // Initialize timeSlotMatrix when dates changed
     useEffect(() => {
       const matrix = getTimeSlotMatrix({
         timeUnit: timeUnit || DEFAULT_TIMEUNIT,
@@ -300,6 +303,7 @@ const DraggableSelector = React.memo(
       }
     }, [mode, startTime, endTime, timeUnit, selectedDates]);
 
+    // Initialize timeSlotMatrixByDay when timeSlotMatrix changed
     useEffect(() => {
       const sortedMatrix = getTimeSlotMatrixByDay(timeSlotMatrix);
       if (sortedMatrix) {
@@ -307,6 +311,7 @@ const DraggableSelector = React.memo(
       }
     }, [timeSlotMatrix]);
 
+    // Initialize mockTimeSlotMatrix when dates changed
     useEffect(() => {
       const mockMatrix = getTimeSlotMatrix({
         timeUnit: timeUnit || DEFAULT_TIMEUNIT,
@@ -319,6 +324,7 @@ const DraggableSelector = React.memo(
       }
     }, [mode, startTime, endTime, timeUnit, selectedDates]);
 
+    // Add, Remove event listener
     useEffect(() => {
       document.addEventListener('mouseup', updateSlots);
       return () => {
