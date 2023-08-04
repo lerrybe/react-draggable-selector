@@ -5,23 +5,27 @@ interface ContainerProps {
   $height?: string;
   $maxWidth?: string;
   $maxHeight?: string;
+  $scrollWidth?: string;
   $scrollColor?: string;
   $scrollBgColor?: string;
-  $scrollWidth?: string;
 }
-
 export const Container = styled.div<ContainerProps>(
   ({
     $width,
     $height,
     $maxWidth,
     $maxHeight,
+    $scrollWidth,
     $scrollColor,
     $scrollBgColor,
-    $scrollWidth,
   }) => `  
   display: flex;
   overflow: auto;
+
+  width: ${$width || '100%'};
+  height: ${$height || '500px'};
+  max-width: ${$maxWidth || '100%'};
+  max-height: ${$maxHeight || '500px'};
   
   &::-webkit-scrollbar {
     width: ${$scrollWidth || '3px'};  /* WIDTH, HEIGHT */
@@ -35,18 +39,12 @@ export const Container = styled.div<ContainerProps>(
   &::-webkit-scrollbar-track {
     background: ${$scrollBgColor || 'rgba(33, 122, 244, .1)'};  /* BG COLOR */
   }
-
-  width: ${$width || '100%'};
-  height: ${$height || '500px'};
-  max-width: ${$maxWidth || '100%'};
-  max-height: ${$maxHeight || '500px'};
 `,
 );
 
 interface LeftContainerProps {
   $rowLabelWidth?: string;
 }
-
 export const LeftContainer = styled.div<LeftContainerProps>(
   ({ $rowLabelWidth }) => `  
   width: ${$rowLabelWidth || '60px'};
@@ -55,9 +53,8 @@ export const LeftContainer = styled.div<LeftContainerProps>(
 );
 
 interface RightContainerProps {}
-
 export const RightContainer = styled.div<RightContainerProps>(
-  () => `  
+  () => `
   width: auto;
   flex-grow: 1;
 `,
@@ -66,7 +63,6 @@ export const RightContainer = styled.div<RightContainerProps>(
 interface EmptySlotProps {
   height?: string;
 }
-
 export const EmptySlot = styled.li<EmptySlotProps>(
   ({ height }) => `  
   width: 100%;

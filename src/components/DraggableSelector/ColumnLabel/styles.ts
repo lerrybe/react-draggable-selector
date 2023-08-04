@@ -2,34 +2,35 @@ import styled from 'styled-components';
 
 interface Items {
   $gap?: string;
-  $columnLabelsBgColor?: string;
-  $columnLabelsBorderRadius?: string;
   $columnLabelsColor?: string;
-  $columnLabelsFontWeight?: number;
   $columnLabelsMargin?: string;
+  $columnLabelsBgColor?: string;
   $columnLabelsFontSize?: string;
   $columnLabelsFontFamily?: string;
+  $columnLabelsFontWeight?: number;
+  $columnLabelsBorderRadius?: string;
 }
-
 export const Items = styled.ul<Items>(
   ({
     $gap,
-    $columnLabelsBgColor,
-    $columnLabelsBorderRadius,
     $columnLabelsColor,
-    $columnLabelsFontWeight,
     $columnLabelsMargin,
+    $columnLabelsBgColor,
     $columnLabelsFontSize,
     $columnLabelsFontFamily,
+    $columnLabelsFontWeight,
+    $columnLabelsBorderRadius,
   }) => `
   display: flex;
-  column-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : '5px'};
-  background-color: ${$columnLabelsBgColor || 'transparent'};
-  border-radius: ${$columnLabelsBorderRadius || '0px'};
   color: ${$columnLabelsColor || '#000'};
-  font-weight: ${$columnLabelsFontWeight || 600};
+  background-color: ${$columnLabelsBgColor || 'transparent'};
+
   margin: ${$columnLabelsMargin || '0px'};
+  border-radius: ${$columnLabelsBorderRadius || '0px'};
+  column-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : '5px'};
+  
   font-size: ${$columnLabelsFontSize || '12px'};
+  font-weight: ${$columnLabelsFontWeight || 600};
   font-family: ${$columnLabelsFontFamily || 'Pretendard-Regular'};
 `,
 );
@@ -38,33 +39,33 @@ interface ItemProps {
   $width?: string;
   $height?: string;
 }
-
 export const Item = styled.li<ItemProps>(
   ({ $height, $width }) => `  
-  width: 100%;
-  min-width: ${$width || '30px'};  
-  height: ${$height || '30px'};
-  
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  
+  width: 100%;
+  height: ${$height || '30px'};
+  min-width: ${$width || '30px'};  
 `,
 );
 
 interface LabelProps {
   $padding?: string;
-  $columnLabelBorderRadius?: string;
   $columnLabelBgColor?: string;
+  $columnLabelBorderRadius?: string;
 }
 
 export const Label = styled.div<LabelProps>(
-  ({ $padding, $columnLabelBorderRadius, $columnLabelBgColor }) => `
+  ({ $padding, $columnLabelBgColor, $columnLabelBorderRadius }) => `
   width: auto;
   height: auto;
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
   padding: ${$padding || '0px 10px'};
   border-radius: ${$columnLabelBorderRadius || '0px'};
   background-color: ${$columnLabelBgColor || 'transparent'};

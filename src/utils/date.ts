@@ -5,8 +5,22 @@ import { Day, type TimeSlot } from '../types/time';
 /* MODULE EXTEND */
 dayjs.extend(isBetween);
 
-export const getSortedDates = (dates: Date[]) => {
-  return [...dates].sort((a, b) => a.getTime() - b.getTime());
+export const getUniqueDateKey = (date: Date) => {
+  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+};
+
+export const removeDuplicatesAndSortByDate = (dates: Date[]) => {
+  const uniqueDates = new Set<string>();
+  for (const date of dates) {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    uniqueDates.add(`${year}/${month}/${day}`);
+  }
+  const sortedDates = Array.from(uniqueDates).sort(
+    (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+  );
+  return sortedDates.map(strDate => new Date(strDate));
 };
 
 export const isDateBetween = (
@@ -18,10 +32,6 @@ export const isDateBetween = (
   const startDate = dayjs(start.date);
   const targetDate = dayjs(target.date);
   return targetDate.isBetween(startDate, endDate, 'day', '[]');
-};
-
-export const changeDateStringFormat = (dateStr: string) => {
-  return `${dateStr[0]}${dateStr[1]}${dateStr[2]}${dateStr[3]}/${dateStr[4]}${dateStr[5]}/${dateStr[6]}${dateStr[7]}`;
 };
 
 export const getDay = (dayNumber: 0 | 1 | 2 | 3 | 4 | 5 | 6) => {
@@ -38,15 +48,6 @@ export const getDay = (dayNumber: 0 | 1 | 2 | 3 | 4 | 5 | 6) => {
   return DAY[dayNumber];
 };
 
-export const getIterableDays = (version: 'en' | 'ko') => {
-  const DAYS = {
-    en: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
-    ko: ['일', '월', '화', '수', '목', '금', '토'],
-  };
-
-  return DAYS[version];
-};
-
 export const getDayNum = (day: Day) => {
   const DAY_NUM = {
     SUN: 0,
@@ -61,14 +62,22 @@ export const getDayNum = (day: Day) => {
   return DAY_NUM[day];
 };
 
-export const getTimeSlotMatrixSortedByDay = (matrix: TimeSlot[][]) => {
+export const getIterableDays = (version: 'en' | 'ko') => {
+  const DAYS = {
+    en: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
+    ko: ['일', '월', '화', '수', '목', '금', '토'],
+  };
+
+  return DAYS[version];
+};
+
+export const getTimeSlotMatrixByDay = (matrix: TimeSlot[][]) => {
   if (!matrix || matrix.length === 0) return;
 
   const sortedMatrix: TimeSlot[][] = [[], [], [], [], [], [], []];
   matrix?.forEach((timeSlots: TimeSlot[]) => {
     timeSlots?.forEach((timeSlot: TimeSlot) => {
-      const dayNum = getDayNum(timeSlot.day);
-      sortedMatrix[dayNum].push(timeSlot);
+      sortedMatrix[getDayNum(timeSlot.day)].push(timeSlot);
     });
   });
   return sortedMatrix;

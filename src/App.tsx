@@ -8,15 +8,11 @@ function TimeSelector() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2),
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 8),
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 9),
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 10),
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3),
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 5),
   ]);
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<TimeSlot[]>([]);
 
-  const [count, setCount] = useState(6);
+  const [count, setCount] = useState(11);
   const click = () => {
     setSelectedDates(prev => {
       const next = [...prev];
@@ -64,7 +60,7 @@ function TimeSelector() {
       <DraggableSelector
         startTime={'09:30'}
         endTime={'15:00'}
-        selectedDates={selectedDates}
+        dates={selectedDates}
         selectedTimeSlots={selectedTimeSlots}
         setSelectedTimeSlots={setSelectedTimeSlots}
         timeUnit={30}
@@ -83,7 +79,7 @@ function TimeSelector() {
         isRowLabelInvisible={false}
         isColumnLabelInVisible={false}
         mode={mode}
-        language={'ko'}
+        language={'en'}
       />
     </>
   );

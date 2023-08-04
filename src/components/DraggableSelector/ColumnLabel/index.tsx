@@ -1,26 +1,25 @@
 import dayjs from 'dayjs';
 import * as S from './styles';
-import { getIterableDays } from '../../../utils/date.ts';
+import { getIterableDays, getUniqueDateKey } from '../../../utils/date';
 
 interface ColumnLabelProps {
   dates?: Date[];
+  dateFormat?: string;
   mode: 'date' | 'day';
   language: 'en' | 'ko';
-
   gap?: string;
   slotHeight?: string;
   slotMinWidth?: string;
-  columnLabelsBgColor?: string;
-  columnLabelsBorderRadius?: string;
-  columnLabelsColor?: string;
-  columnLabelsFontWeight?: number;
-  columnLabelsMargin?: string;
-  columnLabelsFontSize?: string;
-  columnLabelsFontFamily?: string;
-  columnLabelBorderRadius?: string;
   columnLabelBgColor?: string;
   columnLabelPadding?: string;
-  dateFormat?: string;
+  columnLabelBorderRadius?: string;
+  columnLabelsColor?: string;
+  columnLabelsMargin?: string;
+  columnLabelsBgColor?: string;
+  columnLabelsFontSize?: string;
+  columnLabelsFontFamily?: string;
+  columnLabelsFontWeight?: number;
+  columnLabelsBorderRadius?: string;
 }
 
 /*
@@ -28,22 +27,22 @@ interface ColumnLabelProps {
 */
 export default function ColumnLabel({
   gap,
+  mode,
   dates,
+  language,
+  dateFormat,
   slotHeight,
   slotMinWidth,
-  columnLabelsBgColor,
-  columnLabelsBorderRadius,
-  columnLabelsColor,
-  columnLabelsFontWeight,
-  columnLabelsMargin,
-  columnLabelsFontSize,
-  columnLabelsFontFamily,
-  columnLabelBorderRadius,
   columnLabelBgColor,
   columnLabelPadding,
-  dateFormat,
-  mode,
-  language,
+  columnLabelBorderRadius,
+  columnLabelsColor,
+  columnLabelsMargin,
+  columnLabelsBgColor,
+  columnLabelsFontSize,
+  columnLabelsFontFamily,
+  columnLabelsFontWeight,
+  columnLabelsBorderRadius,
 }: ColumnLabelProps) {
   if (!dates || dates.length === 0) {
     return <></>;
@@ -52,13 +51,13 @@ export default function ColumnLabel({
   return (
     <S.Items
       $gap={gap}
-      $columnLabelsBgColor={columnLabelsBgColor}
-      $columnLabelsBorderRadius={columnLabelsBorderRadius}
       $columnLabelsColor={columnLabelsColor}
-      $columnLabelsFontWeight={columnLabelsFontWeight}
       $columnLabelsMargin={columnLabelsMargin}
+      $columnLabelsBgColor={columnLabelsBgColor}
       $columnLabelsFontSize={columnLabelsFontSize}
       $columnLabelsFontFamily={columnLabelsFontFamily}
+      $columnLabelsFontWeight={columnLabelsFontWeight}
+      $columnLabelsBorderRadius={columnLabelsBorderRadius}
     >
       {mode === 'day' ? (
         <>
@@ -79,9 +78,12 @@ export default function ColumnLabel({
       ) : (
         <>
           {dates.map(date => {
-            const key = date.getDate();
             return (
-              <S.Item key={key} $height={slotHeight} $width={slotMinWidth}>
+              <S.Item
+                $height={slotHeight}
+                $width={slotMinWidth}
+                key={getUniqueDateKey(date)}
+              >
                 <S.Label
                   $padding={columnLabelPadding}
                   $columnLabelBgColor={columnLabelBgColor}

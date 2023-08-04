@@ -1,52 +1,48 @@
 import { useEffect, useState } from 'react';
 
 import * as S from './styles';
+import { getDayNum } from '../../../utils/date';
 import { type TimeSlot } from '../../../types/time';
 import { areTimeSlotsEqual } from '../../../utils/time';
-import { getDayNum } from '../../../utils/date.ts';
 
 interface TimeSlotsProps {
+  mode: 'date' | 'day';
   timeSlotMatrix?: TimeSlot[][];
   mockTimeSlotMatrix?: TimeSlot[][];
+  timeSlotMatrixByDay?: TimeSlot[][];
   cachedSelectedTimeSlots?: TimeSlot[];
-  sortedTimeSlotMatrixByDay?: TimeSlot[][];
-
   handleMouseUp: (timeSlot: TimeSlot) => void;
   handleMouseDown: (timeSlot: TimeSlot) => void;
   handleMouseEnter: (timeSlot: TimeSlot) => void;
-  mode: 'date' | 'day';
-
+  slotHeight?: string;
+  slotMinWidth?: string;
   slotRowGap?: string;
   slotColumnGap?: string;
-  slotMinWidth?: string;
-  slotHeight?: string;
-
-  defaultSlotColor?: string;
-  selectedSlotColor?: string;
-  hoveredSlotColor?: string;
   slotBorderStyle?: string;
   slotBorderRadius?: string;
+  defaultSlotColor?: string;
+  hoveredSlotColor?: string;
+  selectedSlotColor?: string;
 }
 
 export default function TimeSlots({
+  mode,
+  timeSlotMatrix,
+  mockTimeSlotMatrix,
+  timeSlotMatrixByDay,
+  cachedSelectedTimeSlots,
   handleMouseUp,
   handleMouseDown,
   handleMouseEnter,
-  timeSlotMatrix,
-  cachedSelectedTimeSlots,
-  mockTimeSlotMatrix,
-  sortedTimeSlotMatrixByDay,
-  mode,
-
+  slotHeight,
+  slotMinWidth,
   slotRowGap,
   slotColumnGap,
-  slotMinWidth,
-  slotHeight,
-  defaultSlotColor,
-  selectedSlotColor,
-  hoveredSlotColor,
   slotBorderStyle,
   slotBorderRadius,
+  hoveredSlotColor,
+  defaultSlotColor,
+  selectedSlotColor,
 }: TimeSlotsProps) {
   const [matrix, setMatrix] = useState<TimeSlot[][]>();
 
@@ -56,9 +52,9 @@ export default function TimeSlots({
     } else {
       setMatrix(timeSlotMatrix);
     }
-  }, [mockTimeSlotMatrix, mode, timeSlotMatrix]);
+  }, [mode, timeSlotMatrix, mockTimeSlotMatrix]);
 
-  if (!matrix || !sortedTimeSlotMatrixByDay) {
+  if (!matrix || !timeSlotMatrixByDay) {
     return <></>;
   }
 
@@ -69,10 +65,10 @@ export default function TimeSlots({
 
   return (
     <S.ItemsGrid
-      $rows={gridTemplateRows}
-      $cols={gridTemplateColumns}
       $rowGap={slotRowGap}
+      $rows={gridTemplateRows}
       $columnGap={slotColumnGap}
+      $cols={gridTemplateColumns}
     >
       {matrix[0]?.map(
         (_, colIndex: number) =>
@@ -91,18 +87,18 @@ export default function TimeSlots({
                 key={key}
                 selected={selected}
                 $selectDisabled={
-                  mode === 'date'
-                    ? false
-                    : sortedTimeSlotMatrixByDay[getDayNum(targetSlot.day)]
-                        .length === 0
+                  mode === 'day'
+                    ? timeSlotMatrixByDay[getDayNum(targetSlot.day)].length ===
+                      0
+                    : false
                 }
-                $width={slotMinWidth}
                 $height={slotHeight}
+                $width={slotMinWidth}
+                $slotBorderStyle={slotBorderStyle}
+                $slotBorderRadius={slotBorderRadius}
                 $hoveredSlotColor={hoveredSlotColor}
                 $defaultSlotColor={defaultSlotColor}
                 $selectedSlotColor={selectedSlotColor}
-                $slotBorderStyle={slotBorderStyle}
-                $slotBorderRadius={slotBorderRadius}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
                 }}

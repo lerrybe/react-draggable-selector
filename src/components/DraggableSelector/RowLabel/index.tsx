@@ -3,39 +3,40 @@ import * as S from './styles';
 import { type TimeSlot } from '../../../types/time';
 
 interface RowLabelProps {
+  timeFormat?: string;
   timeSlots?: TimeSlot[];
-
   gap?: string;
   slotHeight?: string;
-  rowLabelsBgColor?: string;
-  rowLabelsBorderRadius?: string;
-  rowLabelsColor?: string;
-  rowLabelsFontWeight?: number;
-  rowLabelsMargin?: string;
-  rowLabelsFontSize?: string;
-  rowLabelsFontFamily?: string;
-  rowLabelBorderRadius?: string;
   rowLabelBgColor?: string;
   rowLabelPadding?: string;
-
-  timeFormat?: string;
+  rowLabelBorderRadius?: string;
+  rowLabelsColor?: string;
+  rowLabelsMargin?: string;
+  rowLabelsBgColor?: string;
+  rowLabelsFontSize?: string;
+  rowLabelsFontFamily?: string;
+  rowLabelsFontWeight?: number;
+  rowLabelsBorderRadius?: string;
 }
 
+/*
+  "RowLabel" component is used to display the "times" of the row.
+*/
 export default function RowLabel({
+  timeFormat,
   timeSlots,
   gap,
   slotHeight,
-  rowLabelsBgColor,
-  rowLabelsBorderRadius,
-  rowLabelsColor,
-  rowLabelsFontWeight,
-  rowLabelsMargin,
-  rowLabelsFontSize,
-  rowLabelsFontFamily,
+  rowLabelPadding,
   rowLabelBgColor,
   rowLabelBorderRadius,
-  rowLabelPadding,
-  timeFormat,
+  rowLabelsColor,
+  rowLabelsMargin,
+  rowLabelsBgColor,
+  rowLabelsFontSize,
+  rowLabelsFontFamily,
+  rowLabelsFontWeight,
+  rowLabelsBorderRadius,
 }: RowLabelProps) {
   if (!timeSlots || timeSlots.length === 0) {
     return <></>;
@@ -44,13 +45,13 @@ export default function RowLabel({
   return (
     <S.Items
       $gap={gap}
-      $rowLabelsBgColor={rowLabelsBgColor}
-      $rowLabelsBorderRadius={rowLabelsBorderRadius}
       $rowLabelsColor={rowLabelsColor}
-      $rowLabelsFontWeight={rowLabelsFontWeight}
       $rowLabelsMargin={rowLabelsMargin}
+      $rowLabelsBgColor={rowLabelsBgColor}
       $rowLabelsFontSize={rowLabelsFontSize}
       $rowLabelsFontFamily={rowLabelsFontFamily}
+      $rowLabelsFontWeight={rowLabelsFontWeight}
+      $rowLabelsBorderRadius={rowLabelsBorderRadius}
     >
       {timeSlots.map(({ date, startTime, endTime }) => {
         const dayjsDate = dayjs(`${date} ${startTime}:${endTime}`);

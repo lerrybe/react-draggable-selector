@@ -2,35 +2,37 @@ import styled from 'styled-components';
 
 interface Items {
   $gap?: string;
-  $rowLabelsBgColor?: string;
-  $rowLabelsBorderRadius?: string;
   $rowLabelsColor?: string;
-  $rowLabelsFontWeight?: number;
   $rowLabelsMargin?: string;
+  $rowLabelsBgColor?: string;
   $rowLabelsFontSize?: string;
   $rowLabelsFontFamily?: string;
+  $rowLabelsFontWeight?: number;
+  $rowLabelsBorderRadius?: string;
 }
-
 export const Items = styled.ul<Items>(
   ({
     $gap,
-    $rowLabelsBgColor,
-    $rowLabelsBorderRadius,
     $rowLabelsColor,
-    $rowLabelsFontWeight,
     $rowLabelsMargin,
+    $rowLabelsBgColor,
     $rowLabelsFontSize,
     $rowLabelsFontFamily,
+    $rowLabelsFontWeight,
+    $rowLabelsBorderRadius,
   }) => `
   display: flex;
   flex-direction: column;
-  row-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : '5px'};
-  background-color: ${$rowLabelsBgColor || 'transparent'};
-  border-radius: ${$rowLabelsBorderRadius || '0px'};
+ 
   color: ${$rowLabelsColor || '#000'};
-  font-weight: ${$rowLabelsFontWeight || 600};
+  background-color: ${$rowLabelsBgColor || 'transparent'};
+ 
   margin: ${$rowLabelsMargin || '0px'};
+  border-radius: ${$rowLabelsBorderRadius || '0px'};
+  row-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : '5px'};
+  
   font-size: ${$rowLabelsFontSize || '12px'};
+  font-weight: ${$rowLabelsFontWeight || 600};
   font-family: ${$rowLabelsFontFamily || 'Pretendard-Regular'};
 `,
 );
@@ -38,15 +40,14 @@ export const Items = styled.ul<Items>(
 interface ItemProps {
   $height?: string;
 }
-
 export const Item = styled.li<ItemProps>(
   ({ $height }) => `
   width: 100%;
   height: ${$height || '30px'};
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 `,
 );
 
