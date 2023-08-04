@@ -1,23 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import TimeSelector from '../App.tsx';
+import { DraggableSelector } from './Playground';
 
 const meta = {
-  title: 'Example/TimeSelector',
-  component: TimeSelector,
+  title: 'components/DraggableSelector',
+  component: DraggableSelector,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
-  tags: ['autodocs'],
+  tags: [''],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
-    layout: 'fullscreen',
+    layout: 'padded',
   },
-} satisfies Meta<typeof TimeSelector>;
+} satisfies Meta<typeof DraggableSelector>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const LoggedIn: Story = {
-  args: {
-  },
+export const Playground: Story = {
+  args: {},
 };
-

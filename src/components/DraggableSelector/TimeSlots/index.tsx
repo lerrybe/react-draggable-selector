@@ -23,6 +23,7 @@ interface TimeSlotsProps {
   defaultSlotColor?: string;
   hoveredSlotColor?: string;
   selectedSlotColor?: string;
+  disabledSlotColor?: string;
 }
 
 export default function TimeSlots({
@@ -43,6 +44,7 @@ export default function TimeSlots({
   hoveredSlotColor,
   defaultSlotColor,
   selectedSlotColor,
+  disabledSlotColor,
 }: TimeSlotsProps) {
   const [matrix, setMatrix] = useState<TimeSlot[][]>();
 
@@ -99,6 +101,7 @@ export default function TimeSlots({
                 $hoveredSlotColor={hoveredSlotColor}
                 $defaultSlotColor={defaultSlotColor}
                 $selectedSlotColor={selectedSlotColor}
+                $disabledSlotColor={disabledSlotColor}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
                 }}

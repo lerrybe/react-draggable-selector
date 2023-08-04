@@ -43,7 +43,11 @@ interface DraggableSelectorProps {
 
   width?: string;
   height?: string;
+  margin?: string;
+  padding?: string;
+  minWidth?: string;
   maxWidth?: string;
+  minHeight?: string;
   maxHeight?: string;
   slotHeight?: string;
   slotMinWidth?: string;
@@ -52,6 +56,7 @@ interface DraggableSelectorProps {
   defaultSlotColor?: string;
   hoveredSlotColor?: string;
   selectedSlotColor?: string;
+  disabledSlotColor?: string;
   slotBorderStyle?: string;
   slotBorderRadius?: string;
 
@@ -100,7 +105,11 @@ export default function DraggableSelector({
 
   width,
   height,
+  margin,
+  padding,
+  minWidth,
   maxWidth,
+  minHeight,
   maxHeight,
   slotHeight,
   slotMinWidth,
@@ -111,6 +120,7 @@ export default function DraggableSelector({
   defaultSlotColor,
   hoveredSlotColor,
   selectedSlotColor,
+  disabledSlotColor,
 
   rowLabelBgColor,
   rowLabelPadding,
@@ -310,7 +320,11 @@ export default function DraggableSelector({
       <S.Container
         $width={width}
         $height={height}
+        $margin={margin}
+        $padding={padding}
+        $minWidth={minWidth}
         $maxWidth={maxWidth}
+        $minHeight={minHeight}
         $maxHeight={maxHeight}
         $scrollWidth={scrollWidth}
         $scrollColor={scrollColor}
@@ -374,6 +388,7 @@ export default function DraggableSelector({
                 defaultSlotColor={defaultSlotColor}
                 slotBorderRadius={slotBorderRadius}
                 selectedSlotColor={selectedSlotColor}
+                disabledSlotColor={disabledSlotColor}
                 mockTimeSlotMatrix={mockTimeSlotMatrix}
                 timeSlotMatrixByDay={timeSlotMatrixByDay}
                 handleMouseUp={handleMouseUp}

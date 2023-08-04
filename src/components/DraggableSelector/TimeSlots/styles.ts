@@ -45,6 +45,7 @@ interface ItemProps {
   $hoveredSlotColor?: string;
   $slotBorderStyle?: string;
   $slotBorderRadius?: string;
+  $disabledSlotColor?: string;
 }
 
 export const Item = styled.div<ItemProps>(
@@ -58,6 +59,7 @@ export const Item = styled.div<ItemProps>(
     $selectedSlotColor,
     $slotBorderStyle,
     $slotBorderRadius,
+    $disabledSlotColor,
   }) => `
   background-color: ${
     selected
@@ -83,7 +85,9 @@ export const Item = styled.div<ItemProps>(
   ${$selectDisabled ? 'cursor: not-allowed;' : ''}
   ${
     $selectDisabled
-      ? `background-color: ${DEFAULT_DISABLED_SLOT_BG_COLOR};`
+      ? `background-color: ${
+          $disabledSlotColor || DEFAULT_DISABLED_SLOT_BG_COLOR
+        };`
       : ''
   }
 `,

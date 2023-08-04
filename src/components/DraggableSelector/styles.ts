@@ -2,6 +2,12 @@ import styled from 'styled-components';
 import {
   DEFAULT_WIDTH,
   DEFAULT_HEIGHT,
+  DEFAULT_MARGIN,
+  DEFAULT_PADDING,
+  DEFAULT_MIN_WIDTH,
+  DEFAULT_MAX_WIDTH,
+  DEFAULT_MIN_HEIGHT,
+  DEFAULT_MAX_HEIGHT,
   DEFAULT_SCROLL_COLOR,
   DEFAULT_SCROLL_WIDTH,
   DEFAULT_ROW_LABEL_WIDTH,
@@ -12,7 +18,11 @@ import {
 interface ContainerProps {
   $width?: string;
   $height?: string;
+  $margin?: string;
+  $padding?: string;
+  $minWidth?: string;
   $maxWidth?: string;
+  $minHeight?: string;
   $maxHeight?: string;
   $scrollWidth?: string;
   $scrollColor?: string;
@@ -22,7 +32,11 @@ export const Container = styled.div<ContainerProps>(
   ({
     $width,
     $height,
+    $margin,
+    $padding,
+    $minWidth,
     $maxWidth,
+    $minHeight,
     $maxHeight,
     $scrollWidth,
     $scrollColor,
@@ -31,10 +45,14 @@ export const Container = styled.div<ContainerProps>(
   display: flex;
   overflow: auto;
 
+  margin: ${$margin || DEFAULT_MARGIN};
+  padding: ${$padding || DEFAULT_PADDING};
   width: ${$width || DEFAULT_WIDTH};
   height: ${$height || DEFAULT_HEIGHT};
-  max-width: ${$maxWidth || DEFAULT_WIDTH};
-  max-height: ${$maxHeight || DEFAULT_HEIGHT};
+  min-width: ${$minWidth || DEFAULT_MIN_WIDTH};
+  max-width: ${$maxWidth || DEFAULT_MAX_WIDTH};
+  min-height: ${$minHeight || DEFAULT_MIN_HEIGHT};
+  max-height: ${$maxHeight || DEFAULT_MAX_HEIGHT};
   
   &::-webkit-scrollbar {
     width: ${$scrollWidth || DEFAULT_SCROLL_WIDTH};  /* WIDTH, HEIGHT */
