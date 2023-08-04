@@ -357,6 +357,7 @@ const DraggableSelector = React.memo(
                   )}
                   <RowLabel
                     gap={slotRowGap}
+                    language={language || DEFAULT_LANG}
                     slotHeight={slotHeight}
                     timeFormat={timeFormat}
                     timeSlots={timeSlotMatrix[0]}

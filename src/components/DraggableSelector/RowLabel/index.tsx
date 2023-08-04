@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import 'dayjs/locale/ko';
 import * as S from './styles';
 import { type TimeSlot } from '../../../types/time';
 import { DEFAULT_TIME_FORMAT } from '../../../constant/options';
@@ -6,6 +7,7 @@ import { DEFAULT_TIME_FORMAT } from '../../../constant/options';
 interface RowLabelProps {
   timeFormat?: string;
   timeSlots?: TimeSlot[];
+  language?: 'en' | 'ko';
   gap?: string;
   slotHeight?: string;
   rowLabelBgColor?: string;
@@ -26,6 +28,7 @@ interface RowLabelProps {
 export default function RowLabel({
   timeFormat,
   timeSlots,
+  language,
   gap,
   slotHeight,
   rowLabelPadding,
@@ -41,6 +44,12 @@ export default function RowLabel({
 }: RowLabelProps) {
   if (!timeSlots || timeSlots.length === 0) {
     return <></>;
+  }
+
+  if (language === 'ko') {
+    dayjs.locale('ko');
+  } else {
+    dayjs.locale('en');
   }
 
   return (
