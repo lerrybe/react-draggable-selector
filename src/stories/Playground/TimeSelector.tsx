@@ -40,8 +40,9 @@ function TimeSelector({
       setEndTimes(filteredEndTimes);
       setEndTime(filteredEndTimes[0]);
       setIsStartTimeOpen(false);
+      setIsStartTimeOpen(false);
     },
-    [startTimes, timeUnit],
+    [startTimes, timeUnit, setIsStartTimeOpen],
   );
 
   const handleEndTimeChange = useCallback(
@@ -55,6 +56,7 @@ function TimeSelector({
   useEffect(() => {
     const times = generateTimes();
     setStartTimes(times);
+    setEndTimes(times.filter(t => t > startTime));
   }, [timeUnit, startTime, startTimes.length]);
 
   useEffect(() => {
