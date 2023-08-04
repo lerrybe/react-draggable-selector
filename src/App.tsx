@@ -8,6 +8,8 @@ function TimeSelector() {
   const [selectedDates, setSelectedDates] = useState<Date[]>([
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 2),
+    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 3),
+    new Date(today.getFullYear(), today.getMonth(), today.getDate() + 4),
     new Date(today.getFullYear(), today.getMonth(), today.getDate() + 5),
   ]);
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<TimeSlot[]>([]);
@@ -63,23 +65,23 @@ function TimeSelector() {
         dates={selectedDates}
         selectedTimeSlots={selectedTimeSlots}
         setSelectedTimeSlots={setSelectedTimeSlots}
-        timeUnit={30}
-        slotRowGap={'2px'}
-        slotColumnGap={'2px'}
-        slotHeight={'30px'}
-        slotMinWidth={'60px'}
-        hoveredSlotColor={'#023020'}
-        selectedSlotColor={'#000'}
-        defaultSlotColor={'#d77373'}
+        // timeUnit={30}
+        // slotRowGap={'2px'}
+        // slotColumnGap={'2px'}
+        // slotHeight={'30px'}
+        // slotMinWidth={'60px'}
+        // hoveredSlotColor={'#023020'}
+        // selectedSlotColor={'#000'}
+        // defaultSlotColor={'#d77373'}
         // slotBorderStyle={'1px solid #000'}
-        slotBorderRadius={'3px'}
-        rowLabelWidth={'100px'}
-        width={'100%'}
-        height={'auto'}
-        isRowLabelInvisible={false}
-        isColumnLabelInVisible={false}
+        // slotBorderRadius={'3px'}
+        // rowLabelWidth={'100px'}
+        // width={'100%'}
+        // height={'auto'}
+        // isRowLabelInvisible={false}
+        // isColumnLabelInVisible={false}
         mode={mode}
-        language={'en'}
+        // language={'en'}
       />
     </>
   );

@@ -1,4 +1,18 @@
 import styled from 'styled-components';
+import {
+  DEFAULT_ROW_GAP,
+  DEFAULT_SLOT_HEIGHT,
+  DEFAULT_ROW_LABELS_COLOR,
+  DEFAULT_ROW_LABELS_MARGIN,
+  DEFAULT_ROW_LABEL_PADDING,
+  DEFAULT_ROW_LABEL_BG_COLOR,
+  DEFAULT_ROW_LABELS_BG_COLOR,
+  DEFAULT_ROW_LABELS_FONT_SIZE,
+  DEFAULT_ROW_LABELS_FONT_WEIGHT,
+  DEFAULT_ROW_LABELS_FONT_FAMILY,
+  DEFAULT_ROW_LABEL_BORDER_RADIUS,
+  DEFAULT_ROW_LABELS_BORDER_RADIUS,
+} from '../../../constant/options';
 
 interface Items {
   $gap?: string;
@@ -24,16 +38,16 @@ export const Items = styled.ul<Items>(
   display: flex;
   flex-direction: column;
  
-  color: ${$rowLabelsColor || '#000'};
-  background-color: ${$rowLabelsBgColor || 'transparent'};
+  color: ${$rowLabelsColor || DEFAULT_ROW_LABELS_COLOR};
+  background-color: ${$rowLabelsBgColor || DEFAULT_ROW_LABELS_BG_COLOR};
  
-  margin: ${$rowLabelsMargin || '0px'};
-  border-radius: ${$rowLabelsBorderRadius || '0px'};
-  row-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : '5px'};
+  margin: ${$rowLabelsMargin || DEFAULT_ROW_LABELS_MARGIN};
+  border-radius: ${$rowLabelsBorderRadius || DEFAULT_ROW_LABELS_BORDER_RADIUS};
+  row-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : DEFAULT_ROW_GAP};
   
-  font-size: ${$rowLabelsFontSize || '12px'};
-  font-weight: ${$rowLabelsFontWeight || 600};
-  font-family: ${$rowLabelsFontFamily || 'Pretendard-Regular'};
+  font-size: ${$rowLabelsFontSize || DEFAULT_ROW_LABELS_FONT_SIZE};
+  font-weight: ${$rowLabelsFontWeight || DEFAULT_ROW_LABELS_FONT_WEIGHT};
+  font-family: ${$rowLabelsFontFamily || DEFAULT_ROW_LABELS_FONT_FAMILY};
 `,
 );
 
@@ -43,7 +57,7 @@ interface ItemProps {
 export const Item = styled.li<ItemProps>(
   ({ $height }) => `
   width: 100%;
-  height: ${$height || '30px'};
+  height: ${$height || DEFAULT_SLOT_HEIGHT};
 
   display: flex;
   align-items: center;
@@ -65,8 +79,8 @@ export const Label = styled.div<LabelProps>(
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: ${$padding || '0px 10px'};
-  border-radius: ${$rowLabelBorderRadius || '0px'};
-  background-color: ${$rowLabelBgColor || 'transparent'};
+  padding: ${$padding || DEFAULT_ROW_LABEL_PADDING};
+  background-color: ${$rowLabelBgColor || DEFAULT_ROW_LABEL_BG_COLOR};
+  border-radius: ${$rowLabelBorderRadius || DEFAULT_ROW_LABEL_BORDER_RADIUS};
 `,
 );

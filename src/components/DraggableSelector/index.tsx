@@ -15,6 +15,12 @@ import RowLabel from './RowLabel';
 import TimeSlots from './TimeSlots';
 import ColumnLabel from './ColumnLabel';
 
+import {
+  DEFAULT_LANG,
+  DEFAULT_MODE,
+  DEFAULT_TIMEUNIT,
+} from '../../constant/options';
+
 import { sampleDates } from '../../data/date';
 import { type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
@@ -156,7 +162,7 @@ export default function DraggableSelector({
   const startSelection = useCallback(
     (startedTimeSlot: TimeSlot, selectedTimeSlots: TimeSlot[]) => {
       const selectedTimeSlot = selectedTimeSlots.find(slot =>
-        areTimeSlotsEqual(startedTimeSlot, slot, mode || 'date'),
+        areTimeSlotsEqual(startedTimeSlot, slot, mode || DEFAULT_MODE),
       );
       setDragEventStates(prev => ({
         ...prev,
@@ -261,7 +267,7 @@ export default function DraggableSelector({
 
   useEffect(() => {
     const matrix = getTimeSlotMatrix({
-      timeUnit: timeUnit || 30,
+      timeUnit: timeUnit || DEFAULT_TIMEUNIT,
       dates: selectedDates,
       startTime: startTime,
       endTime: endTime,
@@ -280,7 +286,7 @@ export default function DraggableSelector({
 
   useEffect(() => {
     const mockMatrix = getTimeSlotMatrix({
-      timeUnit: timeUnit || 30,
+      timeUnit: timeUnit || DEFAULT_TIMEUNIT,
       dates: removeDuplicatesAndSortByDate(sampleDates),
       startTime: startTime,
       endTime: endTime,
@@ -336,10 +342,10 @@ export default function DraggableSelector({
             <S.RightContainer>
               {!isColumnLabelInVisible && (
                 <ColumnLabel
-                  mode={mode || 'date'}
                   dates={selectedDates}
                   dateFormat={dateFormat}
-                  language={language || 'en'}
+                  mode={mode || DEFAULT_MODE}
+                  language={language || DEFAULT_LANG}
                   gap={slotColumnGap}
                   slotHeight={slotHeight}
                   slotMinWidth={slotMinWidth}
@@ -356,9 +362,9 @@ export default function DraggableSelector({
                 />
               )}
               <TimeSlots
-                mode={mode || 'date'}
                 slotRowGap={slotRowGap}
                 slotHeight={slotHeight}
+                mode={mode || DEFAULT_MODE}
                 slotMinWidth={slotMinWidth}
                 slotColumnGap={slotColumnGap}
                 timeSlotMatrix={timeSlotMatrix}

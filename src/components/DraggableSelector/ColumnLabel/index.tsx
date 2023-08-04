@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import * as S from './styles';
+import { DEFAULT_DATE_FORMAT } from '../../../constant/options';
 import { getIterableDays, getUniqueDateKey } from '../../../utils/date';
 
 interface ColumnLabelProps {
@@ -89,7 +90,7 @@ export default function ColumnLabel({
                   $columnLabelBgColor={columnLabelBgColor}
                   $columnLabelBorderRadius={columnLabelBorderRadius}
                 >
-                  {dayjs(date).format(dateFormat || 'M/D')}
+                  {dayjs(date).format(dateFormat || DEFAULT_DATE_FORMAT)}
                 </S.Label>
               </S.Item>
             );

@@ -1,4 +1,19 @@
 import styled from 'styled-components';
+import {
+  DEFAULT_COLUMN_GAP,
+  DEFAULT_SLOT_MIN_WIDTH,
+  DEFAULT_COLUMN_LABELS_COLOR,
+  DEFAULT_COLUMN_LABELS_MARGIN,
+  DEFAULT_COLUMN_LABELS_HEIGHT,
+  DEFAULT_COLUMN_LABEL_PADDING,
+  DEFAULT_COLUMN_LABEL_BG_COLOR,
+  DEFAULT_COLUMN_LABELS_BG_COLOR,
+  DEFAULT_COLUMN_LABELS_FONT_SIZE,
+  DEFAULT_COLUMN_LABELS_FONT_WEIGHT,
+  DEFAULT_COLUMN_LABELS_FONT_FAMILY,
+  DEFAULT_COLUMN_LABEL_BORDER_RADIUS,
+  DEFAULT_COLUMN_LABELS_BORDER_RADIUS,
+} from '../../../constant/options';
 
 interface Items {
   $gap?: string;
@@ -22,16 +37,18 @@ export const Items = styled.ul<Items>(
     $columnLabelsBorderRadius,
   }) => `
   display: flex;
-  color: ${$columnLabelsColor || '#000'};
-  background-color: ${$columnLabelsBgColor || 'transparent'};
-
-  margin: ${$columnLabelsMargin || '0px'};
-  border-radius: ${$columnLabelsBorderRadius || '0px'};
-  column-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : '5px'};
-  
-  font-size: ${$columnLabelsFontSize || '12px'};
-  font-weight: ${$columnLabelsFontWeight || 600};
-  font-family: ${$columnLabelsFontFamily || 'Pretendard-Regular'};
+  color: ${$columnLabelsColor || DEFAULT_COLUMN_LABELS_COLOR};
+  background-color: ${$columnLabelsBgColor || DEFAULT_COLUMN_LABELS_BG_COLOR};
+  font-size: ${$columnLabelsFontSize || DEFAULT_COLUMN_LABELS_FONT_SIZE};
+  font-weight: ${$columnLabelsFontWeight || DEFAULT_COLUMN_LABELS_FONT_WEIGHT};
+  font-family: ${$columnLabelsFontFamily || DEFAULT_COLUMN_LABELS_FONT_FAMILY};
+  margin: ${$columnLabelsMargin || DEFAULT_COLUMN_LABELS_MARGIN};
+  border-radius: ${
+    $columnLabelsBorderRadius || DEFAULT_COLUMN_LABELS_BORDER_RADIUS
+  };
+  column-gap: ${
+    $gap || $gap === '0' || $gap === '0px' ? $gap : DEFAULT_COLUMN_GAP
+  };
 `,
 );
 
@@ -46,8 +63,8 @@ export const Item = styled.li<ItemProps>(
   justify-content: center;
   
   width: 100%;
-  height: ${$height || '30px'};
-  min-width: ${$width || '30px'};  
+  min-width: ${$width || DEFAULT_SLOT_MIN_WIDTH};  
+  height: ${$height || DEFAULT_COLUMN_LABELS_HEIGHT};
 `,
 );
 
@@ -66,8 +83,10 @@ export const Label = styled.div<LabelProps>(
   align-items: center;
   justify-content: center;
 
-  padding: ${$padding || '0px 10px'};
-  border-radius: ${$columnLabelBorderRadius || '0px'};
-  background-color: ${$columnLabelBgColor || 'transparent'};
+  padding: ${$padding || DEFAULT_COLUMN_LABEL_PADDING};
+  background-color: ${$columnLabelBgColor || DEFAULT_COLUMN_LABEL_BG_COLOR};
+  border-radius: ${
+    $columnLabelBorderRadius || DEFAULT_COLUMN_LABEL_BORDER_RADIUS
+  };
 `,
 );

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import * as S from './styles';
 import { type TimeSlot } from '../../../types/time';
+import { DEFAULT_TIME_FORMAT } from '../../../constant/options';
 
 interface RowLabelProps {
   timeFormat?: string;
@@ -62,7 +63,7 @@ export default function RowLabel({
               $rowLabelBgColor={rowLabelBgColor}
               $rowLabelBorderRadius={rowLabelBorderRadius}
             >
-              {dayjsDate.format(timeFormat || 'hh:mm A')}
+              {dayjsDate.format(timeFormat || DEFAULT_TIME_FORMAT)}
             </S.Label>
           </S.Item>
         );

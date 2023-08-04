@@ -1,4 +1,13 @@
 import styled from 'styled-components';
+import {
+  DEFAULT_WIDTH,
+  DEFAULT_HEIGHT,
+  DEFAULT_SCROLL_COLOR,
+  DEFAULT_SCROLL_WIDTH,
+  DEFAULT_ROW_LABEL_WIDTH,
+  DEFAULT_SCROLL_BG_COLOR,
+  DEFAULT_COLUMN_LABELS_HEIGHT,
+} from '../../constant/options';
 
 interface ContainerProps {
   $width?: string;
@@ -22,22 +31,22 @@ export const Container = styled.div<ContainerProps>(
   display: flex;
   overflow: auto;
 
-  width: ${$width || '100%'};
-  height: ${$height || '500px'};
-  max-width: ${$maxWidth || '100%'};
-  max-height: ${$maxHeight || '500px'};
+  width: ${$width || DEFAULT_WIDTH};
+  height: ${$height || DEFAULT_HEIGHT};
+  max-width: ${$maxWidth || DEFAULT_WIDTH};
+  max-height: ${$maxHeight || DEFAULT_HEIGHT};
   
   &::-webkit-scrollbar {
-    width: ${$scrollWidth || '3px'};  /* WIDTH, HEIGHT */
-    height: ${$scrollWidth || '3px'};
+    width: ${$scrollWidth || DEFAULT_SCROLL_WIDTH};  /* WIDTH, HEIGHT */
+    height: ${$scrollWidth || DEFAULT_SCROLL_WIDTH};
   }
   &::-webkit-scrollbar-thumb {
     height: 30%; /* LENGTH */
-    background: ${$scrollColor || '#217af4'}; /* COLOR */
+    background: ${$scrollColor || DEFAULT_SCROLL_COLOR}; /* COLOR */
     border-radius: 10px;
   }
   &::-webkit-scrollbar-track {
-    background: ${$scrollBgColor || 'rgba(33, 122, 244, .1)'};  /* BG COLOR */
+    background: ${$scrollBgColor || DEFAULT_SCROLL_BG_COLOR};  /* BG COLOR */
   }
 `,
 );
@@ -47,8 +56,8 @@ interface LeftContainerProps {
 }
 export const LeftContainer = styled.div<LeftContainerProps>(
   ({ $rowLabelWidth }) => `  
-  width: ${$rowLabelWidth || '60px'};
-  min-width: ${$rowLabelWidth || '60px'};
+  width: ${$rowLabelWidth || DEFAULT_ROW_LABEL_WIDTH};
+  min-width: ${$rowLabelWidth || DEFAULT_ROW_LABEL_WIDTH};
 `,
 );
 
@@ -66,7 +75,7 @@ interface EmptySlotProps {
 export const EmptySlot = styled.li<EmptySlotProps>(
   ({ height }) => `  
   width: 100%;
-  height: ${height || '30px'};
+  height: ${height || DEFAULT_COLUMN_LABELS_HEIGHT};
   
   display: flex;
   align-items: center;
