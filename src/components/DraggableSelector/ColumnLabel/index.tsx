@@ -45,7 +45,7 @@ export default function ColumnLabel({
   columnLabelsFontWeight,
   columnLabelsBorderRadius,
 }: ColumnLabelProps) {
-  if (!dates || dates.length === 0) {
+  if (!dates || dates?.length === 0) {
     return <></>;
   }
 
@@ -62,7 +62,7 @@ export default function ColumnLabel({
     >
       {mode === 'day' ? (
         <>
-          {getIterableDays(language).map(day => {
+          {getIterableDays(language)?.map(day => {
             return (
               <S.Item
                 key={day}
@@ -82,7 +82,7 @@ export default function ColumnLabel({
         </>
       ) : (
         <>
-          {dates.map(date => {
+          {dates?.map(date => {
             return (
               <S.Item
                 $width={slotMinWidth}

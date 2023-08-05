@@ -54,15 +54,15 @@ export const getTimeSlotMatrix = ({
 }) => {
   if (!dates || !startTime || !endTime) return;
 
-  const startHour = Number(startTime.split(':')[0]);
-  const startMinute = Number(startTime.split(':')[1]);
-  const endHour = Number(endTime.split(':')[0]);
-  const endMinute = Number(endTime.split(':')[1]);
+  const startHour = Number(startTime?.split(':')[0]);
+  const startMinute = Number(startTime?.split(':')[1]);
+  const endHour = Number(endTime?.split(':')[0]);
+  const endMinute = Number(endTime?.split(':')[1]);
 
   const matrix: TimeSlot[][] = [];
-  dates.forEach(date => {
+  dates?.forEach(date => {
     const times: TimeSlot[] = [];
-    const key = dayjs(date).format('YYYY/MM/DD');
+    const key = dayjs(date)?.format('YYYY/MM/DD');
 
     let hour = startHour;
     let minute = startMinute;
@@ -121,7 +121,7 @@ export const updateCachedSelectedTimeSlots = ({
   const updatedCachedSelectedTimeSlots: TimeSlot[] =
     startedTimeSlot && endedTimeSlot && selectionType
       ? endedTimeSlot
-        ? timeSlotMatrix.reduce((acc, dayOfTimes) => {
+        ? timeSlotMatrix?.reduce((acc, dayOfTimes) => {
             const dateIsReversed = dayjs(endedTimeSlot.date).isBefore(
               dayjs(startedTimeSlot.date),
             );
@@ -130,8 +130,8 @@ export const updateCachedSelectedTimeSlots = ({
               `${standardDate} ${endedTimeSlot.startTime}`,
             ).isBefore(dayjs(`${standardDate} ${startedTimeSlot.startTime}`));
 
-            return acc.concat(
-              dayOfTimes.filter(
+            return acc?.concat(
+              dayOfTimes?.filter(
                 t =>
                   isDateBetween(
                     t,
@@ -151,7 +151,7 @@ export const updateCachedSelectedTimeSlots = ({
 
   if (mode === 'day') {
     const cachedSelectedAllTimeSlots: TimeSlot[] = [];
-    updatedCachedSelectedTimeSlots.forEach(slot => {
+    updatedCachedSelectedTimeSlots?.forEach(slot => {
       const target = timeSlotMatrixByDay[getDayNum(slot.day)];
       target?.forEach(t => {
         if (areTimeSlotsEqual(slot, t, 'day')) {
@@ -165,7 +165,7 @@ export const updateCachedSelectedTimeSlots = ({
             new Set([...selectedTimeSlots, ...cachedSelectedAllTimeSlots]),
           )
         : selectionType === Selection.REMOVE
-        ? selectedTimeSlots.filter(a => {
+        ? selectedTimeSlots?.filter(a => {
             return !cachedSelectedAllTimeSlots.find(b =>
               areTimeSlotsEqual(a, b, mode),
             );
@@ -183,7 +183,7 @@ export const updateCachedSelectedTimeSlots = ({
             new Set([...selectedTimeSlots, ...updatedCachedSelectedTimeSlots]),
           )
         : selectionType === Selection.REMOVE
-        ? selectedTimeSlots.filter(a => {
+        ? selectedTimeSlots?.filter(a => {
             return !updatedCachedSelectedTimeSlots.find(b =>
               areTimeSlotsEqual(a, b, mode),
             );

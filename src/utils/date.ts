@@ -17,10 +17,10 @@ export const removeDuplicatesAndSortByDate = (dates: Date[]) => {
     const day = date.getDate();
     uniqueDates.add(`${year}/${month}/${day}`);
   }
-  const sortedDates = Array.from(uniqueDates).sort(
+  const sortedDates = Array.from(uniqueDates)?.sort(
     (a, b) => new Date(a).getTime() - new Date(b).getTime(),
   );
-  return sortedDates.map(strDate => new Date(strDate));
+  return sortedDates?.map(strDate => new Date(strDate));
 };
 
 export const isDateBetween = (
@@ -72,7 +72,7 @@ export const getIterableDays = (version: 'en' | 'ko') => {
 };
 
 export const getTimeSlotMatrixByDay = (matrix: TimeSlot[][]) => {
-  if (!matrix || matrix.length === 0) return;
+  if (!matrix || matrix?.length === 0) return;
 
   const sortedMatrix: TimeSlot[][] = [[], [], [], [], [], [], []];
   matrix?.forEach((timeSlots: TimeSlot[]) => {

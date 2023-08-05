@@ -42,7 +42,7 @@ export default function RowLabel({
   rowLabelsFontWeight,
   rowLabelsBorderRadius,
 }: RowLabelProps) {
-  if (!timeSlots || timeSlots.length === 0) {
+  if (!timeSlots || timeSlots?.length === 0) {
     return <></>;
   }
 
@@ -63,7 +63,7 @@ export default function RowLabel({
       $rowLabelsFontWeight={rowLabelsFontWeight}
       $rowLabelsBorderRadius={rowLabelsBorderRadius}
     >
-      {timeSlots.map(({ date, startTime, endTime }) => {
+      {timeSlots?.map(({ date, startTime, endTime }) => {
         const dayjsDate = dayjs(`${date} ${startTime}:${endTime}`);
         return (
           <S.Item key={startTime} $height={slotHeight}>

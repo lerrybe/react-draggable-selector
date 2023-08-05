@@ -84,7 +84,7 @@ export default function TimeSlots({
                 selected={selected}
                 $selectDisabled={
                   mode === 'day'
-                    ? timeSlotMatrixByDay[getDayNum(targetSlot.day)].length ===
+                    ? timeSlotMatrixByDay[getDayNum(targetSlot.day)]?.length ===
                       0
                     : false
                 }

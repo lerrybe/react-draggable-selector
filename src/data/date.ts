@@ -1,3 +1,4 @@
+/* DATA for Day type selector */
 export const sampleDates = [
   new Date('2023-08-13'),
   new Date('2023-08-14'),
