@@ -270,8 +270,6 @@ const DraggableSelector = React.memo(
     }, [updateSlots]);
     /* ----- EFFECTS ----- */
 
-    console.log('selectedTimeSlots', selectedTimeSlots);
-
     return (
       <>
         <S.Container
