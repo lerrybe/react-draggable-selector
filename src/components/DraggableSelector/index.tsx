@@ -16,79 +16,15 @@ import RowLabel from './RowLabel';
 import TimeSlots from './TimeSlots';
 import ColumnLabel from './ColumnLabel';
 
+import { sampleDates } from '../../data/date';
+import { type TimeSlot } from '../../types/time';
+import { type DragEventStates, Selection } from '../../types/event';
+import { DraggableSelectorProps } from '../../types/draggableSelector';
 import {
   DEFAULT_LANG,
   DEFAULT_MODE,
   DEFAULT_TIMEUNIT,
-} from '../../constant/options';
-
-import { sampleDates } from '../../data/date';
-import { type TimeSlot } from '../../types/time';
-import { type DragEventStates, Selection } from '../../types/event';
-
-interface DraggableSelectorProps {
-  /* REQUIRED */
-  dates: Date[]; // Required default value: []
-  endTime: string;
-  startTime: string;
-  selectedTimeSlots: TimeSlot[]; // Required default value: []
-  setSelectedTimeSlots: React.Dispatch<React.SetStateAction<TimeSlot[]>>;
-
-  /* OPTIONAL */
-  timeUnit?: 5 | 10 | 15 | 20 | 30 | 60; // default: 30
-  dateFormat?: string;
-  timeFormat?: string;
-  mode?: 'date' | 'day';
-  language?: 'en' | 'ko';
-
-  width?: string;
-  height?: string;
-  margin?: string;
-  padding?: string;
-  minWidth?: string;
-  maxWidth?: string;
-  minHeight?: string;
-  maxHeight?: string;
-  slotHeight?: string;
-  slotMinWidth?: string;
-  slotRowGap?: string;
-  slotColumnGap?: string;
-  defaultSlotColor?: string;
-  hoveredSlotColor?: string;
-  selectedSlotColor?: string;
-  disabledSlotColor?: string;
-  slotBorderStyle?: string;
-  slotBorderRadius?: string;
-
-  rowLabelWidth?: string;
-  rowLabelBgColor?: string;
-  rowLabelPadding?: string;
-  rowLabelBorderRadius?: string;
-  rowLabelsColor?: string;
-  rowLabelsMargin?: string;
-  rowLabelsBgColor?: string;
-  rowLabelsFontSize?: string;
-  rowLabelsFontWeight?: number;
-  rowLabelsFontFamily?: string;
-  rowLabelsBorderRadius?: string;
-  isRowLabelInvisible?: boolean;
-
-  columnLabelBgColor?: string;
-  columnLabelPadding?: string;
-  columnLabelBorderRadius?: string;
-  columnLabelsColor?: string;
-  columnLabelsMargin?: string;
-  columnLabelsBgColor?: string;
-  columnLabelsFontSize?: string;
-  columnLabelsFontFamily?: string;
-  columnLabelsFontWeight?: number;
-  columnLabelsBorderRadius?: string;
-  isColumnLabelInVisible?: boolean;
-
-  scrollWidth?: string;
-  scrollColor?: string;
-  scrollBgColor?: string;
-}
+} from '../../constant/options.ts';
 
 const DraggableSelector = React.memo(
   ({
@@ -136,6 +72,7 @@ const DraggableSelector = React.memo(
     rowLabelsBorderRadius,
     isRowLabelInvisible,
 
+    columnLabelHeight,
     columnLabelBgColor,
     columnLabelPadding,
     columnLabelBorderRadius,
@@ -153,15 +90,15 @@ const DraggableSelector = React.memo(
     scrollBgColor,
   }: DraggableSelectorProps) => {
     /* ----- STATES ----- */
+    const [selectedDates, setSelectedDates] = useState<Date[]>(
+      removeDuplicatesAndSortByDate(dates),
+    );
     const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
     const [dragEventStates, setDragEventStates] = useState<DragEventStates>({
       selectionType: null,
       startedTimeSlot: null,
       cachedSelectedTimeSlots: [...selectedTimeSlots],
     });
-    const [selectedDates, setSelectedDates] = useState<Date[]>(
-      removeDuplicatesAndSortByDate(dates),
-    );
     const [mockTimeSlotMatrix, setMockTimeSlotMatrix] = useState<TimeSlot[][]>(
       [],
     );
@@ -301,7 +238,7 @@ const DraggableSelector = React.memo(
       if (matrix) {
         setTimeSlotMatrix(matrix);
       }
-    }, [mode, startTime, endTime, timeUnit, selectedDates]);
+    }, [startTime, endTime, timeUnit, selectedDates]);
 
     // Initialize timeSlotMatrixByDay when timeSlotMatrix changed
     useEffect(() => {
@@ -322,7 +259,7 @@ const DraggableSelector = React.memo(
       if (mockMatrix) {
         setMockTimeSlotMatrix(mockMatrix);
       }
-    }, [mode, startTime, endTime, timeUnit, selectedDates]);
+    }, [startTime, endTime, timeUnit, selectedDates]);
 
     // Add, Remove event listener
     useEffect(() => {
@@ -332,6 +269,8 @@ const DraggableSelector = React.memo(
       };
     }, [updateSlots]);
     /* ----- EFFECTS ----- */
+
+    console.log('selectedTimeSlots', selectedTimeSlots);
 
     return (
       <>
@@ -353,7 +292,7 @@ const DraggableSelector = React.memo(
               {!isRowLabelInvisible && (
                 <S.LeftContainer $rowLabelWidth={rowLabelWidth}>
                   {!isColumnLabelInVisible && (
-                    <S.EmptySlot height={slotHeight} />
+                    <S.EmptySlot height={columnLabelHeight} />
                   )}
                   <RowLabel
                     gap={slotRowGap}
@@ -383,8 +322,8 @@ const DraggableSelector = React.memo(
                     mode={mode || DEFAULT_MODE}
                     language={language || DEFAULT_LANG}
                     gap={slotColumnGap}
-                    slotHeight={slotHeight}
                     slotMinWidth={slotMinWidth}
+                    columnLabelHeight={columnLabelHeight}
                     columnLabelsColor={columnLabelsColor}
                     columnLabelsMargin={columnLabelsMargin}
                     columnLabelBgColor={columnLabelBgColor}

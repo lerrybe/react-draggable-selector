@@ -3,6 +3,7 @@ export const DEFAULT_TIMEUNIT = 30;
 export const DEFAULT_MODE = 'date';
 export const DEFAULT_LANG = 'en';
 export const DEFAULT_DATE_FORMAT = 'M/D';
+export const DEFAULT_TIME_FORMAT = 'hh:mm A';
 
 /* ABOUT SELECTOR */
 export const DEFAULT_PADDING = '0 10px 0 0';
@@ -43,7 +44,6 @@ export const DEFAULT_COLUMN_LABEL_BORDER_RADIUS = '0px';
 export const DEFAULT_COLUMN_LABEL_BG_COLOR = 'transparent';
 
 /* ABOUT ROW LABELS */
-export const DEFAULT_TIME_FORMAT = 'hh:mm A';
 export const DEFAULT_ROW_LABELS_COLOR = '#939393';
 export const DEFAULT_ROW_LABEL_WIDTH = '68px';
 export const DEFAULT_ROW_LABELS_BG_COLOR = 'transparent';

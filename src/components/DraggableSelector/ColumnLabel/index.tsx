@@ -9,8 +9,8 @@ interface ColumnLabelProps {
   mode: 'date' | 'day';
   language: 'en' | 'ko';
   gap?: string;
-  slotHeight?: string;
   slotMinWidth?: string;
+  columnLabelHeight?: string;
   columnLabelBgColor?: string;
   columnLabelPadding?: string;
   columnLabelBorderRadius?: string;
@@ -32,8 +32,8 @@ export default function ColumnLabel({
   dates,
   language,
   dateFormat,
-  slotHeight,
   slotMinWidth,
+  columnLabelHeight,
   columnLabelBgColor,
   columnLabelPadding,
   columnLabelBorderRadius,
@@ -64,7 +64,11 @@ export default function ColumnLabel({
         <>
           {getIterableDays(language).map(day => {
             return (
-              <S.Item key={day} $height={slotHeight} $width={slotMinWidth}>
+              <S.Item
+                key={day}
+                $width={slotMinWidth}
+                $height={columnLabelHeight}
+              >
                 <S.Label
                   $padding={columnLabelPadding}
                   $columnLabelBgColor={columnLabelBgColor}
@@ -81,8 +85,8 @@ export default function ColumnLabel({
           {dates.map(date => {
             return (
               <S.Item
-                $height={slotHeight}
                 $width={slotMinWidth}
+                $height={columnLabelHeight}
                 key={getUniqueDateKey(date)}
               >
                 <S.Label

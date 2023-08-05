@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 
 import * as S from './styles';
 import { getDayNum } from '../../../utils/date';
@@ -46,15 +46,9 @@ export default function TimeSlots({
   selectedSlotColor,
   disabledSlotColor,
 }: TimeSlotsProps) {
-  const [matrix, setMatrix] = useState<TimeSlot[][]>();
-
-  useEffect(() => {
-    if (mode === 'day') {
-      setMatrix(mockTimeSlotMatrix);
-    } else {
-      setMatrix(timeSlotMatrix);
-    }
-  }, [mode, timeSlotMatrix, mockTimeSlotMatrix]);
+  const matrix = useMemo(() => {
+    return mode === 'day' ? mockTimeSlotMatrix : timeSlotMatrix;
+  }, [mockTimeSlotMatrix, mode, timeSlotMatrix]);
 
   if (!matrix || !timeSlotMatrixByDay) {
     return <></>;
