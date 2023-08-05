@@ -61,7 +61,7 @@ function TimeSelector({
 
   useEffect(() => {
     setStartTime('11:00');
-    setEndTime('18:00');
+    setEndTime('18:30');
     setIsEndTimeOpen(false);
     setIsStartTimeOpen(false);
   }, [timeUnit]);

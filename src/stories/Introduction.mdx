@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/blocks';
+import { Meta, Primary, Controls, Story } from '@storybook/blocks';
 import Code from './assets/code-brackets.svg';
 import Colors from './assets/colors.svg';
 import Comments from './assets/comments.svg';
@@ -8,7 +8,7 @@ import Plugin from './assets/plugin.svg';
 import Repo from './assets/repo.svg';
 import StackAlt from './assets/stackalt.svg';
 
-<Meta title="Introduction" />
+<Meta title="Intro & QuickStart" />
 
 <style>
   {`
@@ -116,98 +116,124 @@ import StackAlt from './assets/stackalt.svg';
   `}
 </style>
 
-# 🖍 Customize your Selector!
+# 🖍 React-Draggable-Selector
 
-Storybook helps you build UI components in isolation from your app's business logic, data, and context.
-That makes it easy to develop hard-to-reach states. Save these UI states as **stories** to revisit during development, testing, or QA.
+<br />
+<br />
 
-Browse example stories now by navigating to them in the sidebar.
-View their code in the `stories` directory to learn how they work.
-We recommend building UIs with a [**component-driven**](https://componentdriven.org) process starting with atomic components and ending with pages.
+### Select with a simple drag, Feel free to style it!
 
-<div className="subheading">Configure</div>
+React-Draggable-Selector is a user-friendly and customizable component that allows users to easily select time ranges by dragging.
+This package is for react applications, and uses styled-components for styling and dayjs for date and time management.
+
+Its main advantages are its intuitive drag-to-select functionality and the freedom to apply custom styling. You can select a time zone by day of the week or by date.
+Let's get started!
+
+<br />
+<br />
+<br />
+
+## 🚀 Quick Start
+
+### **1. Installation**
+
+Use npm package manager to install
+
+```bash
+$ npm install react-draggable-selector
+```
+
+or install with yarn
+
+```bash
+$ yarn add react-draggable-selector
+```
+
+### **2. Usage**
+Take out the component in your React project.
+
+1. When using Javascript:
+
+```jsx
+import { useState } from 'react';
+import { DraggableSelector } from "react-draggable-selector";
+
+function App = () => {
+  const [dates, setDates] = useState([]);  // required default: []
+  const [times, setTimes] = useState([]);  // required default: []
+
+  return (
+    <DraggableSelector
+      startTime="09:00"                // required
+      endTime="18:00"                  // required
+      dates={dates}                    // required, required default: []
+      selectedTimeSlots={times}        // required, required default: []
+      setSelectedTimeSlots={setTimes}  // required
+    />
+  );
+};
+
+export default App;
+```
+
+2. When using Typescript:
+
+```tsx
+import { useState } from 'react';
+import { DraggableSelector } from "react-draggable-selector";
+
+export enum Day {
+  SUN = 'SUN',
+  MON = 'MON',
+  TUE = 'TUE',
+  WED = 'WED',
+  THU = 'THU',
+  FRI = 'FRI',
+  SAT = 'SAT',
+}
+
+interface TimeSlot {
+  date: string;        // ex: '2023/12/24'
+  startTime: string;   // ex: '11:00'
+  endTime: string;     // ex: '18:00'
+  day: Day;            // ex: 'SUN'
+}
+
+function App = () => {
+  const [dates, setDates] = useState<Date[]>([]);     // required default: []
+  const [times, setTimes] = useState<TimeSlot[]>([]); // required default: []
+
+  return (
+    <DraggableSelector
+      startTime="09:00"                // required, type: 'string'.
+      endTime="18:00"                  // required, type: 'string'
+      dates={dates}                    // required, type: 'Date[]', required default: []
+      selectedTimeSlots={times}        // required, type: 'TimeSlot[]', required default: []
+      setSelectedTimeSlots={setTimes}  // required, type: 'React.Dispatch<React.SetStateAction<TimeSlot[]>>'
+    />
+  );
+};
+
+export default App;
+```
+
+<br />
+
+<div className="subheading">SOURCE</div>
 
 <div className="link-list">
-  <a
-    className="link-item"
-    href="https://storybook.js.org/docs/react/addons/addon-types"
-    target="_blank"
-  >
-    <img src={Plugin} alt="plugin" />
-    <span>
-      <strong>Presets for popular tools</strong>
-      Easy setup for TypeScript, SCSS and more.
-    </span>
-  </a>
-  <a
-    className="link-item"
-    href="https://storybook.js.org/docs/react/configure/webpack"
-    target="_blank"
-  >
-    <img src={StackAlt} alt="Build" />
-    <span>
-      <strong>Build configuration</strong>
-      How to customize webpack and Babel
-    </span>
-  </a>
-  <a
-    className="link-item"
-    href="https://storybook.js.org/docs/react/configure/styling-and-css"
-    target="_blank"
-  >
-    <img src={Colors} alt="colors" />
-    <span>
-      <strong>Styling</strong>
-      How to load and configure CSS libraries
-    </span>
-  </a>
-  <a
-    className="link-item"
-    href="https://storybook.js.org/docs/react/get-started/setup#configure-storybook-for-your-stack"
-    target="_blank"
-  >
-    <img src={Flow} alt="flow" />
-    <span>
-      <strong>Data</strong>
-      Providers and mocking for data libraries
-    </span>
-  </a>
-</div>
-
-<div className="subheading">Learn</div>
-
-<div className="link-list">
-  <a className="link-item" href="https://storybook.js.org/docs" target="_blank">
-    <img src={Repo} alt="repo" />
-    <span>
-      <strong>Storybook documentation</strong>
-      Configure, customize, and extend
-    </span>
-  </a>
-  <a className="link-item" href="https://storybook.js.org/tutorials/" target="_blank">
-    <img src={Direction} alt="direction" />
-    <span>
-      <strong>In-depth guides</strong>
-      Best practices from leading teams
-    </span>
-  </a>
-  <a className="link-item" href="https://github.com/storybookjs/storybook" target="_blank">
+  <a className="link-item" href="https://github.com/lerrybe/react-draggable-selector" target="_blank">
     <img src={Code} alt="code" />
     <span>
-      <strong>GitHub project</strong>
-      View the source and add issues
+      <strong>GitHub Source Code</strong>
+      View the source and add issues to contribute!
     </span>
   </a>
-  <a className="link-item" href="https://discord.gg/storybook" target="_blank">
-    <img src={Comments} alt="comments" />
+  <a className="link-item" href="" target="_blank">
+    <img src={Direction} alt="direction" />
     <span>
-      <strong>Discord chat</strong>
-      Chat with maintainers and the community
+      <strong>NPM Publish</strong>
+      Go to npm to see the more info about the package.
     </span>
   </a>
-</div>
-
-<div className="tip-wrapper">
-  <span className="tip">Tip</span>Edit the Markdown in{' '}
-  <code>stories/Introduction.stories.mdx</code>
 </div>
