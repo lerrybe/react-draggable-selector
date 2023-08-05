@@ -1,19 +1,40 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { TimeSlot } from '../types';
-import { sampleDates } from '../data/options.ts';
+import { sampleDates } from '../../data/options.ts';
+import { SampleDraggableSelectorProps, TimeSlot } from '../../types';
 
 import Calendar from './Calendar.tsx';
 import TimeSelector from './TimeSelector.tsx';
-import { DraggableSelector } from '../../main.ts';
 import TimeUnitSelector from './TimeUnitSelector.tsx';
+import { DraggableSelector } from '../../../main.ts';
 
-function Playground() {
+function Sample({
+  dateFormat,
+  timeFormat,
+  slotHeight,
+  slotMinWidth,
+  slotRowGap,
+  slotColumnGap,
+  slotBorderStyle,
+  slotBorderRadius,
+  hoveredSlotColor,
+  defaultSlotColor,
+  selectedSlotColor,
+  disabledSlotColor,
+  rowLabelWidth,
+  rowLabelsColor,
+  rowLabelsFontSize,
+  isRowLabelInvisible,
+  columnLabelHeight,
+  columnLabelsColor,
+  columnLabelsFontSize,
+  isColumnLabelInVisible,
+}: SampleDraggableSelectorProps) {
   type TimeUnit = 5 | 10 | 15 | 20 | 30 | 60;
-  const [lang, setLang] = useState<'en' | 'ko'>('en');
+  const [lang, setLang] = useState<'en' | 'ko'>('ko');
   const [mode, setMode] = useState<'day' | 'date'>('date');
-  const [endTime, setEndTime] = useState<string>('18:00');
+  const [endTime, setEndTime] = useState<string>('18:30');
   const [startTime, setStartTime] = useState<string>('11:00');
   const [timeUnit, setTimeUnit] = useState<TimeUnit>(30);
   const [selectedDates, setSelectedDates] = useState<Date[]>(sampleDates);
@@ -21,8 +42,11 @@ function Playground() {
 
   return (
     <OuterContainer>
-      <SelectorWrapper>
-        <Mode>{`${mode} ver.`}</Mode>
+      <SelectorContainer>
+        <TitleContainer>
+          <ComponentTitle>* DraggableSelector</ComponentTitle>
+          <Mode>{`${mode} & '${lang}' ver.`}</Mode>
+        </TitleContainer>
         <DraggableSelector
           mode={mode}
           language={lang}
@@ -37,28 +61,32 @@ function Playground() {
           maxHeight={'540px'}
           minWidth={'320px'}
           minHeight={'300px'}
+          dateFormat={dateFormat}
+          timeFormat={timeFormat}
+          slotHeight={slotHeight}
+          slotMinWidth={slotMinWidth}
+          slotRowGap={slotRowGap}
+          slotColumnGap={slotColumnGap}
+          slotBorderStyle={slotBorderStyle}
+          slotBorderRadius={slotBorderRadius}
+          hoveredSlotColor={hoveredSlotColor}
+          defaultSlotColor={defaultSlotColor}
+          selectedSlotColor={selectedSlotColor}
+          disabledSlotColor={disabledSlotColor}
+          rowLabelWidth={rowLabelWidth}
+          rowLabelsColor={rowLabelsColor}
+          rowLabelsFontSize={rowLabelsFontSize}
+          isRowLabelInvisible={isRowLabelInvisible}
+          columnLabelHeight={columnLabelHeight}
+          columnLabelsColor={columnLabelsColor}
+          columnLabelsFontSize={columnLabelsFontSize}
+          isColumnLabelInVisible={isColumnLabelInVisible}
         />
-      </SelectorWrapper>
+      </SelectorContainer>
 
       <ControlContainer>
         <ControlTitle>{`* Control Examples`}</ControlTitle>
         <div>
-          <ButtonContainer>
-            <Button
-              onClick={() => {
-                setMode('date');
-              }}
-            >
-              DATE ver.
-            </Button>
-            <Button
-              onClick={() => {
-                setMode('day');
-              }}
-            >
-              DAY ver.
-            </Button>
-          </ButtonContainer>
           <ButtonContainer>
             <Button
               onClick={() => {
@@ -73,6 +101,22 @@ function Playground() {
               }}
             >
               ENGLISH ver.
+            </Button>
+          </ButtonContainer>
+          <ButtonContainer>
+            <Button
+              onClick={() => {
+                setMode('date');
+              }}
+            >
+              DATE ver.
+            </Button>
+            <Button
+              onClick={() => {
+                setMode('day');
+              }}
+            >
+              DAY ver.
             </Button>
           </ButtonContainer>
         </div>
@@ -93,15 +137,17 @@ function Playground() {
   );
 }
 
-export default Playground;
+export default Sample;
 
 // styles
 const OuterContainer = styled.div`
   display: flex;
-  padding-top: 20px;
+  padding: 20px 30px 20px 0px;
+  justify-content: center;
+  min-width: 870px;
 `;
 
-const SelectorWrapper = styled.div`
+const SelectorContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -111,21 +157,38 @@ const ControlContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-left: 40px;
+  margin-left: 20px;
   gap: 20px;
 `;
 
 const Mode = styled.h1`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   font-family: 'SBAggroB';
-  margin-bottom: 10px;
+  display: flex;
+  align-items: flex-end;
+  margin-left: 10px;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
+const ComponentTitle = styled.h1`
+  font-size: 26px;
+  font-weight: 700;
+  font-family: 'SBAggroB';
+  background-color: rgba(30, 167, 253, 0.46);
 `;
 
 const ControlTitle = styled.h1`
   font-size: 20px;
   font-weight: 700;
   font-family: 'SBAggroB';
+  background-color: rgba(30, 167, 253, 0.46);
 `;
 
 const ButtonContainer = styled.div`
