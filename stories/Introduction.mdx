@@ -159,7 +159,7 @@ Take out the component in your React project.
 import { useState } from 'react';
 import { DraggableSelector } from "react-draggable-selector";
 
-function App = () => {
+function App () {
   const [dates, setDates] = useState([]);  // required default: []
   const [times, setTimes] = useState([]);  // required default: []
 
@@ -200,7 +200,7 @@ interface TimeSlot {
   day: Day;            // ex: 'SUN'
 }
 
-function App = () => {
+function App () {
   const [dates, setDates] = useState<Date[]>([]);     // required default: []
   const [times, setTimes] = useState<TimeSlot[]>([]); // required default: []
 

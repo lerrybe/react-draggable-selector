@@ -1,7 +1,7 @@
 {
   "name": "react-draggable-selector",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "description": "A library for select times with drag action in React.",
   "license": "MIT",
