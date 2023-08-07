@@ -24,7 +24,7 @@ import {
   DEFAULT_LANG,
   DEFAULT_MODE,
   DEFAULT_TIMEUNIT,
-} from '../../constant/options.ts';
+} from '../../constant/options';
 
 const DraggableSelector = React.memo(
   ({

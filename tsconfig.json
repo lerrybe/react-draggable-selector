@@ -7,20 +7,19 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "node",
-    "outDir": "dist",
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
-    "declaration": true,
     "jsx": "react-jsx",
+    "declaration": true,
+    "outDir": "./dist",
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": false, // deployment bug fix
-    "noUnusedParameters": false, // deployment bug fix
-    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

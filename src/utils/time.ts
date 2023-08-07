@@ -2,7 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { type TimeSlot } from '../types/time';
-import { getDay, getDayNum, isDateBetween } from './date.ts';
+import { getDay, getDayNum, isDateBetween } from './date';
 import { type DragEventStates, Selection } from '../types/event';
 
 /* MODULE EXTEND */

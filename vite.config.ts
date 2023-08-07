@@ -9,7 +9,7 @@ export default defineConfig({
 
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(__dirname, 'src/main.ts'),
       name: 'react-draggable-selector',
       fileName: 'index',
       formats: ['es', 'umd', 'cjs'],

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TimeSlot } from './time.ts';
+import { TimeSlot } from './time';
 
 export interface DraggableSelectorProps {
   /* REQUIRED */
