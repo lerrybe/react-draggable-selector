@@ -24,6 +24,10 @@ export interface DraggableSelectorProps {
   maxWidth?: string;
   minHeight?: string;
   maxHeight?: string;
+  scrollWidth?: string;
+  scrollColor?: string;
+  scrollBgColor?: string;
+
   slotHeight?: string;
   slotMinWidth?: string;
   slotRowGap?: string;
@@ -60,8 +64,4 @@ export interface DraggableSelectorProps {
   columnLabelsFontWeight?: number;
   columnLabelsBorderRadius?: string;
   isColumnLabelInvisible?: boolean;
-
-  scrollWidth?: string;
-  scrollColor?: string;
-  scrollBgColor?: string;
 }
