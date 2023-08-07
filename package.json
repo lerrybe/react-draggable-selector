@@ -1,7 +1,7 @@
 {
   "name": "react-draggable-selector",
   "private": false,
-  "version": "0.0.2",
+  "version": "0.0.4",
   "type": "module",
   "description": "A library for select times with drag action in React.",
   "license": "MIT",
@@ -32,11 +32,16 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "prepare" : "yarn build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@types/styled-components": "^5.1.26",
     "dayjs": "^1.11.9",
-    "styled-components": "^6.0.6"
+    "styled-components": "^6.0.6",
+    "vite-plugin-dts": "^3.5.1"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
@@ -50,9 +55,6 @@
     "@storybook/react": "^7.2.0",
     "@storybook/react-vite": "^7.2.0",
     "@storybook/testing-library": "^0.0.14-next.2",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",

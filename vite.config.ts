@@ -2,11 +2,12 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
+import dts from 'vite-plugin-dts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-export default defineConfig({
-  plugins: [react()],
 
+export default defineConfig({
+  plugins: [react(), dts()],
   build: {
     lib: {
       entry: resolve(__dirname, 'src/main.ts'),
@@ -21,7 +22,6 @@ export default defineConfig({
           react: 'React',
           'react-dom': 'ReactDOM',
         },
-        assetFileNames: 'styles/[name].[ext]',
       },
     },
   },
