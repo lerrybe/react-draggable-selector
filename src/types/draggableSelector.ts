@@ -59,7 +59,7 @@ export interface DraggableSelectorProps {
   columnLabelsFontFamily?: string;
   columnLabelsFontWeight?: number;
   columnLabelsBorderRadius?: string;
-  isColumnLabelInVisible?: boolean;
+  isColumnLabelInvisible?: boolean;
 
   scrollWidth?: string;
   scrollColor?: string;

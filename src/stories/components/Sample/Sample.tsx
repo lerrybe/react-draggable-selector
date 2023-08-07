@@ -29,10 +29,10 @@ function Sample({
   columnLabelHeight,
   columnLabelsColor,
   columnLabelsFontSize,
-  isColumnLabelInVisible,
+  isColumnLabelInvisible,
 }: SampleDraggableSelectorProps) {
   type TimeUnit = 5 | 10 | 15 | 20 | 30 | 60;
-  const [lang, setLang] = useState<'en' | 'ko'>('ko');
+  const [lang, setLang] = useState<'en' | 'ko'>('en');
   const [mode, setMode] = useState<'day' | 'date'>('date');
   const [endTime, setEndTime] = useState<string>('18:30');
   const [startTime, setStartTime] = useState<string>('11:00');
@@ -80,12 +80,16 @@ function Sample({
           columnLabelHeight={columnLabelHeight}
           columnLabelsColor={columnLabelsColor}
           columnLabelsFontSize={columnLabelsFontSize}
-          isColumnLabelInVisible={isColumnLabelInVisible}
+          isColumnLabelInvisible={isColumnLabelInvisible}
         />
       </SelectorContainer>
 
       <ControlContainer>
-        <ControlTitle>{`* Control Examples`}</ControlTitle>
+        <TitleContainer>
+          <ControlTitle>{`* Control Examples`}</ControlTitle>
+          <Mode>{'(not provided)'}</Mode>
+        </TitleContainer>
+
         <div>
           <ButtonContainer>
             <Button
@@ -174,21 +178,21 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: flex-end;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `;
 
 const ComponentTitle = styled.h1`
   font-size: 26px;
   font-weight: 700;
   font-family: 'SBAggroB';
-  background-color: rgba(30, 167, 253, 0.46);
+  background-color: rgba(30, 167, 253, 0.21);
 `;
 
 const ControlTitle = styled.h1`
   font-size: 20px;
   font-weight: 700;
   font-family: 'SBAggroB';
-  background-color: rgba(30, 167, 253, 0.46);
+  background-color: rgba(255, 117, 146, 0.29);
 `;
 
 const ButtonContainer = styled.div`

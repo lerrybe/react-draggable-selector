@@ -83,7 +83,7 @@ const DraggableSelector = React.memo(
     columnLabelsFontFamily,
     columnLabelsFontWeight,
     columnLabelsBorderRadius,
-    isColumnLabelInVisible,
+    isColumnLabelInvisible,
 
     scrollWidth,
     scrollColor,
@@ -289,7 +289,7 @@ const DraggableSelector = React.memo(
             <>
               {!isRowLabelInvisible && (
                 <S.LeftContainer $rowLabelWidth={rowLabelWidth}>
-                  {!isColumnLabelInVisible && (
+                  {!isColumnLabelInvisible && (
                     <S.EmptySlot height={columnLabelHeight} />
                   )}
                   <RowLabel
@@ -313,7 +313,7 @@ const DraggableSelector = React.memo(
               )}
 
               <S.RightContainer>
-                {!isColumnLabelInVisible && (
+                {!isColumnLabelInvisible && (
                   <ColumnLabel
                     dates={selectedDates}
                     dateFormat={dateFormat}

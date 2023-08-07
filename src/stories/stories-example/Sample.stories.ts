@@ -29,7 +29,7 @@ export const Sample: Story = {
     selectedSlotColor: '#3f3f3f',
     disabledSlotColor: '#939393',
     isRowLabelInvisible: false,
-    isColumnLabelInVisible: false,
+    isColumnLabelInvisible: false,
     rowLabelWidth: '68px',
     columnLabelHeight: '36px',
     rowLabelsColor: '#7a7a7a',

@@ -65,6 +65,7 @@ export default function TimeSlots({
       $rows={gridTemplateRows}
       $columnGap={slotColumnGap}
       $cols={gridTemplateColumns}
+      onDragStart={() => false}
     >
       {matrix[0]?.map(
         (_, colIndex: number) =>

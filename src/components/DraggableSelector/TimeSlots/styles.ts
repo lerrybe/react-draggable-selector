@@ -48,7 +48,7 @@ interface ItemProps {
   $disabledSlotColor?: string;
 }
 
-export const Item = styled.div<ItemProps>(
+export const Item = styled.button<ItemProps>(
   ({
     selected,
     $selectDisabled,
@@ -66,6 +66,9 @@ export const Item = styled.div<ItemProps>(
       ? $selectedSlotColor || DEFAULT_SELECTED_SLOT_BG_COLOR
       : $defaultSlotColor || DEFAULT_SLOT_BG_COLOR
   };
+  user-drag: none; /* 최신 브라우저 */
+  -webkit-user-drag: none; /* 구형 브라우저 */
+  
   width: 100%;
   min-width: ${$width || DEFAULT_SLOT_MIN_WIDTH};  
   height: ${$height || DEFAULT_SLOT_HEIGHT};
