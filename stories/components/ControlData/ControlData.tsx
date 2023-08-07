@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { TimeSlot } from '../../types';
-import { sampleDates } from '../../data/options.ts';
-import { DraggableSelector } from '../../../main.ts';
+import { sampleDates } from '../../data/options';
+import { DraggableSelector } from '../../../src/main';
 import {
   DEFAULT_LANG,
   DEFAULT_MODE,
   DEFAULT_TIMEUNIT,
   DEFAULT_TIME_FORMAT,
   DEFAULT_DATE_FORMAT,
-} from '../../../constant/options.ts';
+} from '../../../src/constant/options';
 
 function ControlData({
   endTime,

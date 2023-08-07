@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TimeSlot } from '../../types';
-import { sampleDates } from '../../data/options.ts';
-import { DraggableSelector } from '../../../main.ts';
+import { sampleDates } from '../../data/options';
+import { DraggableSelector } from '../../../src/main';
 import {
   DEFAULT_WIDTH,
   DEFAULT_HEIGHT,
@@ -14,7 +14,7 @@ import {
   DEFAULT_SCROLL_COLOR,
   DEFAULT_SCROLL_WIDTH,
   DEFAULT_SCROLL_BG_COLOR,
-} from '../../../constant/options.ts';
+} from '../../../src/constant/options';
 
 function ControlSelectorStyle({
   width = DEFAULT_WIDTH,

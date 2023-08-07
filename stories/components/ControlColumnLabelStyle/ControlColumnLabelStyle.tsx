@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { TimeSlot } from '../../types';
-import { sampleDates } from '../../data/options.ts';
-import { DraggableSelector } from '../../../main.ts';
 import {
   DEFAULT_COLUMN_LABEL_BG_COLOR,
   DEFAULT_COLUMN_LABEL_BORDER_RADIUS,
@@ -14,7 +12,9 @@ import {
   DEFAULT_COLUMN_LABELS_FONT_WEIGHT,
   DEFAULT_COLUMN_LABELS_HEIGHT,
   DEFAULT_COLUMN_LABELS_MARGIN,
-} from '../../../constant/options.ts';
+} from '../../../src/constant/options';
+import { sampleDates } from '../../data/options';
+import { DraggableSelector } from '../../../src/main';
 
 function ControlColumnLabelStyle({
   columnLabelsColor = DEFAULT_COLUMN_LABELS_COLOR,

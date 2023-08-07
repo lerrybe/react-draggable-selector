@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TimeSlot } from '../../types';
-import { sampleDates } from '../../data/options.ts';
-import { DraggableSelector } from '../../../main.ts';
+import { sampleDates } from '../../data/options';
+import { DraggableSelector } from '../../../src/main';
 import {
   DEFAULT_ROW_LABEL_BG_COLOR,
   DEFAULT_ROW_LABEL_BORDER_RADIUS,
@@ -14,7 +14,7 @@ import {
   DEFAULT_ROW_LABELS_FONT_SIZE,
   DEFAULT_ROW_LABELS_FONT_WEIGHT,
   DEFAULT_ROW_LABELS_MARGIN,
-} from '../../../constant/options.ts';
+} from '../../../src/constant/options';
 
 function ControlRowLabelStyle({
   rowLabelsColor = DEFAULT_ROW_LABELS_COLOR,

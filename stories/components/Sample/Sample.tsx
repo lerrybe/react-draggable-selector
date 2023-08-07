@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { sampleDates } from '../../data/options.ts';
+import { sampleDates } from '../../data/options';
 import { SampleDraggableSelectorProps, TimeSlot } from '../../types';
 
-import Calendar from './Calendar.tsx';
-import TimeSelector from './TimeSelector.tsx';
-import TimeUnitSelector from './TimeUnitSelector.tsx';
-import { DraggableSelector } from '../../../main.ts';
+import Calendar from './Calendar';
+import TimeSelector from './TimeSelector';
+import TimeUnitSelector from './TimeUnitSelector';
+import { DraggableSelector } from '../../../src/main';
 
 function Sample({
   dateFormat,

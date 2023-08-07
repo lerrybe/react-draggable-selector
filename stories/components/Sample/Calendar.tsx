@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import dayjs from 'dayjs';
 import styled from 'styled-components';
 
 interface CalendarProps {
@@ -8,12 +7,12 @@ interface CalendarProps {
 }
 
 function Calendar({ selectedDates, setSelectedDates }: CalendarProps) {
-  const [currentMonth, setCurrentMonth] = useState(dayjs());
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const handleDateClick = (date: Date) => {
-    const dateString = dayjs(date).format('YYYY/MM/DD');
+    const dateString = formatDateToString(date);
     const dateIndex = selectedDates.findIndex(selectedDate =>
-      dayjs(selectedDate).isSame(dateString, 'day'),
+      isSameDay(selectedDate, dateString),
     );
     if (dateIndex !== -1) {
       // If the date is already selected, remove it from the array
@@ -25,29 +24,47 @@ function Calendar({ selectedDates, setSelectedDates }: CalendarProps) {
     }
   };
 
+  const formatDateToString = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+  };
+
+  const isSameDay = (date1: Date, date2String: string) => {
+    const date2 = new Date(date2String);
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
+  };
+
   const renderCalendar = () => {
-    const startOfMonth = currentMonth.startOf('month');
-    const endOfMonth = currentMonth.endOf('month');
-    const startDate = startOfMonth.startOf('week');
-    const endDate = endOfMonth.endOf('week');
+    const startOfMonth = new Date(currentMonth);
+    startOfMonth.setDate(1);
+    const endOfMonth = new Date(currentMonth);
+    endOfMonth.setMonth(endOfMonth.getMonth() + 1, 0);
+    const startDate = new Date(startOfMonth);
+    startDate.setDate(startOfMonth.getDate() - startOfMonth.getDay());
+    const endDate = new Date(endOfMonth);
+    endDate.setDate(endOfMonth.getDate() + (6 - endOfMonth.getDay()));
+
     const calendar = [];
-    let currentDate = startDate;
-    while (
-      currentDate.isBefore(endDate) ||
-      currentDate.isSame(endDate, 'day')
-    ) {
-      const day = currentDate.toDate();
-      const isCurrentMonth = currentDate.isSame(currentMonth, 'month');
+    const currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      const day = new Date(currentDate);
+      const isCurrentMonth = currentDate.getMonth() === currentMonth.getMonth();
       const isSelected = selectedDates.some(selectedDate =>
-        dayjs(selectedDate).isSame(day, 'day'),
+        isSameDay(selectedDate, formatDateToString(day)),
       );
       calendar.push({
-        day: currentDate.date(),
+        day: currentDate.getDate(),
         date: day,
         isCurrentMonth: isCurrentMonth,
         isSelected: isSelected,
       });
-      currentDate = currentDate.add(1, 'day');
+      currentDate.setDate(currentDate.getDate() + 1);
     }
 
     return (
@@ -67,18 +84,31 @@ function Calendar({ selectedDates, setSelectedDates }: CalendarProps) {
   };
 
   const handleNextMonth = () => {
-    setCurrentMonth(currentMonth.add(1, 'month'));
+    setCurrentMonth(prevMonth => {
+      const nextMonth = new Date(prevMonth);
+      nextMonth.setMonth(prevMonth.getMonth() + 1);
+      return nextMonth;
+    });
   };
 
   const handlePrevMonth = () => {
-    setCurrentMonth(currentMonth.subtract(1, 'month'));
+    setCurrentMonth(prevMonth => {
+      const prevMonthCopy = new Date(prevMonth);
+      prevMonthCopy.setMonth(prevMonth.getMonth() - 1);
+      return prevMonthCopy;
+    });
   };
 
   return (
     <CalendarContainer>
       <CalendarHeader>
         <Button onClick={handlePrevMonth}>Prev</Button>
-        <div>{currentMonth.format('YYYY MMMM')}</div>
+        <div>
+          {currentMonth.toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'long',
+          })}
+        </div>
         <Button onClick={handleNextMonth}>Next</Button>
       </CalendarHeader>
       <CalendarGrid>

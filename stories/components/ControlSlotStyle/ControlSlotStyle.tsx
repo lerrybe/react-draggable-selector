@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TimeSlot } from '../../types';
-import { sampleDates } from '../../data/options.ts';
-import { DraggableSelector } from '../../../main.ts';
+import { sampleDates } from '../../data/options';
+import { DraggableSelector } from '../../../src/main';
 import {
   DEFAULT_COLUMN_GAP,
   DEFAULT_DISABLED_SLOT_BG_COLOR,
@@ -13,7 +13,7 @@ import {
   DEFAULT_SLOT_BORDER_STYLE,
   DEFAULT_SLOT_HEIGHT,
   DEFAULT_SLOT_MIN_WIDTH,
-} from '../../../constant/options.ts';
+} from '../../../src/constant/options';
 
 function ControlSlotStyle({
   slotRowGap = DEFAULT_ROW_GAP,

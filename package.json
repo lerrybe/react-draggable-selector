@@ -1,17 +1,41 @@
 {
   "name": "react-draggable-selector",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.1",
   "type": "module",
+  "description": "A library for select times with drag action in React.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lerrybe/react-draggable-selector"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "browser": "./browser/specific/main.js",
+  "author": "Yeji Kim",
+  "keywords": [
+    "react",
+    "drag",
+    "selector",
+    "custom",
+    "styling",
+    "grid",
+    "component",
+    "styled-components"
+  ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --base=./",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "dayjs": "^1.11.9",
     "styled-components": "^6.0.6"
   },
   "peerDependencies": {
@@ -32,7 +56,6 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
-    "dayjs": "^1.11.9",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
