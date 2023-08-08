@@ -86,7 +86,7 @@ function Sample({
 
       <ControlContainer>
         <TitleContainer>
-          <ControlTitle>{`* Control Examples`}</ControlTitle>
+          <ControlTitle>{`* Control Ex.`}</ControlTitle>
           <Mode>{'(not provided)'}</Mode>
         </TitleContainer>
 

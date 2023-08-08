@@ -1,8 +1,8 @@
 # 🖍 React-Draggable-Selector
 
 <div style="display: flex">
-  <img src="./src/assets/ver1.gif" alt="date" style="width: 50%"/>
-  <img src="./src/assets/ver2.gif" alt="day" style="width: 50%"/>
+  <img src="https://user-images.githubusercontent.com/71599639/259009910-990cd6d1-78ba-4892-aefd-2d34f2f74353.gif" alt="date" style="width: 50%"/>
+  <img src="https://user-images.githubusercontent.com/71599639/259009925-080bb3e6-3bf5-4fc8-af41-fc30d05ecf3a.gif" alt="day" style="width: 50%"/>
 </div>
 
 
@@ -13,9 +13,14 @@ This package is for react applications, and uses [styled-components](https://sty
 
 Its main advantages are its intuitive drag-to-select functionality and the freedom to apply custom styling. You can select a time zone by day of the week or by date. Let's get started!
 
-## 🚀 Quick Start
+# Live example & Document 
+You can learn how to use it by operating it directly in the document below.
 
-### **1. Installation**
+[Go to Document]() (Coming soon)
+
+# 🚀 Quick Start
+
+## **1. Installation**
 
 Use npm package manager to install
 
@@ -29,10 +34,10 @@ or install with yarn
 $ yarn add react-draggable-selector
 ```
 
-### **2. Usage**
+## **2. Usage**
 Take out the component in your React project.
 
-1. When using Javascript:
+### 1. When using Javascript:
 
 ```jsx
 import { useState } from 'react';
@@ -56,28 +61,12 @@ function App () {
 export default App;
 ```
 
-2. When using Typescript:
+### 2. When using Typescript:
 
 ```tsx
 import { useState } from 'react';
 import { DraggableSelector } from "react-draggable-selector";
-
-export enum Day {
-  SUN = 'SUN',
-  MON = 'MON',
-  TUE = 'TUE',
-  WED = 'WED',
-  THU = 'THU',
-  FRI = 'FRI',
-  SAT = 'SAT',
-}
-
-interface TimeSlot {
-  date: string;        // ex: '2023/12/24'
-  startTime: string;   // ex: '11:00'
-  endTime: string;     // ex: '18:00'
-  day: Day;            // ex: 'SUN'
-}
+import { TimeSlot } from 'react-draggable-selector/dist/types/time';
 
 function App () {
   const [dates, setDates] = useState<Date[]>([]);     // required default: []
@@ -97,9 +86,9 @@ function App () {
 export default App;
 ```
 
-### **3. Props**
+## **3. Props**
 
-#### **3.1. Required Props**
+### **3.1. Required Props**
 
 | Name (Prop)          | Type                                             | Description                                                                                                   | Default value | Required |
 |----------------------|--------------------------------------------------|---------------------------------------------------------------------------------------------------------------|---------------|----------|
@@ -110,9 +99,9 @@ export default App;
 | setSelectedTimeSlots | React.Dispatch<React.SetStateAction<TimeSlot[]>> | The setState function of the selectedTimeSlots.                                                               | -             | ✔️       |
 
 
-#### **3.2. Optional Props**
+### **3.2. Optional Props**
 
-##### **3.2.1. Control core data**
+#### **3.2.1. Control core data**
 
 | Name (Prop) | Type                            | Description                                                                                                                                                                                              | Default value | Required |
 |-------------|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------|----------|
@@ -123,7 +112,7 @@ export default App;
 | language    | 'en' \| 'ko'                    | Set the language that will appear in the selector.                                                                                                                                                       | 'en'          |          |
 
 
-##### **3.2.2. Control selector style**
+#### **3.2.2. Control selector style**
 
 | Name (Prop)   | Type   | Description                                                                                                               | Default value | Required |
 |---------------|--------|---------------------------------------------------------------------------------------------------------------------------|---------------|----------|
@@ -140,7 +129,7 @@ export default App;
 | scrollBgColor | string | The background color of the scroll bar. Assign a string to scrollBgColor, such as `#e1e1e1`, `blue`, `rgb(0, 0, 0)`, etc. | '#e1e1e1'     |          |
 
 
-##### **3.2.3. Control slot (cell) style**
+#### **3.2.3. Control slot (cell) style**
 
 | Name (Prop)       | Type   | Description                                                                                             | Default value | Required |
 |-------------------|--------|---------------------------------------------------------------------------------------------------------|---------------|----------|
@@ -156,7 +145,7 @@ export default App;
 | disabledSlotColor | string | The color of each slot when it is disabled. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`. | '#939393'     |          |
 
 
-##### **3.2.4. Control row label (time) style**
+#### **3.2.4. Control row label (time) style**
 
 | Name (Prop)           | Type    | Description                                                                                                           | Default value      | Required |
 |-----------------------|---------|-----------------------------------------------------------------------------------------------------------------------|--------------------|----------|
@@ -174,7 +163,7 @@ export default App;
 | isRowLabelInvisible   | boolean | Set whether to hide the row label. If you set it to true, the row label will not be displayed.                        | false              |          | 
 
 
-##### **3.2.5. Control column label (date/day) style**
+#### **3.2.5. Control column label (date/day) style**
 
 | Name (Prop)              | Type    | Description                                                                                                                | Default value      | Required |
 |--------------------------|---------|----------------------------------------------------------------------------------------------------------------------------|--------------------|----------|
@@ -192,3 +181,10 @@ export default App;
 | isColumnLabelInvisible   | boolean | Set whether to hide the column label. If you set it to true, the column label will not be displayed.                       | false              |          | 
 
 
+# License
+The MIT License.
+
+# Contribution & Issues & Bug report
+
+Always welcome! 
+I would appreciate it if you could leave it as an issue in the repository.
