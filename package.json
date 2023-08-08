@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lerrybe/react-draggable-selector"
+    "url": "git+https://github.com/lerrybe/react-draggable-selector.git"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,9 @@
     }
   },
   "browser": "./browser/specific/main.js",
-  "author": "Yeji Kim",
+  "author": {
+    "name": "Yeji Kim"
+  },
   "keywords": [
     "react",
     "drag",
@@ -64,6 +66,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vitejs/plugin-react": "^4.0.3",
+    "chromatic": "^6.21.0",
     "eslint": "^8.45.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
@@ -75,5 +78,10 @@
     "storybook": "^7.2.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/lerrybe/react-draggable-selector/issues"
+  },
+  "homepage": "https://github.com/lerrybe/react-draggable-selector#readme",
+  "_id": "react-draggable-selector@0.0.6"
 }
