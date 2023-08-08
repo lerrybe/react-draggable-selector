@@ -16,7 +16,7 @@ Its main advantages are its intuitive drag-to-select functionality and the freed
 # Live example & Document 
 You can learn how to use it by operating it directly in the document below.
 
-[Go to Document](https://64d1f2641de7b9e923f3c9d6-pyymweogzx.chromatic.com/?path=/docs/intro-quickstart--docs) (Coming soon)
+[Go to Document](https://64d1f2641de7b9e923f3c9d6-pyymweogzx.chromatic.com/?path=/docs/intro-quickstart--docs)
 
 # 🚀 Quick Start
 
@@ -108,7 +108,7 @@ export default App;
 | timeUnit    | 5 \| 10 \| 15 \| 20 \| 30 \| 60 | The time interval for the selector. The amount of time a cell has.                                                                                                                                       | 30            |          | 
 | dateFormat  | string                          | Use the date format method of dayjs. You can use the following link to set the formatting form. (https://day.js.org/docs/en/display/format)                                                              | 'M/D'         |          |
 | timeFormat  | string                          | Use the time format method of dayjs. You can use the following link to set the formatting form. (https://day.js.org/docs/en/display/format)                                                              | 'HH:mm A'     |          |
-| mode        | 'date' \| 'day'                 | Decide whether to indicate all dates or by day of the week. (In the 'day' version) If there is no day of the week corresponding to the selected date, the cell is blocked so that it cannot be selected. | 'date'        |          |
+| mode        | 'date' \| 'day'                 | Decide whether to indicate all dates or by day of the week. (In the `day` version) If there is no day of the week corresponding to the selected date, the cell is blocked so that it cannot be selected. | 'date'        |          |
 | language    | 'en' \| 'ko'                    | Set the language that will appear in the selector.                                                                                                                                                       | 'en'          |          |
 
 
@@ -149,7 +149,7 @@ export default App;
 
 | Name (Prop)           | Type    | Description                                                                                                           | Default value      | Required |
 |-----------------------|---------|-----------------------------------------------------------------------------------------------------------------------|--------------------|----------|
-| rowLabelWidth         | string  | Set the width of the (time Label) row label . If you set it to 0, the row label will not be displayed.                | '68px'             |          | 
+| rowLabelWidth         | string  | Set the width of the (time Label) row label . If you set it to `0`, the row label will not be displayed.              | '68px'             |          | 
 | rowLabelBgColor       | string  | Set the background color of each row label (time Label). Applies to each, not to the entire background color.         | 'transparent'      |          | 
 | rowLabelPadding       | string  | Set the padding of the (time Label) row label. Applies to each, not to the entire padding. e.g. `10px 20px 10px 20px` | '0px'              |          | 
 | rowLabelBorderRadius  | string  | Set the border radius of the (time Label) row label. Applies to each, not to the entire border radius.                | '0px'              |          | 
@@ -165,20 +165,20 @@ export default App;
 
 #### **3.2.5. Control column label (date/day) style**
 
-| Name (Prop)              | Type    | Description                                                                                                                | Default value      | Required |
-|--------------------------|---------|----------------------------------------------------------------------------------------------------------------------------|--------------------|----------|
-| columnLabelHeight        | string  | Set the height of the (date/day Label) column label . If you set it to 0, the column label will not be displayed.          | '36px'             |          | 
-| columnLabelBgColor       | string  | Set the background color of each column label (date/day Label). Applies to each, not to the entire background color.       | 'transparent'      |          | 
-| columnLabelPadding       | string  | Set the padding of the (date/day Label) column label. Applies to each, not to the entire padding. e.g. 10px 20px 10px 20px | '0px'              |          | 
-| columnLabelBorderRadius  | string  | Set the border radius of the (date/day Label) column label. Applies to each, not to the entire border radius.              | '0px'              |          | 
-| columnLabelsColor        | string  | Set the color of the (date/day Label) column label. Applies to font color.                                                 | '#7a7a7a'          |          | 
-| columnLabelsMargin       | string  | Set the margin of the (date/day Label) column label. Applies to the ✅ entire margin, not each.                             | '0px'              |          | 
-| columnLabelsFontSize     | string  | Set the font size of the (date/day Label) column label.                                                                    | '15px'             |          | 
-| columnLabelsFontWeight   | number  | Set the font weight of the (date/day Label) column label.                                                                  | 600                |          | 
-| columnLabelsFontFamily   | string  | Set the font family of the column label. e.g. `Arial, Helvetica, sans-serif`                                               | 'NanumSquareRound' |          | 
-| columnLabelsBgColor      | string  | Set the background color of the (date/day Label) column label. Applies to the ✅ entire background color, not each.         | 'transparent'      |          | 
-| columnLabelsBorderRadius | string  | Set the border radius of the column label. Applies to the ✅ entire border radius, not each.                                | '0px'              |          | 
-| isColumnLabelInvisible   | boolean | Set whether to hide the column label. If you set it to true, the column label will not be displayed.                       | false              |          | 
+| Name (Prop)              | Type    | Description                                                                                                                  | Default value      | Required |
+|--------------------------|---------|------------------------------------------------------------------------------------------------------------------------------|--------------------|----------|
+| columnLabelHeight        | string  | Set the height of the (date/day Label) column label . If you set it to `0`, the column label will not be displayed.          | '36px'             |          | 
+| columnLabelBgColor       | string  | Set the background color of each column label (date/day Label). Applies to each, not to the entire background color.         | 'transparent'      |          | 
+| columnLabelPadding       | string  | Set the padding of the (date/day Label) column label. Applies to each, not to the entire padding. e.g. `10px 20px 10px 20px` | '0px'              |          | 
+| columnLabelBorderRadius  | string  | Set the border radius of the (date/day Label) column label. Applies to each, not to the entire border radius.                | '0px'              |          | 
+| columnLabelsColor        | string  | Set the color of the (date/day Label) column label. Applies to font color.                                                   | '#7a7a7a'          |          | 
+| columnLabelsMargin       | string  | Set the margin of the (date/day Label) column label. Applies to the ✅ entire margin, not each.                               | '0px'              |          | 
+| columnLabelsFontSize     | string  | Set the font size of the (date/day Label) column label.                                                                      | '15px'             |          | 
+| columnLabelsFontWeight   | number  | Set the font weight of the (date/day Label) column label.                                                                    | 600                |          | 
+| columnLabelsFontFamily   | string  | Set the font family of the column label. e.g. `Arial, Helvetica, sans-serif`                                                 | 'NanumSquareRound' |          | 
+| columnLabelsBgColor      | string  | Set the background color of the (date/day Label) column label. Applies to the ✅ entire background color, not each.           | 'transparent'      |          | 
+| columnLabelsBorderRadius | string  | Set the border radius of the column label. Applies to the ✅ entire border radius, not each.                                  | '0px'              |          | 
+| isColumnLabelInvisible   | boolean | Set whether to hide the column label. If you set it to true, the column label will not be displayed.                         | false              |          | 
 
 
 # License
