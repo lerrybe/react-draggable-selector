@@ -7,7 +7,7 @@ import { SampleDraggableSelectorProps, TimeSlot } from '../../types';
 import Calendar from './Calendar';
 import TimeSelector from './TimeSelector';
 import TimeUnitSelector from './TimeUnitSelector';
-import { DraggableSelector } from '../../../src/main';
+import { DraggableSelector } from '../../../src/index';
 
 function Sample({
   dateFormat,

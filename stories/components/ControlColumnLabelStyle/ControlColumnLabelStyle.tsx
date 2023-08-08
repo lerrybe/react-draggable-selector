@@ -14,7 +14,7 @@ import {
   DEFAULT_COLUMN_LABELS_MARGIN,
 } from '../../../src/constant/options';
 import { sampleDates } from '../../data/options';
-import { DraggableSelector } from '../../../src/main';
+import { DraggableSelector } from '../../../src/index';
 
 function ControlColumnLabelStyle({
   columnLabelsColor = DEFAULT_COLUMN_LABELS_COLOR,

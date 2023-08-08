@@ -1,7 +1,6 @@
 {
   "name": "react-draggable-selector",
-  "private": false,
-  "version": "0.0.4",
+  "version": "0.0.6",
   "type": "module",
   "description": "A library for select times with drag action in React.",
   "license": "MIT",
@@ -14,6 +13,12 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
+  },
   "browser": "./browser/specific/main.js",
   "author": "Yeji Kim",
   "keywords": [
@@ -32,7 +37,7 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepare" : "yarn build",
+    "prepare": "yarn build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
@@ -41,7 +46,8 @@
     "@types/styled-components": "^5.1.26",
     "dayjs": "^1.11.9",
     "styled-components": "^6.0.6",
-    "vite-plugin-dts": "^3.5.1"
+    "vite-plugin-dts": "^3.5.1",
+    "vite-plugin-libcss": "^1.1.1"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

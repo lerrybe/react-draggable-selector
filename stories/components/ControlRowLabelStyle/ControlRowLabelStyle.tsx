@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TimeSlot } from '../../types';
 import { sampleDates } from '../../data/options';
-import { DraggableSelector } from '../../../src/main';
+import { DraggableSelector } from '../../../src/index';
 import {
   DEFAULT_ROW_LABEL_BG_COLOR,
   DEFAULT_ROW_LABEL_BORDER_RADIUS,
