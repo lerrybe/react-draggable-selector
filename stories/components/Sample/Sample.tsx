@@ -154,7 +154,7 @@ const OuterContainer = styled.div`
 const SelectorContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
 `;
 
 const ControlContainer = styled.div`

@@ -27,6 +27,7 @@ interface ContainerProps {
   $scrollWidth?: string;
   $scrollColor?: string;
   $scrollBgColor?: string;
+  $isSlotWidthGrow?: boolean;
 }
 export const Container = styled.div<ContainerProps>(
   ({
@@ -41,13 +42,14 @@ export const Container = styled.div<ContainerProps>(
     $scrollWidth,
     $scrollColor,
     $scrollBgColor,
+    $isSlotWidthGrow,
   }) => `  
   display: flex;
   overflow: auto;
 
   margin: ${$margin || DEFAULT_MARGIN};
   padding: ${$padding || DEFAULT_PADDING};
-  width: ${$width || DEFAULT_WIDTH};
+  width: ${$isSlotWidthGrow ? 'auto' : $width || DEFAULT_WIDTH};
   height: ${$height || DEFAULT_HEIGHT};
   min-width: ${$minWidth || DEFAULT_MIN_WIDTH};
   max-width: ${$maxWidth || DEFAULT_MAX_WIDTH};

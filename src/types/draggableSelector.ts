@@ -28,10 +28,12 @@ export interface DraggableSelectorProps {
   scrollColor?: string;
   scrollBgColor?: string;
 
+  slotWidth?: string;
   slotHeight?: string;
   slotMinWidth?: string;
   slotRowGap?: string;
   slotColumnGap?: string;
+  isSlotWidthGrow?: boolean;
   defaultSlotColor?: string;
   hoveredSlotColor?: string;
   selectedSlotColor?: string;

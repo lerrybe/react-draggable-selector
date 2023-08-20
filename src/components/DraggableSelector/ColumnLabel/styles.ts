@@ -13,10 +13,12 @@ import {
   DEFAULT_COLUMN_LABELS_FONT_FAMILY,
   DEFAULT_COLUMN_LABEL_BORDER_RADIUS,
   DEFAULT_COLUMN_LABELS_BORDER_RADIUS,
+  DEFAULT_SLOT_WIDTH,
 } from '../../../constant/options';
 
 interface Items {
   $gap?: string;
+  $isSlotWidthGrow?: boolean;
   $columnLabelsColor?: string;
   $columnLabelsMargin?: string;
   $columnLabelsBgColor?: string;
@@ -28,6 +30,7 @@ interface Items {
 export const Items = styled.ul<Items>(
   ({
     $gap,
+    $isSlotWidthGrow,
     $columnLabelsColor,
     $columnLabelsMargin,
     $columnLabelsBgColor,
@@ -49,21 +52,24 @@ export const Items = styled.ul<Items>(
   column-gap: ${
     $gap || $gap === '0' || $gap === '0px' ? $gap : DEFAULT_COLUMN_GAP
   };
+  width: ${$isSlotWidthGrow ? '100%' : 'auto'};
 `,
 );
 
 interface ItemProps {
   $width?: string;
   $height?: string;
+  $minWidth?: string;
+  $isSlotWidthGrow?: boolean;
 }
 export const Item = styled.li<ItemProps>(
-  ({ $height, $width }) => `  
+  ({ $height, $width, $minWidth, $isSlotWidthGrow }) => `  
   display: flex;
   align-items: center;
   justify-content: center;
   
-  width: 100%;
-  min-width: ${$width || DEFAULT_SLOT_MIN_WIDTH};  
+  width: ${$isSlotWidthGrow ? '100%' : $width || DEFAULT_SLOT_WIDTH};
+  min-width: ${$minWidth || DEFAULT_SLOT_MIN_WIDTH};  
   height: ${$height || DEFAULT_COLUMN_LABELS_HEIGHT};
 `,
 );

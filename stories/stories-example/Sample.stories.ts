@@ -35,6 +35,6 @@ export const Sample: Story = {
     rowLabelsColor: '#7a7a7a',
     columnLabelsColor: '#7a7a7a',
     rowLabelsFontSize: '12px',
-    columnLabelsFontSize: '15px',
+    columnLabelsFontSize: '13px',
   },
 };

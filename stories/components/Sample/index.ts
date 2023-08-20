@@ -1,3 +1,3 @@
-import Sample from './Sample.tsx';
+import Sample from './Sample';
 
 export { Sample as SampleDraggableSelector };

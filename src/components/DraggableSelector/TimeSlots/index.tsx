@@ -15,15 +15,18 @@ interface TimeSlotsProps {
   handleMouseDown: (timeSlot: TimeSlot) => void;
   handleMouseEnter: (timeSlot: TimeSlot) => void;
   slotHeight?: string;
+  slotWidth?: string;
   slotMinWidth?: string;
   slotRowGap?: string;
   slotColumnGap?: string;
   slotBorderStyle?: string;
   slotBorderRadius?: string;
+  isSlotWidthGrow?: boolean;
   defaultSlotColor?: string;
   hoveredSlotColor?: string;
   selectedSlotColor?: string;
   disabledSlotColor?: string;
+  $isSlotWidthGrow?: boolean;
 }
 
 export default function TimeSlots({
@@ -36,11 +39,13 @@ export default function TimeSlots({
   handleMouseDown,
   handleMouseEnter,
   slotHeight,
+  slotWidth,
   slotMinWidth,
   slotRowGap,
   slotColumnGap,
   slotBorderStyle,
   slotBorderRadius,
+  isSlotWidthGrow,
   hoveredSlotColor,
   defaultSlotColor,
   selectedSlotColor,
@@ -65,6 +70,7 @@ export default function TimeSlots({
       $rows={gridTemplateRows}
       $columnGap={slotColumnGap}
       $cols={gridTemplateColumns}
+      $isSlotWidthGrow={isSlotWidthGrow}
       onDragStart={() => false}
     >
       {matrix[0]?.map(
@@ -90,7 +96,9 @@ export default function TimeSlots({
                     : false
                 }
                 $height={slotHeight}
-                $width={slotMinWidth}
+                $width={slotWidth}
+                $minWidth={slotMinWidth}
+                $isSlotWidthGrow={isSlotWidthGrow}
                 $slotBorderStyle={slotBorderStyle}
                 $slotBorderRadius={slotBorderRadius}
                 $hoveredSlotColor={hoveredSlotColor}

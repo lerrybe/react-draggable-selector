@@ -21,8 +21,10 @@ import { type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
 import { DraggableSelectorProps } from '../../types/draggableSelector';
 import {
+  DEFAULT_IS_SLOT_WIDTH_GROW,
   DEFAULT_LANG,
   DEFAULT_MODE,
+  DEFAULT_SLOT_WIDTH,
   DEFAULT_TIMEUNIT,
 } from '../../constant/options';
 
@@ -48,12 +50,15 @@ const DraggableSelector = React.memo(
     maxWidth,
     minHeight,
     maxHeight,
+
+    slotWidth,
     slotHeight,
     slotMinWidth,
     slotRowGap,
     slotColumnGap,
     slotBorderStyle,
     slotBorderRadius,
+    isSlotWidthGrow,
     defaultSlotColor,
     hoveredSlotColor,
     selectedSlotColor,
@@ -284,6 +289,7 @@ const DraggableSelector = React.memo(
           $scrollWidth={scrollWidth}
           $scrollColor={scrollColor}
           $scrollBgColor={scrollBgColor}
+          $isSlotWidthGrow={isSlotWidthGrow}
         >
           {selectedDates && startTime && endTime && (
             <>
@@ -321,6 +327,10 @@ const DraggableSelector = React.memo(
                     language={language || DEFAULT_LANG}
                     gap={slotColumnGap}
                     slotMinWidth={slotMinWidth}
+                    isSlotWidthGrow={
+                      isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW
+                    }
+                    slotWidth={slotWidth || DEFAULT_SLOT_WIDTH}
                     columnLabelHeight={columnLabelHeight}
                     columnLabelsColor={columnLabelsColor}
                     columnLabelsMargin={columnLabelsMargin}
@@ -337,6 +347,10 @@ const DraggableSelector = React.memo(
                 <TimeSlots
                   slotRowGap={slotRowGap}
                   slotHeight={slotHeight}
+                  isSlotWidthGrow={
+                    isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW
+                  }
+                  slotWidth={slotWidth || DEFAULT_SLOT_WIDTH}
                   mode={mode || DEFAULT_MODE}
                   slotMinWidth={slotMinWidth}
                   slotColumnGap={slotColumnGap}

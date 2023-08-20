@@ -9,7 +9,9 @@ interface ColumnLabelProps {
   mode: 'date' | 'day';
   language: 'en' | 'ko';
   gap?: string;
+  slotWidth?: string;
   slotMinWidth?: string;
+  isSlotWidthGrow?: boolean;
   columnLabelHeight?: string;
   columnLabelBgColor?: string;
   columnLabelPadding?: string;
@@ -31,8 +33,10 @@ export default function ColumnLabel({
   mode,
   dates,
   language,
+  slotWidth,
   dateFormat,
   slotMinWidth,
+  isSlotWidthGrow,
   columnLabelHeight,
   columnLabelBgColor,
   columnLabelPadding,
@@ -52,6 +56,7 @@ export default function ColumnLabel({
   return (
     <S.Items
       $gap={gap}
+      $isSlotWidthGrow={isSlotWidthGrow}
       $columnLabelsColor={columnLabelsColor}
       $columnLabelsMargin={columnLabelsMargin}
       $columnLabelsBgColor={columnLabelsBgColor}
@@ -66,8 +71,10 @@ export default function ColumnLabel({
             return (
               <S.Item
                 key={day}
-                $width={slotMinWidth}
+                $width={slotWidth}
+                $minWidth={slotMinWidth}
                 $height={columnLabelHeight}
+                $isSlotWidthGrow={isSlotWidthGrow}
               >
                 <S.Label
                   $padding={columnLabelPadding}
@@ -85,9 +92,11 @@ export default function ColumnLabel({
           {dates?.map(date => {
             return (
               <S.Item
-                $width={slotMinWidth}
+                $width={slotWidth}
+                $minWidth={slotMinWidth}
                 $height={columnLabelHeight}
                 key={getUniqueDateKey(date)}
+                $isSlotWidthGrow={isSlotWidthGrow}
               >
                 <S.Label
                   $padding={columnLabelPadding}

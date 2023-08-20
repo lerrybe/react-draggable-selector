@@ -17,10 +17,11 @@ interface ItemsGridProps {
   $cols: string;
   $rowGap?: string;
   $columnGap?: string;
+  $isSlotWidthGrow?: boolean;
 }
 
 export const ItemsGrid = styled.ul<ItemsGridProps>(
-  ({ $rows, $cols, $rowGap, $columnGap }) => `
+  ({ $rows, $cols, $rowGap, $columnGap, $isSlotWidthGrow }) => `
   display: grid;
   grid-template-rows: ${$rows};
   grid-template-columns: ${$cols};
@@ -32,6 +33,7 @@ export const ItemsGrid = styled.ul<ItemsGridProps>(
       ? $columnGap
       : DEFAULT_COLUMN_GAP
   };
+  width: ${$isSlotWidthGrow ? '100%' : 0};
 `,
 );
 
@@ -39,6 +41,8 @@ interface ItemProps {
   selected: boolean;
   $height?: string;
   $width?: string;
+  $minWidth?: string;
+  $isSlotWidthGrow?: boolean;
   $selectDisabled: boolean;
   $defaultSlotColor?: string;
   $selectedSlotColor?: string;
@@ -54,6 +58,8 @@ export const Item = styled.button<ItemProps>(
     $selectDisabled,
     $width,
     $height,
+    $minWidth,
+    $isSlotWidthGrow,
     $defaultSlotColor,
     $hoveredSlotColor,
     $selectedSlotColor,
@@ -69,8 +75,8 @@ export const Item = styled.button<ItemProps>(
   user-drag: none; /* 최신 브라우저 */
   -webkit-user-drag: none; /* 구형 브라우저 */
   
-  width: 100%;
-  min-width: ${$width || DEFAULT_SLOT_MIN_WIDTH};  
+  width: ${$isSlotWidthGrow ? '100%' : $width};
+  min-width: ${$minWidth || DEFAULT_SLOT_MIN_WIDTH};  
   height: ${$height || DEFAULT_SLOT_HEIGHT};
   cursor: pointer;
   box-sizing: border-box;
