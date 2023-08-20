@@ -56,8 +56,7 @@ function Sample({
           dates={selectedDates}
           selectedTimeSlots={selectedTimeSlots}
           setSelectedTimeSlots={setSelectedTimeSlots}
-          width={'auto'}
-          maxWidth={'500px'}
+          width={'500px'}
           height={'540px'}
           maxHeight={'540px'}
           minWidth={'320px'}
