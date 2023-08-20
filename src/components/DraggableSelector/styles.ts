@@ -81,12 +81,31 @@ export const LeftContainer = styled.div<LeftContainerProps>(
 `,
 );
 
-interface RightContainerProps {}
+interface RightContainerProps {
+  $scrollWidth?: string;
+  $scrollColor?: string;
+  $scrollBgColor?: string;
+}
 export const RightContainer = styled.div<RightContainerProps>(
-  () => `
+  ({ $scrollWidth, $scrollColor, $scrollBgColor }) => `
   width: auto;
+  height: fit-content;
   flex-grow: 1;
-  overflow: auto;
+  overflow-x: auto;
+  padding-bottom: 5px;
+  
+  &::-webkit-scrollbar {
+    width: ${$scrollWidth || DEFAULT_SCROLL_WIDTH};  /* WIDTH, HEIGHT */
+    height: ${$scrollWidth || DEFAULT_SCROLL_WIDTH};
+  }
+  &::-webkit-scrollbar-thumb {
+    height: 30%; /* LENGTH */
+    background: ${$scrollColor || DEFAULT_SCROLL_COLOR}; /* COLOR */
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background: ${$scrollBgColor || DEFAULT_SCROLL_BG_COLOR};  /* BG COLOR */
+  }
 `,
 );
 

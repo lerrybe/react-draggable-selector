@@ -6,7 +6,7 @@ export const DEFAULT_DATE_FORMAT = 'M/D';
 export const DEFAULT_TIME_FORMAT = 'hh:mm A';
 
 /* ABOUT SELECTOR */
-export const DEFAULT_PADDING = '0 10px 0 0';
+export const DEFAULT_PADDING = '0 5px 0 0';
 export const DEFAULT_MARGIN = '0px';
 export const DEFAULT_WIDTH = '500px';
 export const DEFAULT_MIN_WIDTH = 'auto';
