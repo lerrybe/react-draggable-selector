@@ -69,7 +69,9 @@ export const Item = styled.li<ItemProps>(
   justify-content: center;
   
   width: ${$isSlotWidthGrow ? '100%' : $width || DEFAULT_SLOT_WIDTH};
-  min-width: ${$minWidth || DEFAULT_SLOT_MIN_WIDTH};  
+  min-width: ${
+    $isSlotWidthGrow ? $minWidth || DEFAULT_SLOT_MIN_WIDTH : $width
+  };  
   height: ${$height || DEFAULT_COLUMN_LABELS_HEIGHT};
 `,
 );

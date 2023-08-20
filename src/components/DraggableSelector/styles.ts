@@ -86,6 +86,7 @@ export const RightContainer = styled.div<RightContainerProps>(
   () => `
   width: auto;
   flex-grow: 1;
+  overflow: auto;
 `,
 );
 

@@ -76,7 +76,9 @@ export const Item = styled.button<ItemProps>(
   -webkit-user-drag: none; /* 구형 브라우저 */
   
   width: ${$isSlotWidthGrow ? '100%' : $width};
-  min-width: ${$minWidth || DEFAULT_SLOT_MIN_WIDTH};  
+  min-width: ${
+    $isSlotWidthGrow ? $minWidth || DEFAULT_SLOT_MIN_WIDTH : $width
+  };  
   height: ${$height || DEFAULT_SLOT_HEIGHT};
   cursor: pointer;
   box-sizing: border-box;
