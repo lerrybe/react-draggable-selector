@@ -1,52 +1,27 @@
-import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
+import dayjs from 'dayjs';
 import * as S from './styles';
 import { type TimeSlot } from '../../../types/time';
-import { DEFAULT_TIME_FORMAT } from '../../../constant/options';
+import { DEFAULT_LANG, DEFAULT_TIME_FORMAT } from '../../../constant/options';
+import { useRowLabelStyleContext } from '../../../context/RowLabelStyleContext';
 
 interface RowLabelProps {
   timeFormat?: string;
   timeSlots?: TimeSlot[];
   language?: 'en' | 'ko';
-  gap?: string;
-  slotHeight?: string;
-  rowLabelBgColor?: string;
-  rowLabelPadding?: string;
-  rowLabelBorderRadius?: string;
-  rowLabelsColor?: string;
-  rowLabelsMargin?: string;
-  rowLabelsBgColor?: string;
-  rowLabelsFontSize?: string;
-  rowLabelsFontFamily?: string;
-  rowLabelsFontWeight?: number;
-  rowLabelsBorderRadius?: string;
 }
 
 /*
   "RowLabel" component is used to display the "times" of the row.
 */
-export default function RowLabel({
-  timeFormat,
-  timeSlots,
-  language,
-  gap,
-  slotHeight,
-  rowLabelPadding,
-  rowLabelBgColor,
-  rowLabelBorderRadius,
-  rowLabelsColor,
-  rowLabelsMargin,
-  rowLabelsBgColor,
-  rowLabelsFontSize,
-  rowLabelsFontFamily,
-  rowLabelsFontWeight,
-  rowLabelsBorderRadius,
-}: RowLabelProps) {
+export default function RowLabel({ timeFormat, timeSlots, language }: RowLabelProps) {
+  const value = useRowLabelStyleContext();
+
   if (!timeSlots || timeSlots?.length === 0) {
     return <></>;
   }
 
-  if (language === 'ko') {
+  if ((language || DEFAULT_LANG) === 'ko') {
     dayjs.locale('ko');
   } else {
     dayjs.locale('en');
@@ -54,23 +29,23 @@ export default function RowLabel({
 
   return (
     <S.Items
-      $gap={gap}
-      $rowLabelsColor={rowLabelsColor}
-      $rowLabelsMargin={rowLabelsMargin}
-      $rowLabelsBgColor={rowLabelsBgColor}
-      $rowLabelsFontSize={rowLabelsFontSize}
-      $rowLabelsFontFamily={rowLabelsFontFamily}
-      $rowLabelsFontWeight={rowLabelsFontWeight}
-      $rowLabelsBorderRadius={rowLabelsBorderRadius}
+      $gap={value?.gap}
+      $rowLabelsColor={value?.rowLabelsColor}
+      $rowLabelsMargin={value?.rowLabelsMargin}
+      $rowLabelsBgColor={value?.rowLabelsBgColor}
+      $rowLabelsFontSize={value?.rowLabelsFontSize}
+      $rowLabelsFontFamily={value?.rowLabelsFontFamily}
+      $rowLabelsFontWeight={value?.rowLabelsFontWeight}
+      $rowLabelsBorderRadius={value?.rowLabelsBorderRadius}
     >
       {timeSlots?.map(({ date, startTime, endTime }) => {
         const dayjsDate = dayjs(`${date} ${startTime}:${endTime}`);
         return (
-          <S.Item key={startTime} $height={slotHeight}>
+          <S.Item key={startTime} $height={value?.rowHeight}>
             <S.Label
-              $padding={rowLabelPadding}
-              $rowLabelBgColor={rowLabelBgColor}
-              $rowLabelBorderRadius={rowLabelBorderRadius}
+              $padding={value?.rowLabelPadding}
+              $rowLabelBgColor={value?.rowLabelBgColor}
+              $rowLabelBorderRadius={value?.rowLabelBorderRadius}
             >
               {dayjsDate.format(timeFormat || DEFAULT_TIME_FORMAT)}
             </S.Label>
