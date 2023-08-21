@@ -183,21 +183,9 @@ export default App;
 import { useState } from 'react';
 import { DraggableSelector } from "react-draggable-selector";
 
-export enum Day {
-  SUN = 'SUN',
-  MON = 'MON',
-  TUE = 'TUE',
-  WED = 'WED',
-  THU = 'THU',
-  FRI = 'FRI',
-  SAT = 'SAT',
-}
-
 interface TimeSlot {
-  date: string;        // ex: '2023/12/24'
-  startTime: string;   // ex: '11:00'
-  endTime: string;     // ex: '18:00'
-  day: Day;            // ex: 'SUN'
+  start: Date;
+  end: Date;
 }
 
 function App () {
