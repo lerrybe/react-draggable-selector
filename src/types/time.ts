@@ -9,8 +9,6 @@ export enum Day {
 }
 
 export interface TimeSlot {
-  date: string;
-  startTime: string;
-  endTime: string;
-  day: Day;
+  start: Date;
+  end: Date;
 }

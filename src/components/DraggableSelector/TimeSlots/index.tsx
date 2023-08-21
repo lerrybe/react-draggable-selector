@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import * as S from './styles';
 import { getDayNum } from '../../../utils/date';
 import { type TimeSlot } from '../../../types/time';
-import { areTimeSlotsEqual } from '../../../utils/time';
 import { useSlotStyleContext } from '../../../context/SlotStyleContext';
+import { areTimeSlotsEqual, getSerializedTimeInfoFromSlot } from '../../../utils/time';
 import { DEFAULT_IS_SLOT_WIDTH_GROW, DEFAULT_MODE, DEFAULT_SLOT_WIDTH } from '../../../constant/options';
 
 interface TimeSlotsProps {
@@ -56,7 +56,7 @@ export default function TimeSlots({
         (_, colIndex: number) =>
           matrix?.map(timeSlots => {
             const targetSlot = timeSlots[colIndex];
-            const { date, startTime, endTime } = targetSlot;
+            const { date, startTime, endTime } = getSerializedTimeInfoFromSlot(targetSlot);
             const key = `${date}${startTime}${endTime}`;
             const selected = Boolean(
               cachedSelectedTimeSlots?.find(slot => areTimeSlotsEqual(slot, targetSlot, mode || DEFAULT_MODE)),
@@ -68,7 +68,7 @@ export default function TimeSlots({
                 selected={selected}
                 $selectDisabled={
                   (mode || DEFAULT_MODE) === 'day'
-                    ? timeSlotMatrixByDay[getDayNum(targetSlot.day)]?.length === 0
+                    ? timeSlotMatrixByDay[getDayNum(getSerializedTimeInfoFromSlot(targetSlot).day)]?.length === 0
                     : false
                 }
                 $width={value?.slotWidth || DEFAULT_SLOT_WIDTH}

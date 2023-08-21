@@ -4,6 +4,7 @@ import * as S from './styles';
 import { type TimeSlot } from '../../../types/time';
 import { DEFAULT_LANG, DEFAULT_TIME_FORMAT } from '../../../constant/options';
 import { useRowLabelStyleContext } from '../../../context/RowLabelStyleContext';
+import { getSerializedTimeInfoFromSlot } from '../../../utils/time';
 
 interface RowLabelProps {
   timeFormat?: string;
@@ -38,7 +39,8 @@ export default function RowLabel({ timeFormat, timeSlots, language }: RowLabelPr
       $rowLabelsFontWeight={value?.rowLabelsFontWeight}
       $rowLabelsBorderRadius={value?.rowLabelsBorderRadius}
     >
-      {timeSlots?.map(({ date, startTime, endTime }) => {
+      {timeSlots?.map(slot => {
+        const { date, startTime, endTime } = getSerializedTimeInfoFromSlot(slot);
         const dayjsDate = dayjs(`${date} ${startTime}:${endTime}`);
         return (
           <S.Item key={startTime} $height={value?.rowHeight}>

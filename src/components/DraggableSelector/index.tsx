@@ -16,7 +16,12 @@ import { useSlotStyleContext } from '../../context/SlotStyleContext';
 import { useRowLabelStyleContext } from '../../context/RowLabelStyleContext';
 import { useColumnLabelStyleContext } from '../../context/ColumnLabelStyleContext';
 import { getTimeSlotMatrixByDay, removeDuplicatesAndSortByDate } from '../../utils/date';
-import { areTimeSlotsEqual, getTimeSlotMatrix, updateCachedSelectedTimeSlots } from '../../utils/time';
+import {
+  areTimeSlotsEqual,
+  getTimeSlotMatrix,
+  updateCachedSelectedTimeSlots,
+  getSerializedTimeInfoFromSlot,
+} from '../../utils/time';
 
 const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
   const { dates, startTime, endTime, mode, timeUnit, dateFormat, language, selectedTimeSlots, setSelectedTimeSlots } =
@@ -139,7 +144,8 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
   useEffect(() => {
     const filteredTimeSlots = selectedTimeSlots.filter(slot => {
       return selectedDates.some(date => {
-        const standardDate = new Date(slot.date);
+        const { date: slotDate } = getSerializedTimeInfoFromSlot(slot);
+        const standardDate = new Date(slotDate);
         return (
           standardDate.getFullYear() === date.getFullYear() &&
           standardDate.getMonth() === date.getMonth() &&
@@ -274,7 +280,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
 
             <S.RightContainer>
               {!props?.isColumnLabelInvisible && (
-                <ColumnLabel dates={selectedDates} dateFormat={dateFormat} mode={mode} language={language} />
+                <ColumnLabel mode={mode} language={language} dates={selectedDates} dateFormat={dateFormat} />
               )}
               <TimeSlots
                 mode={props?.mode}

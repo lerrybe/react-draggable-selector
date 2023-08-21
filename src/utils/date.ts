@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { Day, type TimeSlot } from '../types/time';
+import { getSerializedTimeInfoFromSlot } from './time';
 
 /* MODULE EXTEND */
 dayjs.extend(isBetween);
@@ -17,20 +18,14 @@ export const removeDuplicatesAndSortByDate = (dates: Date[]) => {
     const day = date.getDate();
     uniqueDates.add(`${year}/${month}/${day}`);
   }
-  const sortedDates = Array.from(uniqueDates)?.sort(
-    (a, b) => new Date(a).getTime() - new Date(b).getTime(),
-  );
+  const sortedDates = Array.from(uniqueDates)?.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
   return sortedDates?.map(strDate => new Date(strDate));
 };
 
-export const isDateBetween = (
-  target: TimeSlot,
-  start: TimeSlot,
-  end: TimeSlot,
-) => {
-  const endDate = dayjs(end.date);
-  const startDate = dayjs(start.date);
-  const targetDate = dayjs(target.date);
+export const isDateBetween = (target: TimeSlot, start: TimeSlot, end: TimeSlot) => {
+  const endDate = dayjs(getSerializedTimeInfoFromSlot(end).date);
+  const startDate = dayjs(getSerializedTimeInfoFromSlot(start).date);
+  const targetDate = dayjs(getSerializedTimeInfoFromSlot(target).date);
   return targetDate.isBetween(startDate, endDate, 'day', '[]');
 };
 
@@ -77,7 +72,8 @@ export const getTimeSlotMatrixByDay = (matrix: TimeSlot[][]) => {
   const sortedMatrix: TimeSlot[][] = [[], [], [], [], [], [], []];
   matrix?.forEach((timeSlots: TimeSlot[]) => {
     timeSlots?.forEach((timeSlot: TimeSlot) => {
-      sortedMatrix[getDayNum(timeSlot.day)].push(timeSlot);
+      const { day } = getSerializedTimeInfoFromSlot(timeSlot);
+      sortedMatrix[getDayNum(day)].push(timeSlot);
     });
   });
   return sortedMatrix;
