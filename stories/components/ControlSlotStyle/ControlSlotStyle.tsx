@@ -108,8 +108,6 @@ function ControlSlotStyle({
   const [selectedDates] = useState<Date[]>(sampleDates);
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<TimeSlot[]>([]);
 
-  console.log(isSlotWidthGrow);
-
   return (
     <DraggableSelector
       endTime={'15:00'}
