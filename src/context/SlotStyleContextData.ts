@@ -1,4 +1,5 @@
 import React from 'react';
+import { DEFAULT_IS_SLOT_WIDTH_GROW } from '../constant/options';
 
 export type SlotStyleContextType = {
   slotRowGap?: string;
@@ -33,7 +34,7 @@ export const initialData = {
   slotHeight: '',
   slotWidth: '',
   slotMinWidth: '',
-  isSlotWidthGrow: true,
+  isSlotWidthGrow: DEFAULT_IS_SLOT_WIDTH_GROW,
   slotBorderStyle: '',
   hoveredSlotColor: '',
   selectedSlotColor: '',

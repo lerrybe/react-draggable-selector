@@ -1,25 +1,22 @@
 import 'dayjs/locale/ko';
 import dayjs from 'dayjs';
 import * as S from './styles';
-import { type TimeSlot } from '../../../types/time';
+import { getSerializedTimeInfoFromSlot } from '../../../utils/time';
 import { DEFAULT_LANG, DEFAULT_TIME_FORMAT } from '../../../constant/options';
 
-import { getSerializedTimeInfoFromSlot } from '../../../utils/time';
+import { useDataContext } from '../../../context/DataContext';
 import { useSelectorInfoContext } from '../../../context/SelectorInfoContext';
 import { useRowLabelStyleContext } from '../../../context/RowLabelStyleContext';
-
-interface RowLabelProps {
-  timeSlots?: TimeSlot[];
-}
 
 /*
   "RowLabel" component is used to display the "times" of the row.
 */
-export default function RowLabel({ timeSlots }: RowLabelProps) {
+export default function RowLabel() {
   const rowValue = useRowLabelStyleContext();
+  const { timeSlotMatrix } = useDataContext();
   const { language, timeFormat } = useSelectorInfoContext();
 
-  if (!timeSlots || timeSlots?.length === 0) {
+  if (!timeSlotMatrix || timeSlotMatrix?.length === 0 || timeSlotMatrix[0]?.length === 0) {
     return <></>;
   }
 
@@ -40,7 +37,7 @@ export default function RowLabel({ timeSlots }: RowLabelProps) {
       $rowLabelsFontWeight={rowValue?.rowLabelsFontWeight}
       $rowLabelsBorderRadius={rowValue?.rowLabelsBorderRadius}
     >
-      {timeSlots?.map(slot => {
+      {timeSlotMatrix[0]?.map(slot => {
         const { date, startTime, endTime } = getSerializedTimeInfoFromSlot(slot);
         const dayjsDate = dayjs(`${date} ${startTime}:${endTime}`);
         return (

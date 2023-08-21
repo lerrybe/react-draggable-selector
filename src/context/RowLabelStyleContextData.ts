@@ -1,4 +1,5 @@
 import React from 'react';
+import { DEFAULT_ROW_LABELS_FONT_WEIGHT } from '../constant/options';
 
 export type RowLabelStyleContextType = {
   gap?: string;
@@ -37,7 +38,7 @@ export const initialData = {
   rowLabelsMargin: '',
   rowLabelsBgColor: '',
   rowLabelsFontSize: '',
-  rowLabelsFontWeight: 0,
+  rowLabelsFontWeight: DEFAULT_ROW_LABELS_FONT_WEIGHT,
   rowLabelsFontFamily: '',
   rowLabelsBorderRadius: '',
   setGap: () => {},

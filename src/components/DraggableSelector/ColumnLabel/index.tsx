@@ -1,8 +1,11 @@
 import dayjs from 'dayjs';
 import * as S from './styles';
-import { useSelectorInfoContext } from '../../../context/SelectorInfoContext';
 import { getIterableDays, getUniqueDateKey } from '../../../utils/date';
+
+import { useDataContext } from '../../../context/DataContext';
+import { useSelectorInfoContext } from '../../../context/SelectorInfoContext';
 import { useColumnLabelStyleContext } from '../../../context/ColumnLabelStyleContext';
+
 import {
   DEFAULT_LANG,
   DEFAULT_MODE,
@@ -11,15 +14,12 @@ import {
   DEFAULT_IS_SLOT_WIDTH_GROW,
 } from '../../../constant/options';
 
-interface ColumnLabelProps {
-  dates?: Date[];
-}
-
 /*
   "ColumnLabel" component is used to display the "date or day" of the column.
 */
-export default function ColumnLabel({ dates }: ColumnLabelProps) {
+export default function ColumnLabel() {
   const colValue = useColumnLabelStyleContext();
+  const { selectedDates: dates } = useDataContext();
   const { mode, language, dateFormat } = useSelectorInfoContext();
 
   if (!dates || dates?.length === 0) {

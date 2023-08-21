@@ -283,17 +283,13 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
             {!props?.isRowLabelInvisible && (
               <S.LeftContainer $rowLabelWidth={props?.rowLabelWidth}>
                 {!props?.isColumnLabelInvisible && <S.EmptySlot height={props?.columnLabelHeight} />}
-                <RowLabel timeSlots={timeSlotMatrix[0]} />
+                <RowLabel />
               </S.LeftContainer>
             )}
 
             <S.RightContainer>
-              {!props?.isColumnLabelInvisible && <ColumnLabel dates={selectedDates} />}
+              {!props?.isColumnLabelInvisible && <ColumnLabel />}
               <TimeSlots
-                timeSlotMatrix={timeSlotMatrix}
-                mockTimeSlotMatrix={mockTimeSlotMatrix}
-                timeSlotMatrixByDay={timeSlotMatrixByDay}
-                cachedSelectedTimeSlots={dragEventStates.cachedSelectedTimeSlots}
                 handleMouseUp={handleMouseUp}
                 handleMouseDown={handleMouseDown}
                 handleMouseEnter={handleMouseEnter}

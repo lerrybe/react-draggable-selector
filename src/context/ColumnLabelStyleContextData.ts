@@ -1,4 +1,5 @@
 import React from 'react';
+import { DEFAULT_IS_SLOT_WIDTH_GROW } from '../constant/options';
 
 export type ColumnLabelStyleContextType = {
   gap?: string;
@@ -37,7 +38,7 @@ export const initialData = {
   gap: '',
   columnWidth: '',
   columnMinWidth: '',
-  isColumnWidthGrow: true,
+  isColumnWidthGrow: DEFAULT_IS_SLOT_WIDTH_GROW,
   columnLabelHeight: '',
   columnLabelBgColor: '',
   columnLabelPadding: '',

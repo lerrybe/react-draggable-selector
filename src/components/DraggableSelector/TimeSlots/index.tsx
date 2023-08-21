@@ -3,32 +3,30 @@ import { useMemo } from 'react';
 import * as S from './styles';
 import { getDayNum } from '../../../utils/date';
 import { type TimeSlot } from '../../../types/time';
+import { useDataContext } from '../../../context/DataContext';
 import { useSlotStyleContext } from '../../../context/SlotStyleContext';
 import { useSelectorInfoContext } from '../../../context/SelectorInfoContext';
 import { areTimeSlotsEqual, getSerializedTimeInfoFromSlot } from '../../../utils/time';
 import { DEFAULT_IS_SLOT_WIDTH_GROW, DEFAULT_MODE, DEFAULT_SLOT_WIDTH } from '../../../constant/options';
 
 interface TimeSlotsProps {
-  timeSlotMatrix?: TimeSlot[][];
-  mockTimeSlotMatrix?: TimeSlot[][];
-  timeSlotMatrixByDay?: TimeSlot[][];
-  cachedSelectedTimeSlots?: TimeSlot[];
   handleMouseUp: (timeSlot: TimeSlot) => void;
   handleMouseDown: (timeSlot: TimeSlot) => void;
   handleMouseEnter: (timeSlot: TimeSlot) => void;
 }
 
-export default function TimeSlots({
-  timeSlotMatrix,
-  mockTimeSlotMatrix,
-  timeSlotMatrixByDay,
-  cachedSelectedTimeSlots,
-  handleMouseUp,
-  handleMouseDown,
-  handleMouseEnter,
-}: TimeSlotsProps) {
+/*
+  "TimeSlots" component is used to display the every "slots" of the table.
+*/
+export default function TimeSlots({ handleMouseUp, handleMouseDown, handleMouseEnter }: TimeSlotsProps) {
   const slotValue = useSlotStyleContext();
   const { mode } = useSelectorInfoContext();
+  const {
+    timeSlotMatrix,
+    mockTimeSlotMatrix,
+    timeSlotMatrixByDay,
+    dragEventStates: { cachedSelectedTimeSlots },
+  } = useDataContext();
 
   const matrix = useMemo(() => {
     return (mode || DEFAULT_MODE) === 'day' ? mockTimeSlotMatrix : timeSlotMatrix;
@@ -71,7 +69,6 @@ export default function TimeSlots({
                     ? timeSlotMatrixByDay[getDayNum(getSerializedTimeInfoFromSlot(targetSlot).day)]?.length === 0
                     : false
                 }
-                $width={slotValue?.slotWidth || DEFAULT_SLOT_WIDTH}
                 $height={slotValue?.slotHeight}
                 $minWidth={slotValue?.slotMinWidth}
                 $slotBorderStyle={slotValue?.slotBorderStyle}
@@ -80,6 +77,7 @@ export default function TimeSlots({
                 $defaultSlotColor={slotValue?.defaultSlotColor}
                 $selectedSlotColor={slotValue?.selectedSlotColor}
                 $disabledSlotColor={slotValue?.disabledSlotColor}
+                $width={slotValue?.slotWidth || DEFAULT_SLOT_WIDTH}
                 $isSlotWidthGrow={slotValue?.isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
