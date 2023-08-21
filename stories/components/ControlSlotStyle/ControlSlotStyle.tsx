@@ -3,30 +3,40 @@ import { TimeSlot } from '../../types';
 import { sampleDates } from '../../data/options';
 import { DraggableSelector } from '../../../src/index';
 import {
-  DEFAULT_COLUMN_GAP,
-  DEFAULT_DISABLED_SLOT_BG_COLOR,
-  DEFAULT_HOVERED_SLOT_BG_COLOR,
   DEFAULT_ROW_GAP,
-  DEFAULT_SELECTED_SLOT_BG_COLOR,
-  DEFAULT_SLOT_BG_COLOR,
-  DEFAULT_SLOT_BORDER_RADIUS,
-  DEFAULT_SLOT_BORDER_STYLE,
+  DEFAULT_COLUMN_GAP,
+  DEFAULT_SLOT_WIDTH,
   DEFAULT_SLOT_HEIGHT,
+  DEFAULT_SLOT_BG_COLOR,
   DEFAULT_SLOT_MIN_WIDTH,
+  DEFAULT_SLOT_BORDER_STYLE,
+  DEFAULT_SLOT_BORDER_RADIUS,
+  DEFAULT_IS_SLOT_WIDTH_GROW,
+  DEFAULT_HOVERED_SLOT_BG_COLOR,
+  DEFAULT_DISABLED_SLOT_BG_COLOR,
+  DEFAULT_SELECTED_SLOT_BG_COLOR,
 } from '../../../src/constant/options';
 
 function ControlSlotStyle({
   slotRowGap = DEFAULT_ROW_GAP,
+  slotWidth = DEFAULT_SLOT_WIDTH,
+  slotHeight = DEFAULT_SLOT_HEIGHT,
   slotColumnGap = DEFAULT_COLUMN_GAP,
   slotMinWidth = DEFAULT_SLOT_MIN_WIDTH,
-  slotHeight = DEFAULT_SLOT_HEIGHT,
   defaultSlotColor = DEFAULT_SLOT_BG_COLOR,
-  selectedSlotColor = DEFAULT_SELECTED_SLOT_BG_COLOR,
+  slotBorderStyle = DEFAULT_SLOT_BORDER_STYLE,
+  isSlotWidthGrow = DEFAULT_IS_SLOT_WIDTH_GROW,
+  slotBorderRadius = DEFAULT_SLOT_BORDER_RADIUS,
   hoveredSlotColor = DEFAULT_HOVERED_SLOT_BG_COLOR,
   disabledSlotColor = DEFAULT_DISABLED_SLOT_BG_COLOR,
-  slotBorderStyle = DEFAULT_SLOT_BORDER_STYLE,
-  slotBorderRadius = DEFAULT_SLOT_BORDER_RADIUS,
+  selectedSlotColor = DEFAULT_SELECTED_SLOT_BG_COLOR,
 }: {
+  /*
+   * The width of each slot.
+   * Assign the value in string, e.g. `30px`, `1rem`, `1em`.
+   * if `isSlotWidthGrow` is true, this value will be ignored.
+   */
+  slotWidth?: string;
   /**
    * The height of each slot.
    * Assign the value in string, e.g. `30px`, `1rem`, `1em`.
@@ -77,6 +87,11 @@ function ControlSlotStyle({
    * Assign the value in string, e.g. `10px`, `1rem`, `1em`.
    */
   slotBorderRadius?: string;
+  /*
+   * Whether the width of each slot is growable.
+   * If true, the width of each slot will be growable to fit the width of the container.
+   */
+  isSlotWidthGrow?: boolean;
 }) {
   const [selectedDates] = useState<Date[]>(sampleDates);
   const [selectedTimeSlots, setSelectedTimeSlots] = useState<TimeSlot[]>([]);
@@ -88,16 +103,18 @@ function ControlSlotStyle({
       dates={selectedDates}
       selectedTimeSlots={selectedTimeSlots}
       setSelectedTimeSlots={setSelectedTimeSlots}
-      slotRowGap={slotRowGap}
-      slotColumnGap={slotColumnGap}
-      slotMinWidth={slotMinWidth}
+      slotWidth={slotWidth}
       slotHeight={slotHeight}
-      defaultSlotColor={defaultSlotColor}
-      selectedSlotColor={selectedSlotColor}
-      hoveredSlotColor={hoveredSlotColor}
-      disabledSlotColor={disabledSlotColor}
+      slotRowGap={slotRowGap}
+      slotMinWidth={slotMinWidth}
+      slotColumnGap={slotColumnGap}
+      isSlotWidthGrow={isSlotWidthGrow}
       slotBorderStyle={slotBorderStyle}
       slotBorderRadius={slotBorderRadius}
+      hoveredSlotColor={hoveredSlotColor}
+      defaultSlotColor={defaultSlotColor}
+      selectedSlotColor={selectedSlotColor}
+      disabledSlotColor={disabledSlotColor}
     />
   );
 }
