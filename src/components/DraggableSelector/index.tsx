@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import * as S from './styles';
 import '../../styles/global.css';
 
@@ -7,12 +7,14 @@ import TimeSlots from './TimeSlots';
 import ColumnLabel from './ColumnLabel';
 
 import { sampleDates } from '../../data/date';
+import { Selection } from '../../types/event';
 import { type TimeSlot } from '../../types/time';
-import { type DragEventStates, Selection } from '../../types/event';
 import { DraggableSelectorProps } from '../../types/draggableSelector';
 import { DEFAULT_MODE, DEFAULT_TIMEUNIT } from '../../constant/options';
 
+import { useDataContext } from '../../context/DataContext';
 import { useSlotStyleContext } from '../../context/SlotStyleContext';
+import { useSelectorInfoContext } from '../../context/SelectorInfoContext';
 import { useRowLabelStyleContext } from '../../context/RowLabelStyleContext';
 import { useColumnLabelStyleContext } from '../../context/ColumnLabelStyleContext';
 import { getTimeSlotMatrixByDay, removeDuplicatesAndSortByDate } from '../../utils/date';
@@ -24,20 +26,20 @@ import {
 } from '../../utils/time';
 
 const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
-  const { dates, startTime, endTime, mode, timeUnit, dateFormat, language, selectedTimeSlots, setSelectedTimeSlots } =
-    props;
+  const { dates, startTime, endTime, mode, timeUnit, selectedTimeSlots, setSelectedTimeSlots } = props;
 
-  /* ----- STATES ----- */
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
-  const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
-  const [dragEventStates, setDragEventStates] = useState<DragEventStates>({
-    selectionType: null,
-    startedTimeSlot: null,
-    cachedSelectedTimeSlots: [...selectedTimeSlots],
-  });
-  const [mockTimeSlotMatrix, setMockTimeSlotMatrix] = useState<TimeSlot[][]>([]);
-  const [timeSlotMatrixByDay, setTimeSlotMatrixByDay] = useState<TimeSlot[][]>([]);
-  /* ----- STATES ----- */
+  const {
+    selectedDates,
+    setSelectedDates,
+    dragEventStates,
+    setDragEventStates,
+    timeSlotMatrix,
+    setTimeSlotMatrix,
+    mockTimeSlotMatrix,
+    setMockTimeSlotMatrix,
+    timeSlotMatrixByDay,
+    setTimeSlotMatrixByDay,
+  } = useDataContext();
 
   /* ----- FUNC related with SELECTION & UPDATING ----- */
   const startSelection = useCallback(
@@ -203,6 +205,13 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
   }, [updateSlots]);
 
   // SET CONTEXT
+  const dataValue = useSelectorInfoContext();
+  useEffect(() => {
+    dataValue.setMode(props?.mode);
+    dataValue.setLanguage(props?.language);
+    dataValue.setDateFormat(props?.dateFormat);
+    dataValue.setTimeFormat(props?.timeFormat);
+  }, [props, dataValue]);
   const rowValue = useRowLabelStyleContext()!;
   useEffect(() => {
     rowValue.setGap(props?.slotRowGap);
@@ -274,16 +283,13 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
             {!props?.isRowLabelInvisible && (
               <S.LeftContainer $rowLabelWidth={props?.rowLabelWidth}>
                 {!props?.isColumnLabelInvisible && <S.EmptySlot height={props?.columnLabelHeight} />}
-                <RowLabel language={props?.language} timeFormat={props?.timeFormat} timeSlots={timeSlotMatrix[0]} />
+                <RowLabel timeSlots={timeSlotMatrix[0]} />
               </S.LeftContainer>
             )}
 
             <S.RightContainer>
-              {!props?.isColumnLabelInvisible && (
-                <ColumnLabel mode={mode} language={language} dates={selectedDates} dateFormat={dateFormat} />
-              )}
+              {!props?.isColumnLabelInvisible && <ColumnLabel dates={selectedDates} />}
               <TimeSlots
-                mode={props?.mode}
                 timeSlotMatrix={timeSlotMatrix}
                 mockTimeSlotMatrix={mockTimeSlotMatrix}
                 timeSlotMatrixByDay={timeSlotMatrixByDay}

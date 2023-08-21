@@ -4,11 +4,11 @@ import * as S from './styles';
 import { getDayNum } from '../../../utils/date';
 import { type TimeSlot } from '../../../types/time';
 import { useSlotStyleContext } from '../../../context/SlotStyleContext';
+import { useSelectorInfoContext } from '../../../context/SelectorInfoContext';
 import { areTimeSlotsEqual, getSerializedTimeInfoFromSlot } from '../../../utils/time';
 import { DEFAULT_IS_SLOT_WIDTH_GROW, DEFAULT_MODE, DEFAULT_SLOT_WIDTH } from '../../../constant/options';
 
 interface TimeSlotsProps {
-  mode?: 'date' | 'day';
   timeSlotMatrix?: TimeSlot[][];
   mockTimeSlotMatrix?: TimeSlot[][];
   timeSlotMatrixByDay?: TimeSlot[][];
@@ -19,7 +19,6 @@ interface TimeSlotsProps {
 }
 
 export default function TimeSlots({
-  mode,
   timeSlotMatrix,
   mockTimeSlotMatrix,
   timeSlotMatrixByDay,
@@ -28,7 +27,8 @@ export default function TimeSlots({
   handleMouseDown,
   handleMouseEnter,
 }: TimeSlotsProps) {
-  const value = useSlotStyleContext();
+  const slotValue = useSlotStyleContext();
+  const { mode } = useSelectorInfoContext();
 
   const matrix = useMemo(() => {
     return (mode || DEFAULT_MODE) === 'day' ? mockTimeSlotMatrix : timeSlotMatrix;
@@ -47,9 +47,9 @@ export default function TimeSlots({
     <S.ItemsGrid
       $rows={gridTemplateRows}
       $cols={gridTemplateColumns}
-      $rowGap={value?.slotRowGap}
-      $columnGap={value?.slotColumnGap}
-      $isSlotWidthGrow={value?.isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
+      $rowGap={slotValue?.slotRowGap}
+      $columnGap={slotValue?.slotColumnGap}
+      $isSlotWidthGrow={slotValue?.isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
       onDragStart={() => false}
     >
       {matrix[0]?.map(
@@ -71,16 +71,16 @@ export default function TimeSlots({
                     ? timeSlotMatrixByDay[getDayNum(getSerializedTimeInfoFromSlot(targetSlot).day)]?.length === 0
                     : false
                 }
-                $width={value?.slotWidth || DEFAULT_SLOT_WIDTH}
-                $height={value?.slotHeight}
-                $minWidth={value?.slotMinWidth}
-                $slotBorderStyle={value?.slotBorderStyle}
-                $slotBorderRadius={value?.slotBorderRadius}
-                $hoveredSlotColor={value?.hoveredSlotColor}
-                $defaultSlotColor={value?.defaultSlotColor}
-                $selectedSlotColor={value?.selectedSlotColor}
-                $disabledSlotColor={value?.disabledSlotColor}
-                $isSlotWidthGrow={value?.isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
+                $width={slotValue?.slotWidth || DEFAULT_SLOT_WIDTH}
+                $height={slotValue?.slotHeight}
+                $minWidth={slotValue?.slotMinWidth}
+                $slotBorderStyle={slotValue?.slotBorderStyle}
+                $slotBorderRadius={slotValue?.slotBorderRadius}
+                $hoveredSlotColor={slotValue?.hoveredSlotColor}
+                $defaultSlotColor={slotValue?.defaultSlotColor}
+                $selectedSlotColor={slotValue?.selectedSlotColor}
+                $disabledSlotColor={slotValue?.disabledSlotColor}
+                $isSlotWidthGrow={slotValue?.isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
                 }}
