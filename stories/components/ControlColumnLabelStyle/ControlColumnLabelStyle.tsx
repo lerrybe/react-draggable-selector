@@ -1,34 +1,35 @@
 import { useState } from 'react';
 import { TimeSlot } from '../../types';
-import {
-  DEFAULT_COLUMN_LABEL_BG_COLOR,
-  DEFAULT_COLUMN_LABEL_BORDER_RADIUS,
-  DEFAULT_COLUMN_LABEL_PADDING,
-  DEFAULT_COLUMN_LABELS_BG_COLOR,
-  DEFAULT_COLUMN_LABELS_BORDER_RADIUS,
-  DEFAULT_COLUMN_LABELS_COLOR,
-  DEFAULT_COLUMN_LABELS_FONT_FAMILY,
-  DEFAULT_COLUMN_LABELS_FONT_SIZE,
-  DEFAULT_COLUMN_LABELS_FONT_WEIGHT,
-  DEFAULT_COLUMN_LABELS_HEIGHT,
-  DEFAULT_COLUMN_LABELS_MARGIN,
-} from '../../../src/constant/options';
 import { sampleDates } from '../../data/options';
 import { DraggableSelector } from '../../../src/index';
 
+import {
+  DEFAULT_COLUMN_LABELS_COLOR,
+  DEFAULT_COLUMN_LABEL_PADDING,
+  DEFAULT_COLUMN_LABELS_HEIGHT,
+  DEFAULT_COLUMN_LABELS_MARGIN,
+  DEFAULT_COLUMN_LABEL_BG_COLOR,
+  DEFAULT_COLUMN_LABELS_BG_COLOR,
+  DEFAULT_COLUMN_LABELS_FONT_SIZE,
+  DEFAULT_COLUMN_LABELS_FONT_WEIGHT,
+  DEFAULT_COLUMN_LABELS_FONT_FAMILY,
+  DEFAULT_COLUMN_LABEL_BORDER_RADIUS,
+  DEFAULT_COLUMN_LABELS_BORDER_RADIUS,
+} from '../../../src/constant/options';
+
 function ControlColumnLabelStyle({
+  isColumnLabelInvisible = false,
   columnLabelsColor = DEFAULT_COLUMN_LABELS_COLOR,
   columnLabelHeight = DEFAULT_COLUMN_LABELS_HEIGHT,
-  columnLabelsBgColor = DEFAULT_COLUMN_LABELS_BG_COLOR,
   columnLabelsMargin = DEFAULT_COLUMN_LABELS_MARGIN,
-  columnLabelsBorderRadius = DEFAULT_COLUMN_LABELS_BORDER_RADIUS,
+  columnLabelPadding = DEFAULT_COLUMN_LABEL_PADDING,
+  columnLabelBgColor = DEFAULT_COLUMN_LABEL_BG_COLOR,
+  columnLabelsBgColor = DEFAULT_COLUMN_LABELS_BG_COLOR,
   columnLabelsFontSize = DEFAULT_COLUMN_LABELS_FONT_SIZE,
   columnLabelsFontWeight = DEFAULT_COLUMN_LABELS_FONT_WEIGHT,
   columnLabelsFontFamily = DEFAULT_COLUMN_LABELS_FONT_FAMILY,
-  columnLabelPadding = DEFAULT_COLUMN_LABEL_PADDING,
   columnLabelBorderRadius = DEFAULT_COLUMN_LABEL_BORDER_RADIUS,
-  columnLabelBgColor = DEFAULT_COLUMN_LABEL_BG_COLOR,
-  isColumnLabelInvisible = false,
+  columnLabelsBorderRadius = DEFAULT_COLUMN_LABELS_BORDER_RADIUS,
 }: {
   /**
    * Set the height of the (date/day Label) column label .
@@ -99,18 +100,18 @@ function ControlColumnLabelStyle({
       dates={selectedDates}
       selectedTimeSlots={selectedTimeSlots}
       setSelectedTimeSlots={setSelectedTimeSlots}
+      columnLabelsColor={columnLabelsColor}
       columnLabelHeight={columnLabelHeight}
       columnLabelBgColor={columnLabelBgColor}
       columnLabelPadding={columnLabelPadding}
-      columnLabelBorderRadius={columnLabelBorderRadius}
-      columnLabelsColor={columnLabelsColor}
       columnLabelsMargin={columnLabelsMargin}
       columnLabelsBgColor={columnLabelsBgColor}
       columnLabelsFontSize={columnLabelsFontSize}
+      isColumnLabelInvisible={isColumnLabelInvisible}
       columnLabelsFontWeight={columnLabelsFontWeight}
       columnLabelsFontFamily={columnLabelsFontFamily}
+      columnLabelBorderRadius={columnLabelBorderRadius}
       columnLabelsBorderRadius={columnLabelsBorderRadius}
-      isColumnLabelInvisible={isColumnLabelInvisible}
     />
   );
 }

@@ -13,8 +13,8 @@ function Sample({
   dateFormat,
   timeFormat,
   slotHeight,
-  slotMinWidth,
   slotRowGap,
+  slotMinWidth,
   slotColumnGap,
   slotBorderStyle,
   slotBorderRadius,
@@ -132,10 +132,7 @@ function Sample({
           setEndTime={setEndTime}
           setStartTime={setStartTime}
         />
-        <Calendar
-          selectedDates={selectedDates}
-          setSelectedDates={setSelectedDates}
-        />
+        <Calendar selectedDates={selectedDates} setSelectedDates={setSelectedDates} />
       </ControlContainer>
     </OuterContainer>
   );

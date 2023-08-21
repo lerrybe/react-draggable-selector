@@ -3,32 +3,32 @@ import { TimeSlot } from '../../types';
 import { sampleDates } from '../../data/options';
 import { DraggableSelector } from '../../../src/index';
 import {
-  DEFAULT_ROW_LABEL_BG_COLOR,
-  DEFAULT_ROW_LABEL_BORDER_RADIUS,
-  DEFAULT_ROW_LABEL_PADDING,
   DEFAULT_ROW_LABEL_WIDTH,
-  DEFAULT_ROW_LABELS_BG_COLOR,
-  DEFAULT_ROW_LABELS_BORDER_RADIUS,
   DEFAULT_ROW_LABELS_COLOR,
-  DEFAULT_ROW_LABELS_FONT_FAMILY,
+  DEFAULT_ROW_LABEL_PADDING,
+  DEFAULT_ROW_LABELS_MARGIN,
+  DEFAULT_ROW_LABEL_BG_COLOR,
+  DEFAULT_ROW_LABELS_BG_COLOR,
   DEFAULT_ROW_LABELS_FONT_SIZE,
   DEFAULT_ROW_LABELS_FONT_WEIGHT,
-  DEFAULT_ROW_LABELS_MARGIN,
+  DEFAULT_ROW_LABELS_FONT_FAMILY,
+  DEFAULT_ROW_LABEL_BORDER_RADIUS,
+  DEFAULT_ROW_LABELS_BORDER_RADIUS,
 } from '../../../src/constant/options';
 
 function ControlRowLabelStyle({
-  rowLabelsColor = DEFAULT_ROW_LABELS_COLOR,
+  isRowLabelInvisible = false,
   rowLabelWidth = DEFAULT_ROW_LABEL_WIDTH,
-  rowLabelsBgColor = DEFAULT_ROW_LABELS_BG_COLOR,
+  rowLabelsColor = DEFAULT_ROW_LABELS_COLOR,
+  rowLabelPadding = DEFAULT_ROW_LABEL_PADDING,
   rowLabelsMargin = DEFAULT_ROW_LABELS_MARGIN,
-  rowLabelsBorderRadius = DEFAULT_ROW_LABELS_BORDER_RADIUS,
+  rowLabelBgColor = DEFAULT_ROW_LABEL_BG_COLOR,
+  rowLabelsBgColor = DEFAULT_ROW_LABELS_BG_COLOR,
   rowLabelsFontSize = DEFAULT_ROW_LABELS_FONT_SIZE,
   rowLabelsFontWeight = DEFAULT_ROW_LABELS_FONT_WEIGHT,
   rowLabelsFontFamily = DEFAULT_ROW_LABELS_FONT_FAMILY,
-  rowLabelPadding = DEFAULT_ROW_LABEL_PADDING,
   rowLabelBorderRadius = DEFAULT_ROW_LABEL_BORDER_RADIUS,
-  rowLabelBgColor = DEFAULT_ROW_LABEL_BG_COLOR,
-  isRowLabelInvisible = false,
+  rowLabelsBorderRadius = DEFAULT_ROW_LABELS_BORDER_RADIUS,
 }: {
   /**
    * Set the width of the (time Label) row label .
@@ -100,17 +100,17 @@ function ControlRowLabelStyle({
       selectedTimeSlots={selectedTimeSlots}
       setSelectedTimeSlots={setSelectedTimeSlots}
       rowLabelWidth={rowLabelWidth}
+      rowLabelsColor={rowLabelsColor}
       rowLabelBgColor={rowLabelBgColor}
       rowLabelPadding={rowLabelPadding}
-      rowLabelBorderRadius={rowLabelBorderRadius}
-      rowLabelsColor={rowLabelsColor}
       rowLabelsMargin={rowLabelsMargin}
       rowLabelsBgColor={rowLabelsBgColor}
       rowLabelsFontSize={rowLabelsFontSize}
+      isRowLabelInvisible={isRowLabelInvisible}
       rowLabelsFontWeight={rowLabelsFontWeight}
       rowLabelsFontFamily={rowLabelsFontFamily}
+      rowLabelBorderRadius={rowLabelBorderRadius}
       rowLabelsBorderRadius={rowLabelsBorderRadius}
-      isRowLabelInvisible={isRowLabelInvisible}
     />
   );
 }
