@@ -18,12 +18,17 @@ type Story = StoryObj<typeof meta>;
 export const Sample: Story = {
   args: {
     slotRowGap: '3px',
-    slotColumnGap: '3px',
+    slotWidth: '40px',
     slotHeight: '40px',
-    slotBorderRadius: '2px',
-    slotBorderStyle: '1px solid #e1e1e1',
+    slotColumnGap: '3px',
+    slotMinWidth: '40px',
     defaultSlotColor: '#ffffff',
     hoveredSlotColor: '#ffb6a1',
     selectedSlotColor: '#ff6c40',
+    isCursorPointer: false,
+    isSlotWidthGrow: true,
+    slotBorderRadius: '2px',
+    slotBorderStyle: '1px solid #e1e1e1',
+    slotContainerBorderStyle: '1px solid #000',
   },
 };

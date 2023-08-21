@@ -6,13 +6,7 @@ import { useDataContext } from '../../../context/DataContext';
 import { useSelectorInfoContext } from '../../../context/SelectorInfoContext';
 import { useColumnLabelStyleContext } from '../../../context/ColumnLabelStyleContext';
 
-import {
-  DEFAULT_LANG,
-  DEFAULT_MODE,
-  DEFAULT_SLOT_WIDTH,
-  DEFAULT_DATE_FORMAT,
-  DEFAULT_IS_SLOT_WIDTH_GROW,
-} from '../../../constant/options';
+import { DEFAULT_LANG, DEFAULT_MODE, DEFAULT_SLOT_WIDTH, DEFAULT_DATE_FORMAT } from '../../../constant/options';
 
 /*
   "ColumnLabel" component is used to display the "date or day" of the column.
@@ -29,6 +23,7 @@ export default function ColumnLabel() {
   return (
     <S.Items
       $gap={colValue?.gap}
+      $isSlotWidthGrow={colValue?.isColumnWidthGrow}
       $columnLabelsColor={colValue?.columnLabelsColor}
       $columnLabelsMargin={colValue?.columnLabelsMargin}
       $columnLabelsBgColor={colValue?.columnLabelsBgColor}
@@ -36,7 +31,6 @@ export default function ColumnLabel() {
       $columnLabelsFontFamily={colValue?.columnLabelsFontFamily}
       $columnLabelsFontWeight={colValue?.columnLabelsFontWeight}
       $columnLabelsBorderRadius={colValue?.columnLabelsBorderRadius}
-      $isSlotWidthGrow={colValue?.isColumnWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
     >
       {(mode || DEFAULT_MODE) === 'day' ? (
         <>
@@ -46,8 +40,8 @@ export default function ColumnLabel() {
                 key={day}
                 $minWidth={colValue?.columnMinWidth}
                 $height={colValue?.columnLabelHeight}
+                $isSlotWidthGrow={colValue?.isColumnWidthGrow}
                 $width={colValue?.columnWidth || DEFAULT_SLOT_WIDTH}
-                $isSlotWidthGrow={colValue?.isColumnWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
               >
                 <S.Label
                   $padding={colValue?.columnLabelPadding}
@@ -68,8 +62,8 @@ export default function ColumnLabel() {
                 key={getUniqueDateKey(date)}
                 $minWidth={colValue?.columnMinWidth}
                 $height={colValue?.columnLabelHeight}
+                $isSlotWidthGrow={colValue?.isColumnWidthGrow}
                 $width={colValue?.columnWidth || DEFAULT_SLOT_WIDTH}
-                $isSlotWidthGrow={colValue?.isColumnWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
               >
                 <S.Label
                   $padding={colValue?.columnLabelPadding}

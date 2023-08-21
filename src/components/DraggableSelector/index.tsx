@@ -278,7 +278,6 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
         $scrollWidth={props?.scrollWidth}
         $scrollColor={props?.scrollColor}
         $scrollBgColor={props?.scrollBgColor}
-        $isSlotWidthGrow={props?.isSlotWidthGrow}
       >
         {selectedDates && startTime && endTime && (
           <>
@@ -289,7 +288,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
               </S.LeftContainer>
             )}
 
-            <S.RightContainer>
+            <S.RightContainer $isSlotWidthGrow={slotValue?.isSlotWidthGrow}>
               {!props?.isColumnLabelInvisible && <ColumnLabel />}
               <TimeSlots
                 handleMouseUp={handleMouseUp}

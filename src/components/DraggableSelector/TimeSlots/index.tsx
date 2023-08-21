@@ -7,7 +7,7 @@ import { useDataContext } from '../../../context/DataContext';
 import { useSlotStyleContext } from '../../../context/SlotStyleContext';
 import { useSelectorInfoContext } from '../../../context/SelectorInfoContext';
 import { areTimeSlotsEqual, getSerializedTimeInfoFromSlot } from '../../../utils/time';
-import { DEFAULT_IS_SLOT_WIDTH_GROW, DEFAULT_MODE, DEFAULT_SLOT_WIDTH } from '../../../constant/options';
+import { DEFAULT_MODE, DEFAULT_SLOT_WIDTH } from '../../../constant/options';
 
 interface TimeSlotsProps {
   handleMouseUp: (timeSlot: TimeSlot) => void;
@@ -47,8 +47,8 @@ export default function TimeSlots({ handleMouseUp, handleMouseDown, handleMouseE
       $cols={gridTemplateColumns}
       $rowGap={slotValue?.slotRowGap}
       $columnGap={slotValue?.slotColumnGap}
+      $isSlotWidthGrow={slotValue?.isSlotWidthGrow}
       $slotContainerBorderStyle={slotValue?.slotContainerBorderStyle}
-      $isSlotWidthGrow={slotValue?.isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
       onDragStart={() => false}
     >
       {matrix[0]?.map(
@@ -72,6 +72,7 @@ export default function TimeSlots({ handleMouseUp, handleMouseDown, handleMouseE
                 }
                 $height={slotValue?.slotHeight}
                 $minWidth={slotValue?.slotMinWidth}
+                $isSlotWidthGrow={slotValue?.isSlotWidthGrow}
                 $slotBorderStyle={slotValue?.slotBorderStyle}
                 $isCursorPointer={slotValue?.isCursorPointer}
                 $slotBorderRadius={slotValue?.slotBorderRadius}
@@ -80,7 +81,6 @@ export default function TimeSlots({ handleMouseUp, handleMouseDown, handleMouseE
                 $selectedSlotColor={slotValue?.selectedSlotColor}
                 $disabledSlotColor={slotValue?.disabledSlotColor}
                 $width={slotValue?.slotWidth || DEFAULT_SLOT_WIDTH}
-                $isSlotWidthGrow={slotValue?.isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
                 onMouseUp={() => {
                   handleMouseUp(targetSlot);
                 }}

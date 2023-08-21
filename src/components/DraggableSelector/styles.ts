@@ -27,7 +27,6 @@ interface ContainerProps {
   $scrollWidth?: string;
   $scrollColor?: string;
   $scrollBgColor?: string;
-  $isSlotWidthGrow?: boolean;
 }
 export const Container = styled.div<ContainerProps>(
   ({
@@ -42,19 +41,18 @@ export const Container = styled.div<ContainerProps>(
     $scrollWidth,
     $scrollColor,
     $scrollBgColor,
-    $isSlotWidthGrow,
   }) => `  
   display: flex;
   overflow: auto;
   margin: ${$margin || DEFAULT_MARGIN};
   padding: ${$padding || DEFAULT_PADDING};
 
+  width: ${$width || DEFAULT_WIDTH};
   height: ${$height || DEFAULT_HEIGHT};
   min-width: ${$minWidth || DEFAULT_MIN_WIDTH};
   max-width: ${$maxWidth || DEFAULT_MAX_WIDTH};
   min-height: ${$minHeight || DEFAULT_MIN_HEIGHT};
   max-height: ${$maxHeight || DEFAULT_MAX_HEIGHT};
-  width: ${$isSlotWidthGrow ? 'auto' : $width || DEFAULT_WIDTH};
   
   &::-webkit-scrollbar {
     width: ${$scrollWidth || DEFAULT_SCROLL_WIDTH};  /* WIDTH, HEIGHT */
@@ -85,14 +83,14 @@ interface RightContainerProps {
   $scrollWidth?: string;
   $scrollColor?: string;
   $scrollBgColor?: string;
+  $isSlotWidthGrow?: boolean;
 }
 export const RightContainer = styled.div<RightContainerProps>(
-  ({ $scrollWidth, $scrollColor, $scrollBgColor }) => `
-  width: auto;
-  flex-grow: 1;
+  ({ $scrollWidth, $scrollColor, $scrollBgColor, $isSlotWidthGrow }) => `
   overflow-x: auto;
   height: fit-content;
   padding-bottom: 5px;
+  width: ${$isSlotWidthGrow ? '100%' : 'auto'};
   
   &::-webkit-scrollbar {
     width: ${$scrollWidth || DEFAULT_SCROLL_WIDTH};  /* WIDTH, HEIGHT */

@@ -140,20 +140,22 @@ export default App;
 
 #### **3.2.3. Control slot (cell) style**
 
-| Name (Prop)       | Type   | Description                                                                                                                               | Default value | Required |
-|-------------------|--------|-------------------------------------------------------------------------------------------------------------------------------------------|---------------|----------|
-| slotRowGap        | string | The row-gap between each slot. Assign the value in string, e.g. `2px`, `1rem`, `1em`.                                                     | '3px'         |          | 
-| slotColumnGap     | string | The column-gap between each slot. Assign the value in string, e.g. `2px`, `1rem`, `1em`.                                                  | '3px'         |          |
-| slotWidth         | string | The width of each slot. Assign the value in string, e.g. `30px`, `1rem`, `1em`. If `isSlotWidthGrow` is true, this value will be ignored. | '36px'        |          |
-| slotHeight        | string | The height of each slot. Assign the value in string, e.g. `30px`, `1rem`, `1em`.                                                          | '30px'        |          |
-| slotBorderRadius  | string | The border radius of each slot. Assign the value in string, e.g. `10px`, `1rem`, `1em`.                                                   | '2px'         |          |
-| slotBorderStyle   | string | The border style of each slot. Assign the value in string, e.g. `1px solid #000`, `2px dashed #fff`.                                      | 'none'        |          |
-| defaultSlotColor  | string | The color of each slot. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`.                                                       | '#f1f1f1'     |          |
-| hoveredSlotColor  | string | The color of each slot when it is hovered. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`.                                    | '#cbcbcb'     |          |
-| selectedSlotColor | string | The color of each slot when it is selected. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`.                                   | '#3f3f3f'     |          |
-| slotMinWidth      | string | The minimum width of each slot. Assign the value in string, e.g. `40px`, `1rem`, `1em`.                                                   | '40px'        |          |
-| disabledSlotColor | string | The color of each slot when it is disabled. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`.                                   | '#939393'     |          |
-| isSlotWidthGrow   | string | Whether the width of each slot is growable. If true, the width of each slot will be growable to fit the width of the container.           | true          |          |
+| Name (Prop)              | Type    | Description                                                                                                                               | Default value | Required |
+|--------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------|---------------|----------|
+| slotRowGap               | string  | The row-gap between each slot. Assign the value in string, e.g. `2px`, `1rem`, `1em`.                                                     | '3px'         |          | 
+| slotColumnGap            | string  | The column-gap between each slot. Assign the value in string, e.g. `2px`, `1rem`, `1em`.                                                  | '3px'         |          |
+| slotWidth                | string  | The width of each slot. Assign the value in string, e.g. `30px`, `1rem`, `1em`. If `isSlotWidthGrow` is true, this value will be ignored. | '36px'        |          |
+| slotHeight               | string  | The height of each slot. Assign the value in string, e.g. `30px`, `1rem`, `1em`.                                                          | '30px'        |          |
+| slotBorderRadius         | string  | The border radius of each slot. Assign the value in string, e.g. `10px`, `1rem`, `1em`.                                                   | '2px'         |          |
+| slotBorderStyle          | string  | The border style of each slot. Assign the value in string, e.g. `1px solid #000`, `2px dashed #fff`.                                      | 'none'        |          |
+| defaultSlotColor         | string  | The color of each slot. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`.                                                       | '#f1f1f1'     |          |
+| hoveredSlotColor         | string  | The color of each slot when it is hovered. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`.                                    | '#cbcbcb'     |          |
+| selectedSlotColor        | string  | The color of each slot when it is selected. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`.                                   | '#3f3f3f'     |          |
+| slotMinWidth             | string  | The minimum width of each slot. Assign the value in string, e.g. `40px`, `1rem`, `1em`.                                                   | '40px'        |          |
+| disabledSlotColor        | string  | The color of each slot when it is disabled. Assign the value in string, e.g. `#000`, `#fff`, `#d77373`.                                   | '#939393'     |          |
+| isSlotWidthGrow          | boolean | Whether the width of each slot is growable. If true, the width of each slot will be growable to fit the width of the container.           | true          |          |
+| isCursorPointer          | boolean | Whether the cursor is pointer when hovering on each slot.                                                                                 | false         |          |
+| slotContainerBorderStyle | string  | The border style of the slot container.                                                                                                   | 'none'        |          |
 
 
 #### **3.2.4. Control row label (time) style**

@@ -27,7 +27,8 @@ export const ItemsGrid = styled.ul<ItemsGridProps>(
   box-sizing: border-box;
   grid-template-rows: ${$rows};
   grid-template-columns: ${$cols};
-  width: ${$isSlotWidthGrow ? '100%' : 0};
+  ${$isSlotWidthGrow ? 'flex-grow: 1;' : ''}
+  width: ${$isSlotWidthGrow ? '100%' : 'auto'};
   ${$slotContainerBorderStyle ? `border: ${$slotContainerBorderStyle};` : ''}
   row-gap: ${$rowGap || $rowGap === '0' || $rowGap === '0px' ? $rowGap : DEFAULT_ROW_GAP};
   column-gap: ${$columnGap || $columnGap === '0' || $columnGap === '0px' ? $columnGap : DEFAULT_COLUMN_GAP};
