@@ -9,6 +9,7 @@ function SlotStyleProvider({ children }: { children: React.ReactNode }) {
   const [slotHeight, setSlotHeight] = useState<string | undefined>(initialData?.slotHeight);
   const [slotWidth, setSlotWidth] = useState<string | undefined>(initialData?.slotWidth);
   const [slotMinWidth, setSlotMinWidth] = useState<string | undefined>(initialData?.slotMinWidth);
+  const [isCursorPointer, setIsCursorPointer] = useState<boolean | undefined>(initialData?.isCursorPointer);
   const [isSlotWidthGrow, setIsSlotWidthGrow] = useState<boolean | undefined>(initialData?.isSlotWidthGrow);
   const [slotBorderStyle, setSlotBorderStyle] = useState<string | undefined>(initialData?.slotBorderStyle);
   const [hoveredSlotColor, setHoveredSlotColor] = useState<string | undefined>(initialData?.hoveredSlotColor);
@@ -16,6 +17,9 @@ function SlotStyleProvider({ children }: { children: React.ReactNode }) {
   const [selectedSlotColor, setSelectedSlotColor] = useState<string | undefined>(initialData?.selectedSlotColor);
   const [disabledSlotColor, setDisabledSlotColor] = useState<string | undefined>(initialData?.disabledSlotColor);
   const [slotBorderRadius, setSlotBorderRadius] = useState<string | undefined>(initialData?.slotBorderRadius);
+  const [slotContainerBorderStyle, setSlotContainerBorderStyle] = useState<string | undefined>(
+    initialData?.slotContainerBorderStyle,
+  );
 
   return (
     <SlotStyleContext.Provider
@@ -30,6 +34,8 @@ function SlotStyleProvider({ children }: { children: React.ReactNode }) {
         setSlotWidth,
         slotMinWidth,
         setSlotMinWidth,
+        isCursorPointer,
+        setIsCursorPointer,
         isSlotWidthGrow,
         setIsSlotWidthGrow,
         slotBorderStyle,
@@ -44,6 +50,8 @@ function SlotStyleProvider({ children }: { children: React.ReactNode }) {
         setDisabledSlotColor,
         slotBorderRadius,
         setSlotBorderRadius,
+        slotContainerBorderStyle,
+        setSlotContainerBorderStyle,
       }}
     >
       {children}

@@ -17,6 +17,7 @@ export const DEFAULT_MAX_HEIGHT = '500px';
 export const DEFAULT_SCROLL_WIDTH = '3px';
 export const DEFAULT_SCROLL_COLOR = '#595959';
 export const DEFAULT_SCROLL_BG_COLOR = '#e1e1e1';
+export const DEFAULT_IS_CURSOR_POINTER = false;
 
 /* ABOUT SLOTS */
 export const DEFAULT_ROW_GAP = '3px';
@@ -31,6 +32,7 @@ export const DEFAULT_HOVERED_SLOT_BG_COLOR = '#cbcbcb';
 export const DEFAULT_DISABLED_SLOT_BG_COLOR = '#939393';
 export const DEFAULT_SLOT_BORDER_STYLE = 'none';
 export const DEFAULT_SLOT_BORDER_RADIUS = '2px';
+export const DEFAULT_SLOT_CONTAINER_BORDER_STYLE = 'none';
 
 /* ABOUT COLUMN LABELS */
 export const DEFAULT_COLUMN_LABELS_COLOR = '#7a7a7a';

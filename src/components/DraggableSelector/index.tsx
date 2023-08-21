@@ -252,6 +252,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
     slotValue.setSlotWidth(props?.slotWidth);
     slotValue.setSlotHeight(props?.slotHeight);
     slotValue.setSlotMinWidth(props?.slotMinWidth);
+    slotValue.setIsCursorPointer(props?.isCursorPointer);
     slotValue.setIsSlotWidthGrow(props?.isSlotWidthGrow);
     slotValue.setSlotBorderStyle(props?.slotBorderStyle);
     slotValue.setDefaultSlotColor(props?.defaultSlotColor);
@@ -259,6 +260,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
     slotValue.setHoveredSlotColor(props?.hoveredSlotColor);
     slotValue.setSelectedSlotColor(props?.selectedSlotColor);
     slotValue.setSlotBorderRadius(props?.slotBorderRadius);
+    slotValue.setSlotContainerBorderStyle(props?.slotContainerBorderStyle);
   }, [props, slotValue]);
   /* ----- EFFECTS ----- */
 
@@ -282,7 +284,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
           <>
             {!props?.isRowLabelInvisible && (
               <S.LeftContainer $rowLabelWidth={props?.rowLabelWidth}>
-                {!props?.isColumnLabelInvisible && <S.EmptySlot height={props?.columnLabelHeight} />}
+                {!props?.isColumnLabelInvisible && <S.EmptySlot $height={props?.columnLabelHeight} />}
                 <RowLabel />
               </S.LeftContainer>
             )}

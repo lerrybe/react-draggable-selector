@@ -47,6 +47,7 @@ export default function TimeSlots({ handleMouseUp, handleMouseDown, handleMouseE
       $cols={gridTemplateColumns}
       $rowGap={slotValue?.slotRowGap}
       $columnGap={slotValue?.slotColumnGap}
+      $slotContainerBorderStyle={slotValue?.slotContainerBorderStyle}
       $isSlotWidthGrow={slotValue?.isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
       onDragStart={() => false}
     >
@@ -72,6 +73,7 @@ export default function TimeSlots({ handleMouseUp, handleMouseDown, handleMouseE
                 $height={slotValue?.slotHeight}
                 $minWidth={slotValue?.slotMinWidth}
                 $slotBorderStyle={slotValue?.slotBorderStyle}
+                $isCursorPointer={slotValue?.isCursorPointer}
                 $slotBorderRadius={slotValue?.slotBorderRadius}
                 $hoveredSlotColor={slotValue?.hoveredSlotColor}
                 $defaultSlotColor={slotValue?.defaultSlotColor}

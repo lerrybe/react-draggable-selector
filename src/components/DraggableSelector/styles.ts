@@ -110,15 +110,15 @@ export const RightContainer = styled.div<RightContainerProps>(
 );
 
 interface EmptySlotProps {
-  height?: string;
+  $height?: string;
 }
 export const EmptySlot = styled.li<EmptySlotProps>(
-  ({ height }) => `  
+  ({ $height }) => `  
   display: flex;
   align-items: center;
   justify-content: center;
   
   width: 100%;
-  height: ${height || DEFAULT_COLUMN_LABELS_HEIGHT};
+  height: ${$height || DEFAULT_COLUMN_LABELS_HEIGHT};
 `,
 );

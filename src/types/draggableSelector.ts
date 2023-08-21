@@ -27,6 +27,7 @@ export interface DraggableSelectorProps {
   scrollWidth?: string;
   scrollColor?: string;
   scrollBgColor?: string;
+  isCursorPointer?: boolean;
 
   slotWidth?: string;
   slotHeight?: string;
@@ -40,6 +41,7 @@ export interface DraggableSelectorProps {
   disabledSlotColor?: string;
   slotBorderStyle?: string;
   slotBorderRadius?: string;
+  slotContainerBorderStyle?: string;
 
   rowLabelWidth?: string;
   rowLabelBgColor?: string;
