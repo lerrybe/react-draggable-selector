@@ -72,7 +72,6 @@ export const Item = styled.button<ItemProps>(
   min-width: ${$isSlotWidthGrow ? $minWidth || DEFAULT_SLOT_MIN_WIDTH : $width};  
   
   box-sizing: border-box;
-  ${$isCursorPointer ? 'cursor: pointer;' : ''}
   border: ${$slotBorderStyle || DEFAULT_SLOT_BORDER_STYLE};
   border-radius: ${$slotBorderRadius || DEFAULT_SLOT_BORDER_RADIUS};
   background-color: ${
@@ -82,9 +81,11 @@ export const Item = styled.button<ItemProps>(
     background-color: ${
       $selectDisabled ? DEFAULT_DISABLED_SLOT_BG_COLOR : $hoveredSlotColor || DEFAULT_HOVERED_SLOT_BG_COLOR
     };
+    ${selected ? `background-color: ${$selectedSlotColor || DEFAULT_SELECTED_SLOT_BG_COLOR};` : ''}
   }
   user-drag: none; /* 최신 브라우저 */
   -webkit-user-drag: none; /* 구형 브라우저 */
+  ${$isCursorPointer ? 'cursor: pointer;' : 'cursor: default;'}
   ${$selectDisabled ? 'cursor: not-allowed;' : ''}
   ${$selectDisabled ? `background-color: ${$disabledSlotColor || DEFAULT_DISABLED_SLOT_BG_COLOR};` : ''}
 `,
