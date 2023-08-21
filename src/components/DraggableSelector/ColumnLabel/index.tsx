@@ -1,54 +1,29 @@
 import dayjs from 'dayjs';
 import * as S from './styles';
-import { DEFAULT_DATE_FORMAT } from '../../../constant/options';
 import { getIterableDays, getUniqueDateKey } from '../../../utils/date';
+import { useColumnLabelStyleContext } from '../../../context/ColumnLabelStyleContext';
+import {
+  DEFAULT_DATE_FORMAT,
+  DEFAULT_IS_SLOT_WIDTH_GROW,
+  DEFAULT_LANG,
+  DEFAULT_MODE,
+  DEFAULT_SLOT_WIDTH,
+} from '../../../constant/options';
 
 interface ColumnLabelProps {
+  gap?: string;
   dates?: Date[];
   dateFormat?: string;
-  mode: 'date' | 'day';
-  language: 'en' | 'ko';
-  gap?: string;
-  slotWidth?: string;
-  slotMinWidth?: string;
-  isSlotWidthGrow?: boolean;
-  columnLabelHeight?: string;
-  columnLabelBgColor?: string;
-  columnLabelPadding?: string;
-  columnLabelBorderRadius?: string;
-  columnLabelsColor?: string;
-  columnLabelsMargin?: string;
-  columnLabelsBgColor?: string;
-  columnLabelsFontSize?: string;
-  columnLabelsFontFamily?: string;
-  columnLabelsFontWeight?: number;
-  columnLabelsBorderRadius?: string;
+  mode?: 'date' | 'day';
+  language?: 'en' | 'ko';
 }
 
 /*
   "ColumnLabel" component is used to display the "date or day" of the column.
 */
-export default function ColumnLabel({
-  gap,
-  mode,
-  dates,
-  language,
-  slotWidth,
-  dateFormat,
-  slotMinWidth,
-  isSlotWidthGrow,
-  columnLabelHeight,
-  columnLabelBgColor,
-  columnLabelPadding,
-  columnLabelBorderRadius,
-  columnLabelsColor,
-  columnLabelsMargin,
-  columnLabelsBgColor,
-  columnLabelsFontSize,
-  columnLabelsFontFamily,
-  columnLabelsFontWeight,
-  columnLabelsBorderRadius,
-}: ColumnLabelProps) {
+export default function ColumnLabel({ gap, mode, dates, language, dateFormat }: ColumnLabelProps) {
+  const value = useColumnLabelStyleContext();
+
   if (!dates || dates?.length === 0) {
     return <></>;
   }
@@ -56,30 +31,30 @@ export default function ColumnLabel({
   return (
     <S.Items
       $gap={gap}
-      $isSlotWidthGrow={isSlotWidthGrow}
-      $columnLabelsColor={columnLabelsColor}
-      $columnLabelsMargin={columnLabelsMargin}
-      $columnLabelsBgColor={columnLabelsBgColor}
-      $columnLabelsFontSize={columnLabelsFontSize}
-      $columnLabelsFontFamily={columnLabelsFontFamily}
-      $columnLabelsFontWeight={columnLabelsFontWeight}
-      $columnLabelsBorderRadius={columnLabelsBorderRadius}
+      $columnLabelsColor={value?.columnLabelsColor}
+      $columnLabelsMargin={value?.columnLabelsMargin}
+      $columnLabelsBgColor={value?.columnLabelsBgColor}
+      $columnLabelsFontSize={value?.columnLabelsFontSize}
+      $columnLabelsFontFamily={value?.columnLabelsFontFamily}
+      $columnLabelsFontWeight={value?.columnLabelsFontWeight}
+      $columnLabelsBorderRadius={value?.columnLabelsBorderRadius}
+      $isSlotWidthGrow={value?.isColumnWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
     >
-      {mode === 'day' ? (
+      {(mode || DEFAULT_MODE) === 'day' ? (
         <>
-          {getIterableDays(language)?.map(day => {
+          {getIterableDays(language || DEFAULT_LANG)?.map(day => {
             return (
               <S.Item
                 key={day}
-                $width={slotWidth}
-                $minWidth={slotMinWidth}
-                $height={columnLabelHeight}
-                $isSlotWidthGrow={isSlotWidthGrow}
+                $minWidth={value?.columnMinWidth}
+                $height={value?.columnLabelHeight}
+                $width={value?.columnWidth || DEFAULT_SLOT_WIDTH}
+                $isSlotWidthGrow={value?.isColumnWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
               >
                 <S.Label
-                  $padding={columnLabelPadding}
-                  $columnLabelBgColor={columnLabelBgColor}
-                  $columnLabelBorderRadius={columnLabelBorderRadius}
+                  $padding={value?.columnLabelPadding}
+                  $columnLabelBgColor={value?.columnLabelBgColor}
+                  $columnLabelBorderRadius={value?.columnLabelBorderRadius}
                 >
                   {day}
                 </S.Label>
@@ -92,16 +67,16 @@ export default function ColumnLabel({
           {dates?.map(date => {
             return (
               <S.Item
-                $width={slotWidth}
-                $minWidth={slotMinWidth}
-                $height={columnLabelHeight}
                 key={getUniqueDateKey(date)}
-                $isSlotWidthGrow={isSlotWidthGrow}
+                $minWidth={value?.columnMinWidth}
+                $height={value?.columnLabelHeight}
+                $width={value?.columnWidth || DEFAULT_SLOT_WIDTH}
+                $isSlotWidthGrow={value?.isColumnWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
               >
                 <S.Label
-                  $padding={columnLabelPadding}
-                  $columnLabelBgColor={columnLabelBgColor}
-                  $columnLabelBorderRadius={columnLabelBorderRadius}
+                  $padding={value?.columnLabelPadding}
+                  $columnLabelBgColor={value?.columnLabelBgColor}
+                  $columnLabelBorderRadius={value?.columnLabelBorderRadius}
                 >
                   {dayjs(date).format(dateFormat || DEFAULT_DATE_FORMAT)}
                 </S.Label>

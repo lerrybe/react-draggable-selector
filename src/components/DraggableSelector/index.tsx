@@ -2,9 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import * as S from './styles';
 import '../../styles/global.css';
 
-import { areTimeSlotsEqual, getTimeSlotMatrix, updateCachedSelectedTimeSlots } from '../../utils/time';
-import { getTimeSlotMatrixByDay, removeDuplicatesAndSortByDate } from '../../utils/date';
-
 import RowLabel from './RowLabel';
 import TimeSlots from './TimeSlots';
 import ColumnLabel from './ColumnLabel';
@@ -13,72 +10,18 @@ import { sampleDates } from '../../data/date';
 import { type TimeSlot } from '../../types/time';
 import { type DragEventStates, Selection } from '../../types/event';
 import { DraggableSelectorProps } from '../../types/draggableSelector';
-import {
-  DEFAULT_IS_SLOT_WIDTH_GROW,
-  DEFAULT_LANG,
-  DEFAULT_MODE,
-  DEFAULT_SLOT_WIDTH,
-  DEFAULT_TIMEUNIT,
-} from '../../constant/options';
-import RowLabelStyleProvider, { useRowLabelStyleContext } from '../../context/RowLabelStyleContext';
+import { DEFAULT_MODE, DEFAULT_TIMEUNIT } from '../../constant/options';
+
+import { useSlotStyleContext } from '../../context/SlotStyleContext';
+import { useRowLabelStyleContext } from '../../context/RowLabelStyleContext';
+import { useColumnLabelStyleContext } from '../../context/ColumnLabelStyleContext';
+import { getTimeSlotMatrixByDay, removeDuplicatesAndSortByDate } from '../../utils/date';
+import { areTimeSlotsEqual, getTimeSlotMatrix, updateCachedSelectedTimeSlots } from '../../utils/time';
 
 const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
-  const {
-    dates,
-    endTime,
-    startTime,
-    selectedTimeSlots,
-    setSelectedTimeSlots,
+  const { dates, startTime, endTime, mode, timeUnit, dateFormat, language, selectedTimeSlots, setSelectedTimeSlots } =
+    props;
 
-    mode,
-    language,
-    timeUnit,
-    dateFormat,
-    timeFormat,
-
-    width,
-    height,
-    margin,
-    padding,
-    minWidth,
-    maxWidth,
-    minHeight,
-    maxHeight,
-
-    slotWidth,
-    slotHeight,
-    slotMinWidth,
-    slotRowGap,
-    slotColumnGap,
-    slotBorderStyle,
-    slotBorderRadius,
-    isSlotWidthGrow,
-    defaultSlotColor,
-    hoveredSlotColor,
-    selectedSlotColor,
-    disabledSlotColor,
-
-    rowLabelWidth,
-
-    isRowLabelInvisible,
-
-    columnLabelHeight,
-    columnLabelBgColor,
-    columnLabelPadding,
-    columnLabelBorderRadius,
-    columnLabelsColor,
-    columnLabelsMargin,
-    columnLabelsBgColor,
-    columnLabelsFontSize,
-    columnLabelsFontFamily,
-    columnLabelsFontWeight,
-    columnLabelsBorderRadius,
-    isColumnLabelInvisible,
-
-    scrollWidth,
-    scrollColor,
-    scrollBgColor,
-  } = props;
   /* ----- STATES ----- */
   const [selectedDates, setSelectedDates] = useState<Date[]>([]);
   const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
@@ -253,100 +196,107 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
     };
   }, [updateSlots]);
 
-  // SET RowLabelStyle
-  const value = useRowLabelStyleContext()!;
+  // SET CONTEXT
+  const rowValue = useRowLabelStyleContext()!;
   useEffect(() => {
-    value.setGap(props.slotRowGap);
-    value.setRowHeight(props.slotHeight);
-    value.setRowLabelBgColor(props.rowLabelBgColor);
-    value.setRowLabelPadding(props.rowLabelPadding);
-    value.setRowLabelBorderRadius(props.rowLabelBorderRadius);
-    value.setRowLabelsColor(props.rowLabelsColor);
-    value.setRowLabelsMargin(props.rowLabelsMargin);
-    value.setRowLabelBgColor(props.rowLabelBgColor);
-    value.setRowLabelsFontSize(props.rowLabelsFontSize);
-    value.setRowLabelsFontWeight(props.rowLabelsFontWeight);
-    value.setRowLabelsFontFamily(props.rowLabelsFontFamily);
-    value.setRowLabelsBorderRadius(props.rowLabelsBorderRadius);
-  }, [props, value]);
+    rowValue.setGap(props?.slotRowGap);
+    rowValue.setRowHeight(props?.slotHeight);
+    rowValue.setRowLabelBgColor(props?.rowLabelBgColor);
+    rowValue.setRowLabelPadding(props?.rowLabelPadding);
+    rowValue.setRowLabelBorderRadius(props?.rowLabelBorderRadius);
+    rowValue.setRowLabelsColor(props?.rowLabelsColor);
+    rowValue.setRowLabelsMargin(props?.rowLabelsMargin);
+    rowValue.setRowLabelsBgColor(props?.rowLabelsBgColor);
+    rowValue.setRowLabelsFontSize(props?.rowLabelsFontSize);
+    rowValue.setRowLabelsFontWeight(props?.rowLabelsFontWeight);
+    rowValue.setRowLabelsFontFamily(props?.rowLabelsFontFamily);
+    rowValue.setRowLabelsBorderRadius(props?.rowLabelsBorderRadius);
+  }, [props, rowValue]);
+  const colValue = useColumnLabelStyleContext()!;
+  useEffect(() => {
+    colValue.setGap(props?.slotColumnGap);
+    colValue.setColumnWidth(props?.slotWidth);
+    colValue.setColumnMinWidth(props?.slotMinWidth);
+    colValue.setIsColumnWidthGrow(props?.isSlotWidthGrow);
+    colValue.setColumnLabelHeight(props?.columnLabelHeight);
+    colValue.setColumnLabelBgColor(props?.columnLabelBgColor);
+    colValue.setColumnLabelPadding(props?.columnLabelPadding);
+    colValue.setColumnLabelBorderRadius(props?.columnLabelBorderRadius);
+    colValue.setColumnLabelsColor(props?.columnLabelsColor);
+    colValue.setColumnLabelsMargin(props?.columnLabelsMargin);
+    colValue.setColumnLabelsBgColor(props?.columnLabelsBgColor);
+    colValue.setColumnLabelsFontSize(props?.columnLabelsFontSize);
+    colValue.setColumnLabelsFontWeight(props?.columnLabelsFontWeight);
+    colValue.setColumnLabelsFontFamily(props?.columnLabelsFontFamily);
+    colValue.setColumnLabelsBorderRadius(props?.columnLabelsBorderRadius);
+  }, [props, colValue]);
+  const slotValue = useSlotStyleContext()!;
+  useEffect(() => {
+    slotValue.setSlotRowGap(props?.slotRowGap);
+    slotValue.setSlotColumnGap(props?.slotColumnGap);
+    slotValue.setSlotWidth(props?.slotWidth);
+    slotValue.setSlotHeight(props?.slotHeight);
+    slotValue.setSlotMinWidth(props?.slotMinWidth);
+    slotValue.setIsSlotWidthGrow(props?.isSlotWidthGrow);
+    slotValue.setSlotBorderStyle(props?.slotBorderStyle);
+    slotValue.setDefaultSlotColor(props?.defaultSlotColor);
+    slotValue.setDisabledSlotColor(props?.disabledSlotColor);
+    slotValue.setHoveredSlotColor(props?.hoveredSlotColor);
+    slotValue.setSelectedSlotColor(props?.selectedSlotColor);
+    slotValue.setSlotBorderRadius(props?.slotBorderRadius);
+  }, [props, slotValue]);
   /* ----- EFFECTS ----- */
 
   return (
-    <RowLabelStyleProvider>
+    <>
       <S.Container
-        $width={width}
-        $height={height}
-        $margin={margin}
-        $padding={padding}
-        $minWidth={minWidth}
-        $maxWidth={maxWidth}
-        $minHeight={minHeight}
-        $maxHeight={maxHeight}
-        $scrollWidth={scrollWidth}
-        $scrollColor={scrollColor}
-        $scrollBgColor={scrollBgColor}
-        $isSlotWidthGrow={isSlotWidthGrow}
+        $width={props?.width}
+        $height={props?.height}
+        $margin={props?.margin}
+        $padding={props?.padding}
+        $minWidth={props?.minWidth}
+        $maxWidth={props?.maxWidth}
+        $minHeight={props?.minHeight}
+        $maxHeight={props?.maxHeight}
+        $scrollWidth={props?.scrollWidth}
+        $scrollColor={props?.scrollColor}
+        $scrollBgColor={props?.scrollBgColor}
+        $isSlotWidthGrow={props?.isSlotWidthGrow}
       >
         {selectedDates && startTime && endTime && (
           <>
-            {!isRowLabelInvisible && (
-              <S.LeftContainer $rowLabelWidth={rowLabelWidth}>
-                {!isColumnLabelInvisible && <S.EmptySlot height={columnLabelHeight} />}
-                <RowLabel language={language || DEFAULT_LANG} timeFormat={timeFormat} timeSlots={timeSlotMatrix[0]} />
+            {!props?.isRowLabelInvisible && (
+              <S.LeftContainer $rowLabelWidth={props?.rowLabelWidth}>
+                {!props?.isColumnLabelInvisible && <S.EmptySlot height={props?.columnLabelHeight} />}
+                <RowLabel language={props?.language} timeFormat={props?.timeFormat} timeSlots={timeSlotMatrix[0]} />
               </S.LeftContainer>
             )}
 
             <S.RightContainer>
-              {!isColumnLabelInvisible && (
+              {!props?.isColumnLabelInvisible && (
                 <ColumnLabel
                   dates={selectedDates}
                   dateFormat={dateFormat}
-                  mode={mode || DEFAULT_MODE}
-                  language={language || DEFAULT_LANG}
-                  gap={slotColumnGap}
-                  slotMinWidth={slotMinWidth}
-                  isSlotWidthGrow={isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
-                  slotWidth={slotWidth || DEFAULT_SLOT_WIDTH}
-                  columnLabelHeight={columnLabelHeight}
-                  columnLabelsColor={columnLabelsColor}
-                  columnLabelsMargin={columnLabelsMargin}
-                  columnLabelBgColor={columnLabelBgColor}
-                  columnLabelPadding={columnLabelPadding}
-                  columnLabelsBgColor={columnLabelsBgColor}
-                  columnLabelsFontSize={columnLabelsFontSize}
-                  columnLabelsFontFamily={columnLabelsFontFamily}
-                  columnLabelsFontWeight={columnLabelsFontWeight}
-                  columnLabelBorderRadius={columnLabelBorderRadius}
-                  columnLabelsBorderRadius={columnLabelsBorderRadius}
+                  gap={props?.slotColumnGap}
+                  mode={mode}
+                  language={language}
                 />
               )}
               <TimeSlots
-                slotRowGap={slotRowGap}
-                slotHeight={slotHeight}
-                isSlotWidthGrow={isSlotWidthGrow || DEFAULT_IS_SLOT_WIDTH_GROW}
-                slotWidth={slotWidth || DEFAULT_SLOT_WIDTH}
-                mode={mode || DEFAULT_MODE}
-                slotMinWidth={slotMinWidth}
-                slotColumnGap={slotColumnGap}
+                mode={props?.mode}
                 timeSlotMatrix={timeSlotMatrix}
-                slotBorderStyle={slotBorderStyle}
-                hoveredSlotColor={hoveredSlotColor}
-                defaultSlotColor={defaultSlotColor}
-                slotBorderRadius={slotBorderRadius}
-                selectedSlotColor={selectedSlotColor}
-                disabledSlotColor={disabledSlotColor}
                 mockTimeSlotMatrix={mockTimeSlotMatrix}
                 timeSlotMatrixByDay={timeSlotMatrixByDay}
+                cachedSelectedTimeSlots={dragEventStates.cachedSelectedTimeSlots}
                 handleMouseUp={handleMouseUp}
                 handleMouseDown={handleMouseDown}
                 handleMouseEnter={handleMouseEnter}
-                cachedSelectedTimeSlots={dragEventStates.cachedSelectedTimeSlots}
               />
             </S.RightContainer>
           </>
         )}
       </S.Container>
-    </RowLabelStyleProvider>
+    </>
   );
 });
 

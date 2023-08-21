@@ -1,3 +1,3 @@
-import DraggableSelector from './components/DraggableSelector';
+import App from './App';
 
-export { DraggableSelector };
+export { App as DraggableSelector };
