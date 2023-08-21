@@ -211,7 +211,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
     dataValue.setLanguage(props?.language);
     dataValue.setDateFormat(props?.dateFormat);
     dataValue.setTimeFormat(props?.timeFormat);
-  }, [props, dataValue]);
+  }, [dataValue, props?.dateFormat, props?.language, props?.mode, props?.timeFormat]);
   const rowValue = useRowLabelStyleContext()!;
   useEffect(() => {
     rowValue.setGap(props?.slotRowGap);
@@ -226,7 +226,21 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
     rowValue.setRowLabelsFontWeight(props?.rowLabelsFontWeight);
     rowValue.setRowLabelsFontFamily(props?.rowLabelsFontFamily);
     rowValue.setRowLabelsBorderRadius(props?.rowLabelsBorderRadius);
-  }, [props, rowValue]);
+  }, [
+    rowValue,
+    props?.slotHeight,
+    props?.slotRowGap,
+    props?.rowLabelsColor,
+    props?.rowLabelBgColor,
+    props?.rowLabelsMargin,
+    props?.rowLabelPadding,
+    props?.rowLabelsBgColor,
+    props?.rowLabelsFontSize,
+    props?.rowLabelsFontWeight,
+    props?.rowLabelsFontFamily,
+    props?.rowLabelBorderRadius,
+    props?.rowLabelsBorderRadius,
+  ]);
   const colValue = useColumnLabelStyleContext()!;
   useEffect(() => {
     colValue.setGap(props?.slotColumnGap);
@@ -244,7 +258,24 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
     colValue.setColumnLabelsFontWeight(props?.columnLabelsFontWeight);
     colValue.setColumnLabelsFontFamily(props?.columnLabelsFontFamily);
     colValue.setColumnLabelsBorderRadius(props?.columnLabelsBorderRadius);
-  }, [props, colValue]);
+  }, [
+    colValue,
+    props?.slotWidth,
+    props?.slotColumnGap,
+    props?.slotMinWidth,
+    props?.isSlotWidthGrow,
+    props?.columnLabelHeight,
+    props?.columnLabelBgColor,
+    props?.columnLabelPadding,
+    props?.columnLabelBorderRadius,
+    props?.columnLabelsColor,
+    props?.columnLabelsMargin,
+    props?.columnLabelsBgColor,
+    props?.columnLabelsFontSize,
+    props?.columnLabelsFontWeight,
+    props?.columnLabelsFontFamily,
+    props?.columnLabelsBorderRadius,
+  ]);
   const slotValue = useSlotStyleContext()!;
   useEffect(() => {
     slotValue.setSlotRowGap(props?.slotRowGap);
@@ -261,7 +292,23 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
     slotValue.setSelectedSlotColor(props?.selectedSlotColor);
     slotValue.setSlotBorderRadius(props?.slotBorderRadius);
     slotValue.setSlotContainerBorderStyle(props?.slotContainerBorderStyle);
-  }, [props, slotValue]);
+  }, [
+    slotValue,
+    props?.slotRowGap,
+    props?.slotColumnGap,
+    props?.slotWidth,
+    props?.slotHeight,
+    props?.slotMinWidth,
+    props?.isCursorPointer,
+    props?.isSlotWidthGrow,
+    props?.slotBorderStyle,
+    props?.defaultSlotColor,
+    props?.disabledSlotColor,
+    props?.hoveredSlotColor,
+    props?.selectedSlotColor,
+    props?.slotBorderRadius,
+    props?.slotContainerBorderStyle,
+  ]);
   /* ----- EFFECTS ----- */
 
   return (
