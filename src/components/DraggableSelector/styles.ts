@@ -46,15 +46,15 @@ export const Container = styled.div<ContainerProps>(
   }) => `  
   display: flex;
   overflow: auto;
-
   margin: ${$margin || DEFAULT_MARGIN};
   padding: ${$padding || DEFAULT_PADDING};
-  width: ${$isSlotWidthGrow ? 'auto' : $width || DEFAULT_WIDTH};
+
   height: ${$height || DEFAULT_HEIGHT};
   min-width: ${$minWidth || DEFAULT_MIN_WIDTH};
   max-width: ${$maxWidth || DEFAULT_MAX_WIDTH};
   min-height: ${$minHeight || DEFAULT_MIN_HEIGHT};
   max-height: ${$maxHeight || DEFAULT_MAX_HEIGHT};
+  width: ${$isSlotWidthGrow ? 'auto' : $width || DEFAULT_WIDTH};
   
   &::-webkit-scrollbar {
     width: ${$scrollWidth || DEFAULT_SCROLL_WIDTH};  /* WIDTH, HEIGHT */
@@ -89,9 +89,9 @@ interface RightContainerProps {
 export const RightContainer = styled.div<RightContainerProps>(
   ({ $scrollWidth, $scrollColor, $scrollBgColor }) => `
   width: auto;
-  height: fit-content;
   flex-grow: 1;
   overflow-x: auto;
+  height: fit-content;
   padding-bottom: 5px;
   
   &::-webkit-scrollbar {
@@ -114,11 +114,11 @@ interface EmptySlotProps {
 }
 export const EmptySlot = styled.li<EmptySlotProps>(
   ({ height }) => `  
-  width: 100%;
-  height: ${height || DEFAULT_COLUMN_LABELS_HEIGHT};
-  
   display: flex;
   align-items: center;
   justify-content: center;
+  
+  width: 100%;
+  height: ${height || DEFAULT_COLUMN_LABELS_HEIGHT};
 `,
 );

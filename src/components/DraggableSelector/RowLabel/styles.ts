@@ -37,14 +37,13 @@ export const Items = styled.ul<Items>(
   }) => `
   display: flex;
   flex-direction: column;
+  margin: ${$rowLabelsMargin || DEFAULT_ROW_LABELS_MARGIN};
+  border-radius: ${$rowLabelsBorderRadius || DEFAULT_ROW_LABELS_BORDER_RADIUS};
+  row-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : DEFAULT_ROW_GAP};
  
   color: ${$rowLabelsColor || DEFAULT_ROW_LABELS_COLOR};
   background-color: ${$rowLabelsBgColor || DEFAULT_ROW_LABELS_BG_COLOR};
  
-  margin: ${$rowLabelsMargin || DEFAULT_ROW_LABELS_MARGIN};
-  border-radius: ${$rowLabelsBorderRadius || DEFAULT_ROW_LABELS_BORDER_RADIUS};
-  row-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : DEFAULT_ROW_GAP};
-  
   font-size: ${$rowLabelsFontSize || DEFAULT_ROW_LABELS_FONT_SIZE};
   font-weight: ${$rowLabelsFontWeight || DEFAULT_ROW_LABELS_FONT_WEIGHT};
   font-family: ${$rowLabelsFontFamily || DEFAULT_ROW_LABELS_FONT_FAMILY};
@@ -56,19 +55,19 @@ interface ItemProps {
 }
 export const Item = styled.li<ItemProps>(
   ({ $height }) => `
-  width: 100%;
-  height: ${$height || DEFAULT_SLOT_HEIGHT};
-
   display: flex;
   align-items: center;
   justify-content: center;
+  
+  width: 100%;
+  height: ${$height || DEFAULT_SLOT_HEIGHT};
 `,
 );
 
 interface LabelProps {
   $padding?: string;
-  $rowLabelBorderRadius?: string;
   $rowLabelBgColor?: string;
+  $rowLabelBorderRadius?: string;
 }
 
 export const Label = styled.div<LabelProps>(
@@ -77,8 +76,8 @@ export const Label = styled.div<LabelProps>(
   height: auto;
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: ${$padding || DEFAULT_ROW_LABEL_PADDING};
   background-color: ${$rowLabelBgColor || DEFAULT_ROW_LABEL_BG_COLOR};
   border-radius: ${$rowLabelBorderRadius || DEFAULT_ROW_LABEL_BORDER_RADIUS};

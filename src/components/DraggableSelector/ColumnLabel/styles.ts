@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {
+  DEFAULT_SLOT_WIDTH,
   DEFAULT_COLUMN_GAP,
   DEFAULT_SLOT_MIN_WIDTH,
   DEFAULT_COLUMN_LABELS_COLOR,
@@ -13,7 +14,6 @@ import {
   DEFAULT_COLUMN_LABELS_FONT_FAMILY,
   DEFAULT_COLUMN_LABEL_BORDER_RADIUS,
   DEFAULT_COLUMN_LABELS_BORDER_RADIUS,
-  DEFAULT_SLOT_WIDTH,
 } from '../../../constant/options';
 
 interface Items {
@@ -40,19 +40,17 @@ export const Items = styled.ul<Items>(
     $columnLabelsBorderRadius,
   }) => `
   display: flex;
+  width: ${$isSlotWidthGrow ? '100%' : 'auto'};
+  margin: ${$columnLabelsMargin || DEFAULT_COLUMN_LABELS_MARGIN};
+  column-gap: ${$gap || $gap === '0' || $gap === '0px' ? $gap : DEFAULT_COLUMN_GAP};
+  
   color: ${$columnLabelsColor || DEFAULT_COLUMN_LABELS_COLOR};
   background-color: ${$columnLabelsBgColor || DEFAULT_COLUMN_LABELS_BG_COLOR};
+  border-radius: ${$columnLabelsBorderRadius || DEFAULT_COLUMN_LABELS_BORDER_RADIUS};
+  
   font-size: ${$columnLabelsFontSize || DEFAULT_COLUMN_LABELS_FONT_SIZE};
   font-weight: ${$columnLabelsFontWeight || DEFAULT_COLUMN_LABELS_FONT_WEIGHT};
   font-family: ${$columnLabelsFontFamily || DEFAULT_COLUMN_LABELS_FONT_FAMILY};
-  margin: ${$columnLabelsMargin || DEFAULT_COLUMN_LABELS_MARGIN};
-  border-radius: ${
-    $columnLabelsBorderRadius || DEFAULT_COLUMN_LABELS_BORDER_RADIUS
-  };
-  column-gap: ${
-    $gap || $gap === '0' || $gap === '0px' ? $gap : DEFAULT_COLUMN_GAP
-  };
-  width: ${$isSlotWidthGrow ? '100%' : 'auto'};
 `,
 );
 
@@ -67,12 +65,9 @@ export const Item = styled.li<ItemProps>(
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  width: ${$isSlotWidthGrow ? '100%' : $width || DEFAULT_SLOT_WIDTH};
-  min-width: ${
-    $isSlotWidthGrow ? $minWidth || DEFAULT_SLOT_MIN_WIDTH : $width
-  };  
   height: ${$height || DEFAULT_COLUMN_LABELS_HEIGHT};
+  width: ${$isSlotWidthGrow ? '100%' : $width || DEFAULT_SLOT_WIDTH};
+  min-width: ${$isSlotWidthGrow ? $minWidth || DEFAULT_SLOT_MIN_WIDTH : $width};  
 `,
 );
 
@@ -93,8 +88,6 @@ export const Label = styled.div<LabelProps>(
 
   padding: ${$padding || DEFAULT_COLUMN_LABEL_PADDING};
   background-color: ${$columnLabelBgColor || DEFAULT_COLUMN_LABEL_BG_COLOR};
-  border-radius: ${
-    $columnLabelBorderRadius || DEFAULT_COLUMN_LABEL_BORDER_RADIUS
-  };
+  border-radius: ${$columnLabelBorderRadius || DEFAULT_COLUMN_LABEL_BORDER_RADIUS};
 `,
 );
