@@ -10,15 +10,24 @@ export const getUniqueDateKey = (date: Date) => {
   return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 };
 
-export const removeDuplicatesAndSortByDate = (dates: Date[]) => {
-  const uniqueDates = new Set<string>();
+export const getDatesForSelector = (dates: Date[]) => {
+  const uniqueDateStrings = getUniqueStringDates(dates);
+  return getSortedDatesOrderedByDate(uniqueDateStrings?.map(strDate => new Date(strDate)));
+};
+
+export const getUniqueStringDates = (dates: Date[]) => {
+  const uniqueDatesStringSet = new Set<string>();
   for (const date of dates) {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    uniqueDates.add(`${year}/${month}/${day}`);
+    uniqueDatesStringSet.add(`${year}/${month}/${day}`);
   }
-  const sortedDates = Array.from(uniqueDates)?.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  return Array.from(uniqueDatesStringSet);
+};
+
+export const getSortedDatesOrderedByDate = (dates: Date[]) => {
+  const sortedDates = dates?.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
   return sortedDates?.map(strDate => new Date(strDate));
 };
 

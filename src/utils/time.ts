@@ -25,9 +25,8 @@ export const areTimeSlotsEqual = (slot1: TimeSlot, slot2: TimeSlot, mode: 'date'
   const { day: day2, date: date2, startTime: startTime2, endTime: endTime2 } = getSerializedTimeInfoFromSlot(slot2);
   if (mode === 'day') {
     return day1 === day2 && endTime1 === endTime2 && startTime1 === startTime2;
-  } else {
-    return date1 === date2 && endTime1 === endTime2 && startTime1 === startTime2;
   }
+  return date1 === date2 && endTime1 === endTime2 && startTime1 === startTime2;
 };
 
 const isTimeBetween = (target: TimeSlot, start: TimeSlot, end: TimeSlot) => {

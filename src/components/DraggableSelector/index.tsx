@@ -17,7 +17,7 @@ import { useSlotStyleContext } from '../../context/SlotStyleContext';
 import { useSelectorInfoContext } from '../../context/SelectorInfoContext';
 import { useRowLabelStyleContext } from '../../context/RowLabelStyleContext';
 import { useColumnLabelStyleContext } from '../../context/ColumnLabelStyleContext';
-import { getTimeSlotMatrixByDay, removeDuplicatesAndSortByDate } from '../../utils/date';
+import { getTimeSlotMatrixByDay, getDatesForSelector } from '../../utils/date';
 import {
   areTimeSlotsEqual,
   getTimeSlotMatrix,
@@ -117,7 +117,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
   /* ----- EFFECTS ----- */
   // Initialize and remove duplicated data when dates changed
   useEffect(() => {
-    setSelectedDates(removeDuplicatesAndSortByDate(dates));
+    setSelectedDates(getDatesForSelector(dates));
   }, [dates]);
 
   // Initialize data when options changed
@@ -187,7 +187,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
   useEffect(() => {
     const mockMatrix = getTimeSlotMatrix({
       timeUnit: timeUnit || DEFAULT_TIMEUNIT,
-      dates: removeDuplicatesAndSortByDate(sampleDates),
+      dates: getDatesForSelector(sampleDates),
       startTime: startTime,
       endTime: endTime,
     });
