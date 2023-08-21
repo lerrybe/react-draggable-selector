@@ -274,13 +274,7 @@ const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
 
             <S.RightContainer>
               {!props?.isColumnLabelInvisible && (
-                <ColumnLabel
-                  dates={selectedDates}
-                  dateFormat={dateFormat}
-                  gap={props?.slotColumnGap}
-                  mode={mode}
-                  language={language}
-                />
+                <ColumnLabel dates={selectedDates} dateFormat={dateFormat} mode={mode} language={language} />
               )}
               <TimeSlots
                 mode={props?.mode}

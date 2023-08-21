@@ -11,7 +11,6 @@ import {
 } from '../../../constant/options';
 
 interface ColumnLabelProps {
-  gap?: string;
   dates?: Date[];
   dateFormat?: string;
   mode?: 'date' | 'day';
@@ -21,7 +20,7 @@ interface ColumnLabelProps {
 /*
   "ColumnLabel" component is used to display the "date or day" of the column.
 */
-export default function ColumnLabel({ gap, mode, dates, language, dateFormat }: ColumnLabelProps) {
+export default function ColumnLabel({ mode, dates, language, dateFormat }: ColumnLabelProps) {
   const value = useColumnLabelStyleContext();
 
   if (!dates || dates?.length === 0) {
@@ -30,7 +29,7 @@ export default function ColumnLabel({ gap, mode, dates, language, dateFormat }: 
 
   return (
     <S.Items
-      $gap={gap}
+      $gap={value?.gap}
       $columnLabelsColor={value?.columnLabelsColor}
       $columnLabelsMargin={value?.columnLabelsMargin}
       $columnLabelsBgColor={value?.columnLabelsBgColor}
