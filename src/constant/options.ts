@@ -8,7 +8,7 @@ export const DEFAULT_TIME_FORMAT = 'hh:mm A';
 /* ABOUT SELECTOR */
 export const DEFAULT_PADDING = '0 5px 0 0';
 export const DEFAULT_MARGIN = '0px';
-export const DEFAULT_WIDTH = '500px';
+export const DEFAULT_WIDTH = 'auto';
 export const DEFAULT_MIN_WIDTH = 'auto';
 export const DEFAULT_MAX_WIDTH = '100%';
 export const DEFAULT_HEIGHT = 'auto';
@@ -17,14 +17,14 @@ export const DEFAULT_MAX_HEIGHT = '500px';
 export const DEFAULT_SCROLL_WIDTH = '3px';
 export const DEFAULT_SCROLL_COLOR = '#595959';
 export const DEFAULT_SCROLL_BG_COLOR = '#e1e1e1';
-export const DEFAULT_IS_CURSOR_POINTER = false;
 
 /* ABOUT SLOTS */
 export const DEFAULT_ROW_GAP = '3px';
 export const DEFAULT_COLUMN_GAP = '3px';
 export const DEFAULT_SLOT_MIN_WIDTH = '40px';
-export const DEFAULT_SLOT_WIDTH = '36px';
-export const DEFAULT_IS_SLOT_WIDTH_GROW = true;
+export const DEFAULT_SLOT_WIDTH = '62px';
+export const DEFAULT_IS_CURSOR_POINTER = false;
+export const DEFAULT_IS_SLOT_WIDTH_GROW = false;
 export const DEFAULT_SLOT_HEIGHT = '30px';
 export const DEFAULT_SLOT_BG_COLOR = '#f1f1f1';
 export const DEFAULT_SELECTED_SLOT_BG_COLOR = '#3f3f3f';
