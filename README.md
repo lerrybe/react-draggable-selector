@@ -16,7 +16,7 @@ Its main advantages are its intuitive drag-to-select functionality and the freed
 # Live example & Document 
 You can learn how to use it by operating it directly in the document below.
 
-[Go to Document](https://64d1f2641de7b9e923f3c9d6-pyymweogzx.chromatic.com/?path=/docs/intro-quickstart--docs)
+[Go to Document](https://64d1f2641de7b9e923f3c9d6-iebuvlnift.chromatic.com/?path=/docs/intro-quickstart--docs)
 
 # 🚀 Quick Start
 
