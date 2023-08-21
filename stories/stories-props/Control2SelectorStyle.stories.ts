@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Sample: Story = {
   args: {
-    width: '500px',
+    width: 'auto',
     height: '200px',
     margin: '2px 4px',
     padding: '2px 4px',
