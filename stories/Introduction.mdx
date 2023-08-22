@@ -1,7 +1,7 @@
 import { Meta, Primary, Controls, Story } from '@storybook/blocks';
 import Code from './assets/code-brackets.svg';
 import Direction from './assets/direction.svg';
-import Sample from './assets/sample.gif';
+import IntroImage from './assets/introduction.png';
 
 <Meta title="Intro & QuickStart" />
 
@@ -119,15 +119,14 @@ import Sample from './assets/sample.gif';
 ### Select with a simple drag!
 
 React-Draggable-Selector is a react component that allows users to easily select time ranges by dragging.
-This package is for react applications, and uses @emotion for styling and dayjs for date and time management.
 
-Its main advantages are its intuitive drag-to-select functionality. You can select a time zone by 'day' of the week or by 'date'.
+This package is for react applications, and uses [@emotion](https://emotion.sh/docs/introduction) for styling and [dayjs](https://www.npmjs.com/package/dayjs) for date and time management. Its main advantages are its intuitive drag-to-select functionality. You can select a time zone by `day` of the week or by `date`.
 Let's get started!
 
 
 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-  <img src={Sample} alt="sample"
-    style={{ maxWidth: '500px', borderRadius: '10px' }}
+  <img src={IntroImage} alt="introImg"
+    style={{ width: '70%' }}
   />
 </div>
 
@@ -160,16 +159,16 @@ import { useState } from 'react';
 import { DraggableSelector } from "react-draggable-selector";
 
 function App () {
-  const [dates, setDates] = useState([]);  // required default: []
-  const [times, setTimes] = useState([]);  // required default: []
+  const [dates, setDates] = useState([]);  // Should inject sorted, not duplicated Date[]
+  const [times, setTimes] = useState([]);
 
   return (
     <DraggableSelector
-      startTime="09:00"                // required
-      endTime="18:00"                  // required
-      dates={dates}                    // required, required default: []
-      selectedTimeSlots={times}        // required, required default: []
-      setSelectedTimeSlots={setTimes}  // required
+      minTime={9}              // required
+      maxTime={14}             // required
+      dates={dates}            // required, required default: []
+      timeSlots={times}        // required, required default: []
+      setTimeslots={setTimes}  // required
     />
   );
 };
@@ -181,24 +180,28 @@ export default App;
 
 ```tsx
 import { useState } from 'react';
-import { DraggableSelector } from "react-draggable-selector";
+import { DraggableSelector, TimeSlot } from "react-draggable-selector";
 
+/*
 interface TimeSlot {
-  start: Date;
-  end: Date;
+  day: number;
+  date: string;
+  minTime: string;  // '09:00', '14:00'
+  maxTime: string;  // '09:30', '14:30'
 }
+*/
 
 function App () {
-  const [dates, setDates] = useState<Date[]>([]);     // required default: []
-  const [times, setTimes] = useState<TimeSlot[]>([]); // required default: []
+  const [dates, setDates] = useState<Date[]>([]);  // Should inject sorted, not duplicated Date[]
+  const [times, setTimes] = useState<TimeSlot[]>([]);
 
   return (
     <DraggableSelector
-      startTime="09:00"                // required, type: 'string'.
-      endTime="18:00"                  // required, type: 'string'
-      dates={dates}                    // required, type: 'Date[]', required default: []
-      selectedTimeSlots={times}        // required, type: 'TimeSlot[]', required default: []
-      setSelectedTimeSlots={setTimes}  // required, type: 'React.Dispatch<React.SetStateAction<TimeSlot[]>>'
+      minTime={9}              // required, type: 'number'
+      maxTime={14}             // required, type: 'number'
+      dates={dates}            // required, type: 'Date[]', required default: []
+      timeSlots={times}        // required, type: 'TimeSlot[]', required default: []
+      setTimeslots={setTimes}  // required, type: 'React.Dispatch<React.SetStateAction<TimeSlot[]>>'
     />
   );
 };
