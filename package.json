@@ -40,8 +40,8 @@
     "build": "tsc && vite build --base=./",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "deploy-storybook": "storybook-to-ghpages",
+    "storybook:build": "storybook build",
+    "storybook:deploy": "storybook-to-ghpages",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
