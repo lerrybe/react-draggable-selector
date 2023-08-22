@@ -1,92 +1,67 @@
-import styled from 'styled-components';
-import {
-  DEFAULT_ROW_GAP,
-  DEFAULT_COLUMN_GAP,
-  DEFAULT_SLOT_HEIGHT,
-  DEFAULT_SLOT_BG_COLOR,
-  DEFAULT_SLOT_MIN_WIDTH,
-  DEFAULT_SLOT_BORDER_STYLE,
-  DEFAULT_SLOT_BORDER_RADIUS,
-  DEFAULT_HOVERED_SLOT_BG_COLOR,
-  DEFAULT_SELECTED_SLOT_BG_COLOR,
-  DEFAULT_DISABLED_SLOT_BG_COLOR,
-} from '../../../constant/options';
+import styled from '@emotion/styled';
 
-interface ItemsGridProps {
-  $rows: string;
-  $cols: string;
-  $rowGap?: string;
-  $columnGap?: string;
-  $isSlotWidthGrow?: boolean;
-  $slotContainerBorderStyle?: string;
+interface GridProps {
+  $rowGap: number;
+  $colGap: number;
+  $gridTemplateRows: string;
+  $gridTemplateColumns: string;
+  $slotsContainerBorder: string;
+  $slotsContainerBorderRadius: string;
 }
 
-export const ItemsGrid = styled.ul<ItemsGridProps>(
-  ({ $rows, $cols, $rowGap, $columnGap, $isSlotWidthGrow, $slotContainerBorderStyle }) => `
+export const Grid = styled.div<GridProps>`
   display: grid;
-  box-sizing: border-box;
-  grid-template-rows: ${$rows};
-  grid-template-columns: ${$cols};
-  ${$isSlotWidthGrow ? 'flex-grow: 1;' : ''}
-  width: ${$isSlotWidthGrow ? '100%' : 'auto'};
-  ${$slotContainerBorderStyle ? `border: ${$slotContainerBorderStyle};` : ''}
-  row-gap: ${$rowGap || $rowGap === '0' || $rowGap === '0px' ? $rowGap : DEFAULT_ROW_GAP};
-  column-gap: ${$columnGap || $columnGap === '0' || $columnGap === '0px' ? $columnGap : DEFAULT_COLUMN_GAP};
-`,
-);
+  width: fit-content;
 
-interface ItemProps {
-  selected: boolean;
-  $height?: string;
-  $width?: string;
-  $minWidth?: string;
-  $selectDisabled: boolean;
-  $isCursorPointer?: boolean;
-  $hoveredSlotColor?: string;
-  $defaultSlotColor?: string;
-  $selectedSlotColor?: string;
-  $slotBorderStyle?: string;
-  $slotBorderRadius?: string;
-  $disabledSlotColor?: string;
-  $isSlotWidthGrow?: boolean;
+  overflow: hidden;
+  border: ${({ $slotsContainerBorder }) => $slotsContainerBorder};
+  border-radius: ${({ $slotsContainerBorderRadius }) =>
+    $slotsContainerBorderRadius};
+
+  row-gap: ${({ $rowGap }) => $rowGap}px;
+  column-gap: ${({ $colGap }) => $colGap}px;
+  grid-template-rows: ${({ $gridTemplateRows }) => $gridTemplateRows};
+  grid-template-columns: ${({ $gridTemplateColumns }) => $gridTemplateColumns};
+`;
+
+interface SlotProps {
+  $width: number;
+  $height: number;
+  $selected: boolean;
+  $isDisabled: boolean;
+  $isEvenIdx: boolean;
+  $isRightMost: boolean;
+  $isBottomMost: boolean;
+  $defaultSlotColor: string;
+  $selectedSlotColor: string;
+  $disabledSlotColor: string;
+  $hoveredSlotColor: string;
 }
 
-export const Item = styled.button<ItemProps>(
-  ({
-    selected,
-    $width,
-    $height,
-    $minWidth,
-    $selectDisabled,
-    $isCursorPointer,
-    $isSlotWidthGrow,
-    $defaultSlotColor,
-    $hoveredSlotColor,
-    $selectedSlotColor,
-    $slotBorderStyle,
-    $slotBorderRadius,
-    $disabledSlotColor,
-  }) => `
-  height: ${$height || DEFAULT_SLOT_HEIGHT};
-  width: ${$isSlotWidthGrow ? '100%' : $width};
-  min-width: ${$isSlotWidthGrow ? $minWidth || DEFAULT_SLOT_MIN_WIDTH : $width};  
-  
-  box-sizing: border-box;
-  border: ${$slotBorderStyle || DEFAULT_SLOT_BORDER_STYLE};
-  border-radius: ${$slotBorderRadius || DEFAULT_SLOT_BORDER_RADIUS};
-  background-color: ${
-    selected ? $selectedSlotColor || DEFAULT_SELECTED_SLOT_BG_COLOR : $defaultSlotColor || DEFAULT_SLOT_BG_COLOR
-  };
+export const Slot = styled.div<SlotProps>`
+  width: ${({ $width }) => $width}px;
+  height: ${({ $height }) => $height}px;
+
+  border-right: 1px solid #8c8d94;
+  border-bottom: ${({ $isEvenIdx }) =>
+    $isEvenIdx ? '1px dashed #C2C3CA' : '1px solid #8C8D94'};
+  ${({ $isRightMost }) => $isRightMost && 'border-right: none;'}
+  ${({ $isBottomMost }) => $isBottomMost && 'border-bottom: none;'}
+
+  user-drag: none;
+  -webkit-user-drag: none;
+
+  background-color: ${({ $selected, $defaultSlotColor, $selectedSlotColor }) =>
+    $selected ? $selectedSlotColor : $defaultSlotColor};
+
+  ${({ $isDisabled }) => ($isDisabled ? 'cursor: not-allowed;' : '')}
+  ${({ $isDisabled, $disabledSlotColor }) =>
+    $isDisabled && `background-color: ${$disabledSlotColor};`}
   &:hover {
-    background-color: ${
-      $selectDisabled ? DEFAULT_DISABLED_SLOT_BG_COLOR : $hoveredSlotColor || DEFAULT_HOVERED_SLOT_BG_COLOR
-    };
-    ${selected ? `background-color: ${$selectedSlotColor || DEFAULT_SELECTED_SLOT_BG_COLOR};` : ''}
+    background-color: ${({
+      $isDisabled,
+      $hoveredSlotColor,
+      $disabledSlotColor,
+    }) => ($isDisabled ? $disabledSlotColor : $hoveredSlotColor)};
   }
-  user-drag: none; /* 최신 브라우저 */
-  -webkit-user-drag: none; /* 구형 브라우저 */
-  ${$isCursorPointer ? 'cursor: pointer;' : 'cursor: default;'}
-  ${$selectDisabled ? 'cursor: not-allowed;' : ''}
-  ${$selectDisabled ? `background-color: ${$disabledSlotColor || DEFAULT_DISABLED_SLOT_BG_COLOR};` : ''}
-`,
-);
+`;

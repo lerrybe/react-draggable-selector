@@ -1,99 +1,110 @@
-import { useMemo } from 'react';
-
 import * as S from './styles';
-import { getDayNum } from '../../../utils/date';
-import { type TimeSlot } from '../../../types/time';
-import { useDataContext } from '../../../context/DataContext';
-import { useSlotStyleContext } from '../../../context/SlotStyleContext';
-import { useSelectorInfoContext } from '../../../context/SelectorInfoContext';
-import { areTimeSlotsEqual, getSerializedTimeInfoFromSlot } from '../../../utils/time';
-import { DEFAULT_MODE, DEFAULT_SLOT_WIDTH } from '../../../constant/options';
+import { TimeSlot } from '../../../types/timeInfo';
+import { areTimeSlotsEqual } from '../../../utils/time';
 
 interface TimeSlotsProps {
+  mode: 'day' | 'date';
+  rowGap: number;
+  colGap: number;
+  slotWidth: number;
+  slotHeight: number;
+  defaultSlotColor: string;
+  selectedSlotColor: string;
+  disabledSlotColor: string;
+  hoveredSlotColor: string;
+  slotsContainerBorder: string;
+  slotsContainerBorderRadius: string;
+  timeSlotMatrix?: TimeSlot[][];
+  cachedMatrixByDay: TimeSlot[][];
+  cachedSelectedTimeSlots?: TimeSlot[];
   handleMouseUp: (timeSlot: TimeSlot) => void;
   handleMouseDown: (timeSlot: TimeSlot) => void;
   handleMouseEnter: (timeSlot: TimeSlot) => void;
 }
 
-/*
-  "TimeSlots" component is used to display the every "slots" of the table.
-*/
-export default function TimeSlots({ handleMouseUp, handleMouseDown, handleMouseEnter }: TimeSlotsProps) {
-  const slotValue = useSlotStyleContext();
-  const { mode } = useSelectorInfoContext();
-  const {
-    timeSlotMatrix,
-    mockTimeSlotMatrix,
-    timeSlotMatrixByDay,
-    dragEventStates: { cachedSelectedTimeSlots },
-  } = useDataContext();
-
-  const matrix = useMemo(() => {
-    return (mode || DEFAULT_MODE) === 'day' ? mockTimeSlotMatrix : timeSlotMatrix;
-  }, [mockTimeSlotMatrix, mode, timeSlotMatrix]);
-
-  if (!matrix || !timeSlotMatrixByDay) {
+const TimeSlots = ({
+  mode,
+  rowGap,
+  colGap,
+  slotWidth,
+  slotHeight,
+  defaultSlotColor,
+  selectedSlotColor,
+  disabledSlotColor,
+  hoveredSlotColor,
+  slotsContainerBorder,
+  slotsContainerBorderRadius,
+  timeSlotMatrix,
+  cachedMatrixByDay,
+  handleMouseUp,
+  handleMouseDown,
+  handleMouseEnter,
+  cachedSelectedTimeSlots,
+}: TimeSlotsProps) => {
+  if (!timeSlotMatrix) {
     return <></>;
   }
 
-  const cols: number = matrix?.length;
-  const rows: number = matrix[0]?.length;
+  const cols: number = timeSlotMatrix?.length;
+  const rows: number = timeSlotMatrix[0]?.length;
+
   const gridTemplateRows: string = `repeat(${rows}, 1fr)`;
   const gridTemplateColumns: string = `repeat(${cols}, 1fr)`;
 
   return (
-    <S.ItemsGrid
-      $rows={gridTemplateRows}
-      $cols={gridTemplateColumns}
-      $rowGap={slotValue?.slotRowGap}
-      $columnGap={slotValue?.slotColumnGap}
-      $isSlotWidthGrow={slotValue?.isSlotWidthGrow}
-      $slotContainerBorderStyle={slotValue?.slotContainerBorderStyle}
-      onDragStart={() => false}
+    <S.Grid
+      $rowGap={rowGap}
+      $colGap={colGap}
+      $gridTemplateRows={gridTemplateRows}
+      $gridTemplateColumns={gridTemplateColumns}
+      $slotsContainerBorder={slotsContainerBorder}
+      $slotsContainerBorderRadius={slotsContainerBorderRadius}
     >
-      {matrix[0]?.map(
+      {timeSlotMatrix[0]?.map(
         (_, colIndex: number) =>
-          matrix?.map(timeSlots => {
-            const targetSlot = timeSlots[colIndex];
-            const { date, startTime, endTime } = getSerializedTimeInfoFromSlot(targetSlot);
-            const key = `${date}${startTime}${endTime}`;
-            const selected = Boolean(
-              cachedSelectedTimeSlots?.find(slot => areTimeSlotsEqual(slot, targetSlot, mode || DEFAULT_MODE)),
-            );
+          timeSlotMatrix?.map(timeSlots => {
+            const target = timeSlots[colIndex];
+            const isDisabled =
+              mode === 'day' && (cachedMatrixByDay.length === 0 || cachedMatrixByDay[target?.day]?.length === 0);
+            const selected = isDisabled
+              ? false
+              : Boolean(cachedSelectedTimeSlots?.find(slot => areTimeSlotsEqual(slot, target)));
+
+            const isEvenIdx = colIndex % 2 === 0;
+            const lastDate = timeSlotMatrix[cols - 1][0]?.date;
+            const lastMinTime = timeSlotMatrix[0][rows - 1]?.minTime;
+            const isRightSide = target?.date === lastDate;
+            const isBottomSide = target?.minTime === lastMinTime;
 
             return (
-              <S.Item
-                key={key}
-                selected={selected}
-                $selectDisabled={
-                  (mode || DEFAULT_MODE) === 'day'
-                    ? timeSlotMatrixByDay[getDayNum(getSerializedTimeInfoFromSlot(targetSlot).day)]?.length === 0
-                    : false
-                }
-                $height={slotValue?.slotHeight}
-                $minWidth={slotValue?.slotMinWidth}
-                $isSlotWidthGrow={slotValue?.isSlotWidthGrow}
-                $slotBorderStyle={slotValue?.slotBorderStyle}
-                $isCursorPointer={slotValue?.isCursorPointer}
-                $slotBorderRadius={slotValue?.slotBorderRadius}
-                $hoveredSlotColor={slotValue?.hoveredSlotColor}
-                $defaultSlotColor={slotValue?.defaultSlotColor}
-                $selectedSlotColor={slotValue?.selectedSlotColor}
-                $disabledSlotColor={slotValue?.disabledSlotColor}
-                $width={slotValue?.slotWidth || DEFAULT_SLOT_WIDTH}
+              <S.Slot
+                $width={slotWidth}
+                $height={slotHeight}
+                $isDisabled={isDisabled}
+                $isEvenIdx={isEvenIdx}
+                $isRightMost={isRightSide}
+                $isBottomMost={isBottomSide}
+                $defaultSlotColor={defaultSlotColor}
+                $selectedSlotColor={selectedSlotColor}
+                $disabledSlotColor={disabledSlotColor}
+                $hoveredSlotColor={hoveredSlotColor}
+                $selected={selected}
+                key={`${target?.date}-${target?.minTime}`}
                 onMouseUp={() => {
-                  handleMouseUp(targetSlot);
+                  !isDisabled && handleMouseUp(target);
                 }}
                 onMouseDown={() => {
-                  handleMouseDown(targetSlot);
+                  !isDisabled && handleMouseDown(target);
                 }}
                 onMouseEnter={() => {
-                  handleMouseEnter(targetSlot);
+                  !isDisabled && handleMouseEnter(target);
                 }}
-              ></S.Item>
+              />
             );
           }),
       )}
-    </S.ItemsGrid>
+    </S.Grid>
   );
-}
+};
+
+export default TimeSlots;

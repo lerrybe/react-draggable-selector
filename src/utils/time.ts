@@ -1,65 +1,88 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { type TimeSlot } from '../types/time';
-import { getDay, getDayNum, isDateBetween } from './date';
-import { type DragEventStates, Selection } from '../types/event';
+import { TimeSlot, TimeSlotRecord } from '../types/timeInfo';
+import { DragEventStates, Selection } from '../types/domEvent';
 
 /* MODULE EXTEND */
 dayjs.extend(isBetween);
 
-export const getSerializedTimeInfoFromSlot = (slot: { start: Date; end: Date }) => {
-  const { start, end } = slot;
-  const startDayjsDate = dayjs(start);
-  const endDayjsDate = dayjs(end);
-  const date = startDayjsDate.format('YYYY/MM/DD');
-  const startTime = startDayjsDate.format('HH:mm');
-  const endTime = endDayjsDate.format('HH:mm');
-  const day = getDay(start.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6);
-
-  return { date, startTime, endTime, day };
+const getStrDateKey = (date: Date) => {
+  return dayjs(date).format('YYYYMMDD');
 };
 
-export const areTimeSlotsEqual = (slot1: TimeSlot, slot2: TimeSlot, mode: 'date' | 'day') => {
-  const { day: day1, date: date1, startTime: startTime1, endTime: endTime1 } = getSerializedTimeInfoFromSlot(slot1);
-  const { day: day2, date: date2, startTime: startTime2, endTime: endTime2 } = getSerializedTimeInfoFromSlot(slot2);
-  if (mode === 'day') {
-    return day1 === day2 && endTime1 === endTime2 && startTime1 === startTime2;
-  }
-  return date1 === date2 && endTime1 === endTime2 && startTime1 === startTime2;
+export const getLabelsFromDates = (dates: Date[], form?: string) => {
+  return dates.map(date => {
+    return dayjs(date).format(`${form ?? 'MM.DD'}`);
+  });
 };
 
-const isTimeBetween = (target: TimeSlot, start: TimeSlot, end: TimeSlot) => {
-  const { date: standardDate } = getSerializedTimeInfoFromSlot(start);
-  const endStartTime = dayjs(`${standardDate} ${getSerializedTimeInfoFromSlot(end).startTime}`);
-  const startStartTime = dayjs(`${standardDate} ${getSerializedTimeInfoFromSlot(start).startTime}`);
-  const targetStartTime = dayjs(`${standardDate} ${getSerializedTimeInfoFromSlot(target).startTime}`);
-  return targetStartTime.isBetween(startStartTime, endStartTime, undefined, '[]');
+export const getFilteredTimeSlotsByDate = (dates: Date[], timeSlots: TimeSlot[]) => {
+  return [...timeSlots]?.filter(slot => {
+    const strDates = dates.map(date => {
+      return getStrDateKey(date);
+    });
+    return strDates.includes(slot.date);
+  });
 };
 
-export const getTimeSlotMatrix = ({
+export const areTimeSlotsEqual = (a: TimeSlot, b: TimeSlot) => {
+  return a.date === b.date && a.minTime === b.minTime && a.maxTime === b.maxTime;
+};
+
+export const areTimeSlotsEqualByDayAndTime = (a: TimeSlot, b: TimeSlot) => {
+  return a.day === b.day && a.minTime === b.minTime && a.maxTime === b.maxTime;
+};
+
+export const getTimeSlotMatrixByDay = (matrix: TimeSlot[][]) => {
+  if (!matrix || matrix?.length === 0) return;
+
+  const sortedMatrix: TimeSlot[][] = [[], [], [], [], [], [], []];
+  matrix?.forEach((timeSlots: TimeSlot[]) => {
+    timeSlots?.forEach((timeSlot: TimeSlot) => {
+      sortedMatrix[timeSlot.day].push(timeSlot);
+    });
+  });
+  return sortedMatrix;
+};
+
+function isDateBetween(start: TimeSlot, target: TimeSlot, end: TimeSlot): boolean {
+  const endDate = dayjs(end.date);
+  const startDate = dayjs(start.date);
+  const targetDate = dayjs(target.date);
+  return targetDate.isBetween(startDate, endDate, 'day', '[]');
+}
+
+function isTimeBetween(start: TimeSlot, target: TimeSlot, end: TimeSlot): boolean {
+  const date = start.date;
+  const endTime = dayjs(`${date} ${end.minTime}`);
+  const startTime = dayjs(`${date} ${start.minTime}`);
+  const targetTime = dayjs(`${date} ${target.minTime}`);
+  return targetTime.isBetween(startTime, endTime, undefined, '[]');
+}
+
+export const getTimeSlotRecord = ({
   dates,
+  maxTime,
+  minTime,
   timeUnit,
-  endTime,
-  startTime,
 }: {
   dates?: Date[];
-  startTime?: string | null;
-  endTime?: string | null;
+  minTime?: string | null;
+  maxTime?: string | null;
   timeUnit: 5 | 10 | 15 | 20 | 30 | 60;
 }) => {
-  if (!dates || !startTime || !endTime) return;
+  if (!dates || !minTime || !maxTime) return;
 
-  const startHour = Number(startTime?.split(':')[0]);
-  const startMinute = Number(startTime?.split(':')[1]);
-  const endHour = Number(endTime?.split(':')[0]);
-  const endMinute = Number(endTime?.split(':')[1]);
+  const startHour = Number(minTime.split(':')[0]);
+  const startMinute = Number(minTime.split(':')[1]);
+  const endHour = Number(maxTime.split(':')[0]);
+  const endMinute = Number(maxTime.split(':')[1]);
 
-  const matrix: TimeSlot[][] = [];
-  dates?.forEach(date => {
-    const times: TimeSlot[] = [];
-    const key = dayjs(date)?.format('YYYY/MM/DD');
-
+  const record: TimeSlotRecord = {};
+  dates.forEach(date => {
+    const times: Record<string, TimeSlot> = {};
+    const key = getStrDateKey(date);
     let hour = startHour;
     let minute = startMinute;
     while (hour < endHour || (hour === endHour && minute < endMinute)) {
@@ -75,12 +98,12 @@ export const getTimeSlotMatrix = ({
         formattedEndMinute = (currEndMinute - 60).toString().padStart(2, '0');
       }
 
-      const start = new Date(`${key} ${formattedHour}:${formattedMinute}`);
-      const end = new Date(`${key} ${formattedEndHour}:${formattedEndMinute}`);
-      times.push({
-        start,
-        end,
-      });
+      times[`${formattedHour}:${formattedMinute}`] = {
+        date: key,
+        day: date.getDay(),
+        minTime: `${formattedHour}:${formattedMinute}`,
+        maxTime: `${formattedEndHour}:${formattedEndMinute}`,
+      };
 
       minute += timeUnit;
       if (minute >= 60) {
@@ -88,23 +111,31 @@ export const getTimeSlotMatrix = ({
         minute -= 60;
       }
     }
-    matrix.push(times);
+    record[key] = times;
   });
+  return record;
+};
+
+export const getTimeSlotMatrix = (timeSlotRecord: TimeSlotRecord) => {
+  const matrix: TimeSlot[][] = [];
+  for (const date in timeSlotRecord) {
+    const timeSlots = [];
+    for (const time in timeSlotRecord[date]) {
+      timeSlots.push(timeSlotRecord[date][time]);
+    }
+    matrix.push(timeSlots);
+  }
   return matrix;
 };
 
 export const updateCachedSelectedTimeSlots = ({
-  mode,
   endedTimeSlot,
   timeSlotMatrix,
   dragEventStates,
   selectedTimeSlots,
   setDragEventStates,
-  timeSlotMatrixByDay,
 }: {
-  mode: 'date' | 'day';
   timeSlotMatrix: TimeSlot[][];
-  timeSlotMatrixByDay: TimeSlot[][];
   selectedTimeSlots: TimeSlot[];
   endedTimeSlot: TimeSlot | null;
   dragEventStates: DragEventStates;
@@ -117,26 +148,25 @@ export const updateCachedSelectedTimeSlots = ({
   const updatedCachedSelectedTimeSlots: TimeSlot[] =
     startedTimeSlot && endedTimeSlot && selectionType
       ? endedTimeSlot
-        ? timeSlotMatrix?.reduce((acc, dayOfTimes) => {
-            const dateIsReversed = dayjs(getSerializedTimeInfoFromSlot(endedTimeSlot).date).isBefore(
-              dayjs(getSerializedTimeInfoFromSlot(startedTimeSlot).date),
+        ? timeSlotMatrix.reduce((acc, dayOfTimes) => {
+            const dateIsReversed = dayjs(endedTimeSlot.date).isBefore(dayjs(startedTimeSlot.date));
+            const date = startedTimeSlot.date;
+            const timeIsReversed = dayjs(`${date}
+              ${endedTimeSlot.minTime}`).isBefore(
+              dayjs(`${date}
+              ${startedTimeSlot.minTime}`),
             );
-            const standardDate = getSerializedTimeInfoFromSlot(startedTimeSlot).date;
-            const timeIsReversed = dayjs(
-              `${standardDate} ${getSerializedTimeInfoFromSlot(endedTimeSlot).startTime}`,
-            ).isBefore(dayjs(`${standardDate} ${getSerializedTimeInfoFromSlot(startedTimeSlot).startTime}`));
-
-            return acc?.concat(
-              dayOfTimes?.filter(
+            return acc.concat(
+              dayOfTimes.filter(
                 t =>
                   isDateBetween(
-                    t,
                     dateIsReversed ? endedTimeSlot : startedTimeSlot,
+                    t,
                     dateIsReversed ? startedTimeSlot : endedTimeSlot,
                   ) &&
                   isTimeBetween(
-                    t,
                     timeIsReversed ? endedTimeSlot : startedTimeSlot,
+                    t,
                     timeIsReversed ? startedTimeSlot : endedTimeSlot,
                   ),
               ),
@@ -145,43 +175,15 @@ export const updateCachedSelectedTimeSlots = ({
         : [startedTimeSlot]
       : [];
 
-  if (mode === 'day') {
-    const cachedSelectedAllTimeSlots: TimeSlot[] = [];
-    updatedCachedSelectedTimeSlots?.forEach(slot => {
-      const { day } = getSerializedTimeInfoFromSlot(slot);
-      const target = timeSlotMatrixByDay[getDayNum(day)];
-      target?.forEach(t => {
-        if (areTimeSlotsEqual(slot, t, 'day')) {
-          cachedSelectedAllTimeSlots.push(t);
-        }
-      });
-    });
-    const nextCache =
-      selectionType === Selection.ADD
-        ? Array.from(new Set([...selectedTimeSlots, ...cachedSelectedAllTimeSlots]))
-        : selectionType === Selection.REMOVE
-        ? selectedTimeSlots?.filter(a => {
-            return !cachedSelectedAllTimeSlots.find(b => areTimeSlotsEqual(a, b, mode));
-          })
-        : [...selectedTimeSlots];
+  const nextDraft =
+    selectionType === Selection.ADD
+      ? Array.from(new Set([...selectedTimeSlots, ...updatedCachedSelectedTimeSlots]))
+      : selectionType === Selection.REMOVE
+      ? selectedTimeSlots.filter(a => !updatedCachedSelectedTimeSlots.find(b => areTimeSlotsEqual(a, b)))
+      : [...selectedTimeSlots];
 
-    setDragEventStates(prev => ({
-      ...prev,
-      cachedSelectedTimeSlots: nextCache,
-    }));
-  } else {
-    const nextCache =
-      selectionType === Selection.ADD
-        ? Array.from(new Set([...selectedTimeSlots, ...updatedCachedSelectedTimeSlots]))
-        : selectionType === Selection.REMOVE
-        ? selectedTimeSlots?.filter(a => {
-            return !updatedCachedSelectedTimeSlots.find(b => areTimeSlotsEqual(a, b, mode));
-          })
-        : [...selectedTimeSlots];
-
-    setDragEventStates(prev => ({
-      ...prev,
-      cachedSelectedTimeSlots: nextCache,
-    }));
-  }
+  setDragEventStates(prev => ({
+    ...prev,
+    cachedSelectedTimeSlots: nextDraft,
+  }));
 };

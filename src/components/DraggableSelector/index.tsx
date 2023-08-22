@@ -1,353 +1,255 @@
-import React, { useCallback, useEffect } from 'react';
-import * as S from './styles';
-import '../../styles/global.css';
+import React, { useEffect, useMemo, useState } from 'react';
 
-import RowLabel from './RowLabel';
-import TimeSlots from './TimeSlots';
-import ColumnLabel from './ColumnLabel';
-
-import { sampleDates } from '../../data/date';
-import { Selection } from '../../types/event';
-import { type TimeSlot } from '../../types/time';
-import { DraggableSelectorProps } from '../../types/draggableSelector';
-import { DEFAULT_MODE, DEFAULT_TIMEUNIT } from '../../constant/options';
-
-import { useDataContext } from '../../context/DataContext';
-import { useSlotStyleContext } from '../../context/SlotStyleContext';
-import { useSelectorInfoContext } from '../../context/SelectorInfoContext';
-import { useRowLabelStyleContext } from '../../context/RowLabelStyleContext';
-import { useColumnLabelStyleContext } from '../../context/ColumnLabelStyleContext';
-import { getTimeSlotMatrixByDay, getDatesForSelector } from '../../utils/date';
+import Selector from './Selector';
 import {
-  areTimeSlotsEqual,
+  getTimeSlotRecord,
   getTimeSlotMatrix,
-  updateCachedSelectedTimeSlots,
-  getSerializedTimeInfoFromSlot,
+  getTimeSlotMatrixByDay,
+  getFilteredTimeSlotsByDate,
+  areTimeSlotsEqualByDayAndTime,
 } from '../../utils/time';
 
-const DraggableSelector = React.memo((props: DraggableSelectorProps) => {
-  const { dates, startTime, endTime, mode, timeUnit, selectedTimeSlots, setSelectedTimeSlots } = props;
+import '../../styles/global.css';
+import { TimeSlot, TimeSlotRecord } from '../../types/timeInfo';
 
-  const {
-    selectedDates,
-    setSelectedDates,
-    dragEventStates,
-    setDragEventStates,
-    timeSlotMatrix,
-    setTimeSlotMatrix,
-    mockTimeSlotMatrix,
-    setMockTimeSlotMatrix,
-    timeSlotMatrixByDay,
-    setTimeSlotMatrixByDay,
-  } = useDataContext();
+export interface DraggableSelectorProps {
+  /*
+   * The start time of each day. Assign the value in `string`. e.g. `09:00`, `14:00`
+   */
+  minTime: string;
+  /*
+   * The end time of each day. Assign the value in `string`. e.g. `09:00`, `22:00`
+   */
+  maxTime: string;
+  /*
+   * The dates selected. Assign the value in `Date[]`. e.g. `[new Date('2021-01-01'), new Date('2021-01-02')]`
+   */
+  dates: Date[];
+  /*
+   * Use the date format method of dayjs. You can use the following link to set the formatting form. (https://day.js.org/docs/en/display/format), `string`. e.g. `MM.DD`, `YYYY-MM-DD`
+   */
+  dateFormat?: string;
+  /*
+   Use the time format method of dayjs. You can use the following link to set the formatting form. (https://day.js.org/docs/en/display/format), `string`. e.g. `HH:mm A`, `HH:mm`
+   */
+  timeFormat?: string;
+  /*
+   * Decide whether to indicate all dates or by day of the week. (In the 'day' version) If there is no day of the week corresponding to the selected date, the cell is blocked so that it cannot be selected. `day | date`. e.g. `day`, `date`
+   */
+  mode?: 'day' | 'date';
+  /*
+   * The time slots you selected. If you put the setTimeSlots in the props together, the result value will be automatically set according to the cell you selected. Create Date objects using the obtained timeSlot arrangement or use them in various ways. `TimeSlot[]`
 
-  /* ----- FUNC related with SELECTION & UPDATING ----- */
-  const startSelection = useCallback(
-    (startedTimeSlot: TimeSlot, selectedTimeSlots: TimeSlot[]) => {
-      const selectedTimeSlot = selectedTimeSlots.find(slot =>
-        areTimeSlotsEqual(startedTimeSlot, slot, mode || DEFAULT_MODE),
-      );
-      setDragEventStates(prev => ({
-        ...prev,
-        startedTimeSlot: startedTimeSlot,
-        selectionType: selectedTimeSlot ? Selection.REMOVE : Selection.ADD,
-      }));
-    },
-    [mode],
-  );
+   */
+  timeSlots: TimeSlot[];
+  /*
+   * The function to set the time slots you selected. If you put the timeSlots in the props together, the result value will be automatically set according to the cell you selected. Create Date objects using the obtained timeSlot arrangement or use them in various ways. `React.Dispatch<React.SetStateAction<TimeSlot[]>>`
+   */
+  setTimeSlots: React.Dispatch<React.SetStateAction<TimeSlot[]>>;
+  /*
+   * The time unit of each slot. Assign the value in `5 | 10 | 15 | 20 | 30 | 60`. e.g. `5`, `10`, `15`, `20`, `30`, `60`
+   */
+  timeUnit?: 5 | 10 | 15 | 20 | 30 | 60;
+  /*
+   * The row-gap between each slot. Assign the value in `number`.
+   */
+  rowGap?: number;
+  /*
+   * The column-gap between each slot. Assign the value in `number`.
+   */
+  colGap?: number;
+  /*
+   * The width of each slot. Assign the value in `number`.
+   */
+  slotWidth?: number;
+  /*
+   * The height of each slot. Assign the value in `number`.
+   */
+  slotHeight?: number;
+  /*
+   * The margin-top of slots container. Assign the value in `number`.
+   */
+  slotsMarginTop?: number;
+  /*
+   * The margin-left of slots container. Assign the value in `number`.
+   */
+  slotsMarginLeft?: number;
+  /*
+   * The max-width of selector. Assign the value in `string`. e.g. `536px`
+   */
+  maxWidth?: string;
+  /*
+   * The max-height of selector. Assign the value in `string`. e.g. `452px`, `100%`
+   */
+  maxHeight?: string;
+  /*
+   * The default color of each slot. Assign the value in `string`. e.g. `#FFFFFF`
+   */
+  defaultSlotColor?: string;
+  /*
+   * The color of each slot when it is selected. Assign the value in `string`. e.g. `#FFF5E5`
+   */
+  selectedSlotColor?: string;
+  /*
+   * The color of each slot when it is disabled. Assign the value in `string`. e.g. `#e1e1e1`
+   */
+  disabledSlotColor?: string;
+  /*
+   * The color of each slot when it is hovered. Assign the value in `string`. e.g. `#FFF5E5`
+   */
+  hoveredSlotColor?: string;
+  /*
+   * The border of slots container. Assign the value in `string`. e.g. `1px solid #8c8d94`
+   */
+  slotsContainerBorder?: string;
+  /*
+   * The border-radius of slots container. Assign the value in `string`. e.g. `0px`, `5px`
+   */
+  slotsContainerBorderRadius?: string;
+}
 
-  const updateSlots = useCallback(() => {
-    setSelectedTimeSlots(dragEventStates.cachedSelectedTimeSlots);
-    setDragEventStates(prev => ({
-      ...prev,
-      selectionType: null,
-      startedTimeSlot: null,
-    }));
-  }, [dragEventStates.cachedSelectedTimeSlots, setSelectedTimeSlots]);
+export default function DraggableSelector({
+  minTime,
+  maxTime,
+  timeUnit = 30,
+  dateFormat = 'MM.DD',
+  timeFormat = 'HH:mm A',
+  timeSlots,
+  setTimeSlots,
+  mode = 'date',
+  dates,
+  rowGap = 0,
+  colGap = 0,
+  slotWidth = 62,
+  slotHeight = 18,
+  slotsMarginTop = 11,
+  slotsMarginLeft = 20,
+  maxWidth = '536px',
+  maxHeight = '452px',
+  defaultSlotColor = '#FFFFFF',
+  selectedSlotColor = '#FFF5E5',
+  disabledSlotColor = '#e1e1e1',
+  hoveredSlotColor = '#FFF5E5',
+  slotsContainerBorder = '1px solid #8c8d94',
+  slotsContainerBorderRadius = '0px',
+}: DraggableSelectorProps) {
+  const [, setTimeSlotRecord] = useState<TimeSlotRecord>();
+  const [cachedMatrix, setCachedMatrix] = useState<TimeSlot[][]>([]);
+  const [timeSlotMatrix, setTimeSlotMatrix] = useState<TimeSlot[][]>([]);
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState<TimeSlot[]>([]);
+  const [cachedMatrixByDay, setCachedMatrixByDay] = useState<TimeSlot[][]>([]);
 
-  const updateCache = useCallback(
-    (endedTimeSlot: TimeSlot) => {
-      if (mode === 'day') {
-        updateCachedSelectedTimeSlots({
-          mode: 'day',
-          endedTimeSlot,
-          timeSlotMatrix: mockTimeSlotMatrix,
-          dragEventStates,
-          selectedTimeSlots,
-          setDragEventStates,
-          timeSlotMatrixByDay,
-        });
-      } else {
-        updateCachedSelectedTimeSlots({
-          mode: 'date',
-          endedTimeSlot,
-          timeSlotMatrix,
-          dragEventStates,
-          selectedTimeSlots,
-          setDragEventStates,
-          timeSlotMatrixByDay,
-        });
-      }
-    },
-    [mode, dragEventStates, selectedTimeSlots, timeSlotMatrix],
-  );
-  /* ----- FUNC related with SELECTION & UPDATING ----- */
+  const datesForDayMode = useMemo(() => {
+    return [
+      new Date('2023-08-20'),
+      new Date('2023-08-21'),
+      new Date('2023-08-22'),
+      new Date('2023-08-23'),
+      new Date('2023-08-24'),
+      new Date('2023-08-25'),
+      new Date('2023-08-26'),
+    ];
+  }, [mode]);
 
-  /* ----- EVENT HANDLERS ----- */
-  const handleMouseUp = useCallback(
-    (endedTimeSlot: TimeSlot) => {
-      updateCache(endedTimeSlot);
-    },
-    [updateCache],
-  );
-  const handleMouseEnter = useCallback(
-    (endedTimeSlot: TimeSlot) => {
-      updateCache(endedTimeSlot);
-    },
-    [updateCache],
-  );
-  const handleMouseDown = useCallback(
-    (startedTimeSlot: TimeSlot) => {
-      startSelection(startedTimeSlot, selectedTimeSlots);
-    },
-    [selectedTimeSlots, startSelection],
-  );
-  /* ----- EVENT HANDLERS ----- */
-
-  /* ----- EFFECTS ----- */
-  // Initialize and remove duplicated data when dates changed
+  /* 🧹 Cleanup timeSlots & selectedTimeSlots when mode, minTime, maxTime, timeUnit is changed */
   useEffect(() => {
-    setSelectedDates(getDatesForSelector(dates));
-  }, [dates]);
-
-  // Initialize data when options changed
-  useEffect(() => {
-    setDragEventStates({
-      selectionType: null,
-      startedTimeSlot: null,
-      cachedSelectedTimeSlots: [],
-    });
+    setTimeSlots([]);
     setSelectedTimeSlots([]);
-  }, [mode, startTime, endTime, timeUnit]);
+  }, [mode, minTime, maxTime, timeUnit]);
 
-  // Initialize data when dates changed
+  /* Initialize timeSlotMatrix when mode, dates, minTime, maxTime, timeUnit is changed */
+  useEffect(() => {
+    const targetDates = mode === 'day' ? datesForDayMode : dates;
+    const record = getTimeSlotRecord({
+      minTime,
+      maxTime,
+      timeUnit,
+      dates: targetDates,
+    });
+    if (record) {
+      setTimeSlotRecord(record);
+      setTimeSlotMatrix(getTimeSlotMatrix(record));
+    } else {
+      setTimeSlotRecord({});
+      setTimeSlotMatrix([]);
+    }
+    if (mode === 'day') {
+      const cachedRecord = getTimeSlotRecord({
+        dates,
+        minTime,
+        maxTime,
+        timeUnit,
+      });
+      if (cachedRecord) {
+        setCachedMatrix(getTimeSlotMatrix(cachedRecord));
+      } else {
+        setCachedMatrix([]);
+      }
+    }
+  }, [mode, dates, minTime, maxTime, timeUnit]);
+
+  /* (🧪 Reprocessing) SET TIME SLOTS for USER DATA */
+  useEffect(() => {
+    if (mode === 'date') {
+      setTimeSlots([...selectedTimeSlots]);
+    } else {
+      const updatedTimeSlots: TimeSlot[] = [];
+      selectedTimeSlots?.forEach(slot => {
+        const target = getTimeSlotMatrixByDay(cachedMatrix);
+        if (target) {
+          const targetArr = target[slot.day];
+          targetArr?.forEach(t => {
+            if (areTimeSlotsEqualByDayAndTime(t, slot)) {
+              updatedTimeSlots.push(t);
+            }
+          });
+        }
+      });
+      setTimeSlots(updatedTimeSlots);
+    }
+  }, [selectedTimeSlots, cachedMatrix]);
   useEffect(() => {
     if (mode === 'day') {
-      setDragEventStates({
-        selectionType: null,
-        startedTimeSlot: null,
-        cachedSelectedTimeSlots: [],
-      });
-      setSelectedTimeSlots([]);
+      const updatedTimeSlots = getFilteredTimeSlotsByDate(dates, timeSlots);
+      setTimeSlots(updatedTimeSlots);
     }
-  }, [mode, dates]);
-
-  // Remove timeSlots if date is not in the selectedDates
+  }, [dates]);
   useEffect(() => {
-    const filteredTimeSlots = selectedTimeSlots.filter(slot => {
-      return selectedDates.some(date => {
-        const { date: slotDate } = getSerializedTimeInfoFromSlot(slot);
-        const standardDate = new Date(slotDate);
-        return (
-          standardDate.getFullYear() === date.getFullYear() &&
-          standardDate.getMonth() === date.getMonth() &&
-          standardDate.getDate() === date.getDate()
-        );
-      });
-    });
-    setSelectedTimeSlots(filteredTimeSlots);
-    setDragEventStates(prev => ({
-      ...prev,
-      cachedSelectedTimeSlots: filteredTimeSlots,
-    }));
-  }, [selectedDates]);
-
-  // Initialize timeSlotMatrix when dates changed
-  useEffect(() => {
-    const matrix = getTimeSlotMatrix({
-      timeUnit: timeUnit || DEFAULT_TIMEUNIT,
-      dates: selectedDates,
-      startTime: startTime,
-      endTime: endTime,
-    });
-    if (matrix) {
-      setTimeSlotMatrix(matrix);
+    const updatedCachedMatrixByDay = getTimeSlotMatrixByDay(cachedMatrix);
+    if (updatedCachedMatrixByDay) {
+      setCachedMatrixByDay(updatedCachedMatrixByDay);
+    } else {
+      setCachedMatrixByDay([]);
     }
-  }, [startTime, endTime, timeUnit, selectedDates]);
-
-  // Initialize timeSlotMatrixByDay when timeSlotMatrix changed
-  useEffect(() => {
-    const sortedMatrix = getTimeSlotMatrixByDay(timeSlotMatrix);
-    if (sortedMatrix) {
-      setTimeSlotMatrixByDay(sortedMatrix);
-    }
-  }, [timeSlotMatrix]);
-
-  // Initialize mockTimeSlotMatrix when dates changed
-  useEffect(() => {
-    const mockMatrix = getTimeSlotMatrix({
-      timeUnit: timeUnit || DEFAULT_TIMEUNIT,
-      dates: getDatesForSelector(sampleDates),
-      startTime: startTime,
-      endTime: endTime,
-    });
-    if (mockMatrix) {
-      setMockTimeSlotMatrix(mockMatrix);
-    }
-  }, [startTime, endTime, timeUnit, selectedDates]);
-
-  // Add, Remove event listener
-  useEffect(() => {
-    document.addEventListener('mouseup', updateSlots);
-    return () => {
-      document.removeEventListener('mouseup', updateSlots);
-    };
-  }, [updateSlots]);
-
-  // SET CONTEXT
-  const dataValue = useSelectorInfoContext();
-  useEffect(() => {
-    dataValue.setMode(props?.mode);
-    dataValue.setLanguage(props?.language);
-    dataValue.setDateFormat(props?.dateFormat);
-    dataValue.setTimeFormat(props?.timeFormat);
-  }, [dataValue, props?.dateFormat, props?.language, props?.mode, props?.timeFormat]);
-  const rowValue = useRowLabelStyleContext()!;
-  useEffect(() => {
-    rowValue.setGap(props?.slotRowGap);
-    rowValue.setRowHeight(props?.slotHeight);
-    rowValue.setRowLabelBgColor(props?.rowLabelBgColor);
-    rowValue.setRowLabelPadding(props?.rowLabelPadding);
-    rowValue.setRowLabelBorderRadius(props?.rowLabelBorderRadius);
-    rowValue.setRowLabelsColor(props?.rowLabelsColor);
-    rowValue.setRowLabelsMargin(props?.rowLabelsMargin);
-    rowValue.setRowLabelsBgColor(props?.rowLabelsBgColor);
-    rowValue.setRowLabelsFontSize(props?.rowLabelsFontSize);
-    rowValue.setRowLabelsFontWeight(props?.rowLabelsFontWeight);
-    rowValue.setRowLabelsFontFamily(props?.rowLabelsFontFamily);
-    rowValue.setRowLabelsBorderRadius(props?.rowLabelsBorderRadius);
-  }, [
-    rowValue,
-    props?.slotHeight,
-    props?.slotRowGap,
-    props?.rowLabelsColor,
-    props?.rowLabelBgColor,
-    props?.rowLabelsMargin,
-    props?.rowLabelPadding,
-    props?.rowLabelsBgColor,
-    props?.rowLabelsFontSize,
-    props?.rowLabelsFontWeight,
-    props?.rowLabelsFontFamily,
-    props?.rowLabelBorderRadius,
-    props?.rowLabelsBorderRadius,
-  ]);
-  const colValue = useColumnLabelStyleContext()!;
-  useEffect(() => {
-    colValue.setGap(props?.slotColumnGap);
-    colValue.setColumnWidth(props?.slotWidth);
-    colValue.setColumnMinWidth(props?.slotMinWidth);
-    colValue.setIsColumnWidthGrow(props?.isSlotWidthGrow);
-    colValue.setColumnLabelHeight(props?.columnLabelHeight);
-    colValue.setColumnLabelBgColor(props?.columnLabelBgColor);
-    colValue.setColumnLabelPadding(props?.columnLabelPadding);
-    colValue.setColumnLabelBorderRadius(props?.columnLabelBorderRadius);
-    colValue.setColumnLabelsColor(props?.columnLabelsColor);
-    colValue.setColumnLabelsMargin(props?.columnLabelsMargin);
-    colValue.setColumnLabelsBgColor(props?.columnLabelsBgColor);
-    colValue.setColumnLabelsFontSize(props?.columnLabelsFontSize);
-    colValue.setColumnLabelsFontWeight(props?.columnLabelsFontWeight);
-    colValue.setColumnLabelsFontFamily(props?.columnLabelsFontFamily);
-    colValue.setColumnLabelsBorderRadius(props?.columnLabelsBorderRadius);
-  }, [
-    colValue,
-    props?.slotWidth,
-    props?.slotColumnGap,
-    props?.slotMinWidth,
-    props?.isSlotWidthGrow,
-    props?.columnLabelHeight,
-    props?.columnLabelBgColor,
-    props?.columnLabelPadding,
-    props?.columnLabelBorderRadius,
-    props?.columnLabelsColor,
-    props?.columnLabelsMargin,
-    props?.columnLabelsBgColor,
-    props?.columnLabelsFontSize,
-    props?.columnLabelsFontWeight,
-    props?.columnLabelsFontFamily,
-    props?.columnLabelsBorderRadius,
-  ]);
-  const slotValue = useSlotStyleContext()!;
-  useEffect(() => {
-    slotValue.setSlotRowGap(props?.slotRowGap);
-    slotValue.setSlotColumnGap(props?.slotColumnGap);
-    slotValue.setSlotWidth(props?.slotWidth);
-    slotValue.setSlotHeight(props?.slotHeight);
-    slotValue.setSlotMinWidth(props?.slotMinWidth);
-    slotValue.setIsCursorPointer(props?.isCursorPointer);
-    slotValue.setIsSlotWidthGrow(props?.isSlotWidthGrow);
-    slotValue.setSlotBorderStyle(props?.slotBorderStyle);
-    slotValue.setDefaultSlotColor(props?.defaultSlotColor);
-    slotValue.setDisabledSlotColor(props?.disabledSlotColor);
-    slotValue.setHoveredSlotColor(props?.hoveredSlotColor);
-    slotValue.setSelectedSlotColor(props?.selectedSlotColor);
-    slotValue.setSlotBorderRadius(props?.slotBorderRadius);
-    slotValue.setSlotContainerBorderStyle(props?.slotContainerBorderStyle);
-  }, [
-    slotValue,
-    props?.slotRowGap,
-    props?.slotColumnGap,
-    props?.slotWidth,
-    props?.slotHeight,
-    props?.slotMinWidth,
-    props?.isCursorPointer,
-    props?.isSlotWidthGrow,
-    props?.slotBorderStyle,
-    props?.defaultSlotColor,
-    props?.disabledSlotColor,
-    props?.hoveredSlotColor,
-    props?.selectedSlotColor,
-    props?.slotBorderRadius,
-    props?.slotContainerBorderStyle,
-  ]);
-  /* ----- EFFECTS ----- */
+  }, [dates, cachedMatrix]);
 
   return (
-    <>
-      <S.Container
-        $width={props?.width}
-        $height={props?.height}
-        $margin={props?.margin}
-        $padding={props?.padding}
-        $minWidth={props?.minWidth}
-        $maxWidth={props?.maxWidth}
-        $minHeight={props?.minHeight}
-        $maxHeight={props?.maxHeight}
-        $scrollWidth={props?.scrollWidth}
-        $scrollColor={props?.scrollColor}
-        $scrollBgColor={props?.scrollBgColor}
-      >
-        {selectedDates && startTime && endTime && (
-          <>
-            {!props?.isRowLabelInvisible && (
-              <S.LeftContainer $rowLabelWidth={props?.rowLabelWidth}>
-                {!props?.isColumnLabelInvisible && <S.EmptySlot $height={props?.columnLabelHeight} />}
-                <RowLabel />
-              </S.LeftContainer>
-            )}
-
-            <S.RightContainer $isSlotWidthGrow={slotValue?.isSlotWidthGrow}>
-              {!props?.isColumnLabelInvisible && <ColumnLabel />}
-              <TimeSlots
-                handleMouseUp={handleMouseUp}
-                handleMouseDown={handleMouseDown}
-                handleMouseEnter={handleMouseEnter}
-              />
-            </S.RightContainer>
-          </>
-        )}
-      </S.Container>
-    </>
+    <Selector
+      mode={mode}
+      rowGap={rowGap}
+      colGap={colGap}
+      slotWidth={slotWidth}
+      slotHeight={slotHeight}
+      slotsMarginTop={slotsMarginTop}
+      slotsMarginLeft={slotsMarginLeft}
+      maxWidth={maxWidth}
+      maxHeight={maxHeight}
+      defaultSlotColor={defaultSlotColor}
+      selectedSlotColor={selectedSlotColor}
+      disabledSlotColor={disabledSlotColor}
+      hoveredSlotColor={hoveredSlotColor}
+      slotsContainerBorder={slotsContainerBorder}
+      slotsContainerBorderRadius={slotsContainerBorderRadius}
+      minTime={minTime}
+      maxTime={maxTime}
+      timeUnit={timeUnit}
+      dateFormat={dateFormat}
+      timeFormat={timeFormat}
+      timeSlotMatrix={timeSlotMatrix}
+      cachedMatrixByDay={cachedMatrixByDay}
+      selectedTimeSlots={selectedTimeSlots}
+      setSelectedTimeSlots={setSelectedTimeSlots}
+      selectedDates={mode === 'day' ? datesForDayMode : dates}
+    />
   );
-});
-
-export default DraggableSelector;
+}

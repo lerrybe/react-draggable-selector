@@ -1,4 +1,4 @@
-import { type TimeSlot } from './time';
+import { TimeSlot } from './timeInfo';
 
 export enum Selection {
   ADD = 'add',
