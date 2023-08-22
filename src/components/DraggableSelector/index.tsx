@@ -115,7 +115,7 @@ export default function DraggableSelector({
   slotHeight = 18,
   slotsMarginTop = 11,
   slotsMarginLeft = 20,
-  maxWidth = '536px',
+  maxWidth = '546px',
   maxHeight = '452px',
   defaultSlotColor = '#FFFFFF',
   selectedSlotColor = '#FFF5E5',

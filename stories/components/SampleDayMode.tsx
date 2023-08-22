@@ -11,7 +11,7 @@ export default function SampleDayMode({
   slotHeight = 18,
   slotsMarginTop = 11,
   slotsMarginLeft = 20,
-  maxWidth = '536px',
+  maxWidth = '546px',
   maxHeight = '452px',
   defaultSlotColor = '#FFFFFF',
   selectedSlotColor = '#FFF5E5',
@@ -142,9 +142,10 @@ export default function SampleDayMode({
 // styles
 const OuterContainer = styled.div`
   display: flex;
-  padding: 20px 30px 20px 0px;
-  justify-content: center;
+  padding: 20px 30px 20px 0;
+  justify-content: space-evenly;
   min-width: 870px;
+  width: 100%;
 `;
 
 const SelectorContainer = styled.div`
