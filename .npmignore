@@ -3,3 +3,4 @@ src/
 public/
 tsconfig.json
 stories/
+.storybook/
