@@ -21,6 +21,6 @@ export const Label = styled.label<LabelProps>`
   color: #8c8d94;
   font-size: 13px;
   font-weight: 400;
-  letter-spacing: 0.1px;
   font-family: 'Poppins', sans-serif;
+  border: 1px solid transparent;
 `;
