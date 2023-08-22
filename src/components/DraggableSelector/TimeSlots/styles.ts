@@ -51,7 +51,7 @@ export const Slot = styled.div<SlotProps>`
   ${({ $isDisabled }) => ($isDisabled ? 'cursor: not-allowed;' : '')}
   ${({ $isDisabled, $disabledSlotColor }) => $isDisabled && `background-color: ${$disabledSlotColor};`}
   &:hover {
-    background-color: ${({ $isDisabled, $hoveredSlotColor, $disabledSlotColor }) =>
-      $isDisabled ? $disabledSlotColor : $hoveredSlotColor};
+    background-color: ${({ $selected, $isDisabled, $hoveredSlotColor, $selectedSlotColor, $disabledSlotColor }) =>
+      $isDisabled ? $disabledSlotColor : $selected ? $selectedSlotColor : $hoveredSlotColor};
   }
 `;
