@@ -109,7 +109,7 @@ export default function DraggableSelector({
   timeFormat = 'HH:mm A',
   timeSlots,
   setTimeSlots,
-  mode = 'date',
+  mode = 'day',
   dates,
   slotWidth = 62,
   slotHeight = 18,
