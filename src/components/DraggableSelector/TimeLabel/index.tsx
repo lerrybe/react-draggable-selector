@@ -4,13 +4,12 @@ import * as S from './styles';
 import { TimeSlot } from '../../../types/timeInfo';
 
 interface TimeLabelProps {
-  rowGap: number;
   slotHeight: number;
   timeFormat: string;
   timeSlots?: TimeSlot[];
 }
 
-const TimeLabel = ({ rowGap, slotHeight, timeFormat, timeSlots }: TimeLabelProps) => {
+const TimeLabel = ({ slotHeight, timeFormat, timeSlots }: TimeLabelProps) => {
   const getEvenIdxTimeSlots = useMemo(() => {
     return timeSlots?.filter((_, idx) => idx % 2 === 0);
   }, [timeSlots]);
@@ -20,7 +19,7 @@ const TimeLabel = ({ rowGap, slotHeight, timeFormat, timeSlots }: TimeLabelProps
   }
 
   return (
-    <S.Container $rowGap={rowGap}>
+    <S.Container>
       {getEvenIdxTimeSlots?.map(({ date, minTime }) => {
         const dayjsDate = dayjs(`${date} ${minTime}`);
         return (

@@ -1,15 +1,10 @@
 import styled from '@emotion/styled';
 
-interface ContainerProps {
-  $rowGap: number;
-}
-
-export const Container = styled.div<ContainerProps>`
+export const Container = styled.div`
   display: flex;
   min-width: 60px;
   align-items: center;
   flex-direction: column;
-  row-gap: ${({ $rowGap }) => $rowGap}px;
 `;
 
 interface LabelProps {

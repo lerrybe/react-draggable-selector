@@ -17,8 +17,6 @@ import { TimeSlot } from '../../../types/timeInfo';
 import { DragEventStates, Selection } from '../../../types/domEvent';
 
 interface SelectorProps {
-  rowGap: number;
-  colGap: number;
   slotWidth: number;
   slotHeight: number;
   slotsMarginTop: number;
@@ -46,8 +44,6 @@ interface SelectorProps {
 
 export default function Selector({
   mode,
-  rowGap,
-  colGap,
   slotWidth,
   slotHeight,
   slotsMarginTop,
@@ -153,11 +149,10 @@ export default function Selector({
         <>
           <S.ContainerL $marginRight={slotsMarginLeft}>
             <S.EmptySlot $marginBottom={slotsMarginTop} />
-            <TimeLabel rowGap={rowGap} slotHeight={slotHeight} timeFormat={timeFormat} timeSlots={timeSlotMatrix[0]} />
+            <TimeLabel slotHeight={slotHeight} timeFormat={timeFormat} timeSlots={timeSlotMatrix[0]} />
           </S.ContainerL>
           <S.ContainerR>
             <DateLabel
-              colGap={colGap}
               slotWidth={slotWidth}
               marginBottom={slotsMarginTop}
               labels={
@@ -168,8 +163,6 @@ export default function Selector({
             />
             <TimeSlots
               mode={mode}
-              rowGap={rowGap}
-              colGap={colGap}
               slotWidth={slotWidth}
               slotHeight={slotHeight}
               defaultSlotColor={defaultSlotColor}

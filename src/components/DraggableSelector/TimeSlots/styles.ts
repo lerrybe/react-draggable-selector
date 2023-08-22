@@ -1,8 +1,6 @@
 import styled from '@emotion/styled';
 
 interface GridProps {
-  $rowGap: number;
-  $colGap: number;
   $gridTemplateRows: string;
   $gridTemplateColumns: string;
   $slotsContainerBorder: string;
@@ -15,11 +13,8 @@ export const Grid = styled.div<GridProps>`
 
   overflow: hidden;
   border: ${({ $slotsContainerBorder }) => $slotsContainerBorder};
-  border-radius: ${({ $slotsContainerBorderRadius }) =>
-    $slotsContainerBorderRadius};
+  border-radius: ${({ $slotsContainerBorderRadius }) => $slotsContainerBorderRadius};
 
-  row-gap: ${({ $rowGap }) => $rowGap}px;
-  column-gap: ${({ $colGap }) => $colGap}px;
   grid-template-rows: ${({ $gridTemplateRows }) => $gridTemplateRows};
   grid-template-columns: ${({ $gridTemplateColumns }) => $gridTemplateColumns};
 `;
@@ -43,8 +38,7 @@ export const Slot = styled.div<SlotProps>`
   height: ${({ $height }) => $height}px;
 
   border-right: 1px solid #8c8d94;
-  border-bottom: ${({ $isEvenIdx }) =>
-    $isEvenIdx ? '1px dashed #C2C3CA' : '1px solid #8C8D94'};
+  border-bottom: ${({ $isEvenIdx }) => ($isEvenIdx ? '1px dashed #C2C3CA' : '1px solid #8C8D94')};
   ${({ $isRightMost }) => $isRightMost && 'border-right: none;'}
   ${({ $isBottomMost }) => $isBottomMost && 'border-bottom: none;'}
 
@@ -55,13 +49,9 @@ export const Slot = styled.div<SlotProps>`
     $selected ? $selectedSlotColor : $defaultSlotColor};
 
   ${({ $isDisabled }) => ($isDisabled ? 'cursor: not-allowed;' : '')}
-  ${({ $isDisabled, $disabledSlotColor }) =>
-    $isDisabled && `background-color: ${$disabledSlotColor};`}
+  ${({ $isDisabled, $disabledSlotColor }) => $isDisabled && `background-color: ${$disabledSlotColor};`}
   &:hover {
-    background-color: ${({
-      $isDisabled,
-      $hoveredSlotColor,
-      $disabledSlotColor,
-    }) => ($isDisabled ? $disabledSlotColor : $hoveredSlotColor)};
+    background-color: ${({ $isDisabled, $hoveredSlotColor, $disabledSlotColor }) =>
+      $isDisabled ? $disabledSlotColor : $hoveredSlotColor};
   }
 `;

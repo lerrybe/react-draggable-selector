@@ -51,14 +51,6 @@ export interface DraggableSelectorProps {
    */
   timeUnit?: 5 | 10 | 15 | 20 | 30 | 60;
   /*
-   * The row-gap between each slot. Assign the value in `number`.
-   */
-  rowGap?: number;
-  /*
-   * The column-gap between each slot. Assign the value in `number`.
-   */
-  colGap?: number;
-  /*
    * The width of each slot. Assign the value in `number`.
    */
   slotWidth?: number;
@@ -118,8 +110,6 @@ export default function DraggableSelector({
   setTimeSlots,
   mode = 'date',
   dates,
-  rowGap = 0,
-  colGap = 0,
   slotWidth = 62,
   slotHeight = 18,
   slotsMarginTop = 11,
@@ -226,8 +216,6 @@ export default function DraggableSelector({
   return (
     <Selector
       mode={mode}
-      rowGap={rowGap}
-      colGap={colGap}
       slotWidth={slotWidth}
       slotHeight={slotHeight}
       slotsMarginTop={slotsMarginTop}

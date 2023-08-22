@@ -4,8 +4,6 @@ import { areTimeSlotsEqual } from '../../../utils/time';
 
 interface TimeSlotsProps {
   mode: 'day' | 'date';
-  rowGap: number;
-  colGap: number;
   slotWidth: number;
   slotHeight: number;
   defaultSlotColor: string;
@@ -24,8 +22,6 @@ interface TimeSlotsProps {
 
 const TimeSlots = ({
   mode,
-  rowGap,
-  colGap,
   slotWidth,
   slotHeight,
   defaultSlotColor,
@@ -53,8 +49,6 @@ const TimeSlots = ({
 
   return (
     <S.Grid
-      $rowGap={rowGap}
-      $colGap={colGap}
       $gridTemplateRows={gridTemplateRows}
       $gridTemplateColumns={gridTemplateColumns}
       $slotsContainerBorder={slotsContainerBorder}

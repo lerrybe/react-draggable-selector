@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 
 interface ContainerProps {
-  $colGap: number;
   $marginBottom: number;
 }
 
@@ -9,7 +8,6 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   width: fit-content;
   justify-content: center;
-  column-gap: ${({ $colGap }) => $colGap}px;
   margin-bottom: ${({ $marginBottom }) => $marginBottom}px;
 `;
 

@@ -15,8 +15,6 @@ type Story = StoryObj<typeof meta>;
 
 export const DateMode: Story = {
   args: {
-    rowGap: 0,
-    colGap: 0,
     slotWidth: 62,
     slotHeight: 18,
     slotsMarginTop: 11,

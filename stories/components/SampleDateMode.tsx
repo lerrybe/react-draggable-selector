@@ -7,8 +7,6 @@ import TimeUnitSelector from './TimeUnitSelector';
 import { DraggableSelector, TimeSlot } from '../../src';
 
 export default function SampleDateMode({
-  rowGap = 0,
-  colGap = 0,
   slotWidth = 62,
   slotHeight = 18,
   slotsMarginTop = 11,
@@ -32,14 +30,6 @@ export default function SampleDateMode({
    Use the time format method of dayjs. You can use the following link to set the formatting form. (https://day.js.org/docs/en/display/format), `string`. e.g. `HH:mm A`, `HH:mm`
    */
   timeFormat?: string;
-  /*
-   * The row-gap between each slot. Assign the value in `number`.
-   */
-  rowGap?: number;
-  /*
-   * The column-gap between each slot. Assign the value in `number`.
-   */
-  colGap?: number;
   /*
    * The width of each slot. Assign the value in `number`.
    */
@@ -120,8 +110,6 @@ export default function SampleDateMode({
           timeUnit={timeUnit}
           dateFormat={dateFormat}
           timeFormat={timeFormat}
-          rowGap={rowGap}
-          colGap={colGap}
           slotWidth={slotWidth}
           slotHeight={slotHeight}
           slotsMarginTop={slotsMarginTop}
