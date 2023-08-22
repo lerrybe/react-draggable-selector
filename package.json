@@ -1,6 +1,6 @@
 {
   "name": "react-draggable-selector",
-  "version": "1.1.3",
+  "version": "2.0.0",
   "type": "module",
   "description": "A library for select times with drag action in React.",
   "license": "MIT",
@@ -8,6 +8,10 @@
     "type": "git",
     "url": "git+https://github.com/lerrybe/react-draggable-selector.git"
   },
+  "bugs": {
+    "url": "https://github.com/lerrybe/react-draggable-selector/issues"
+  },
+  "homepage": "https://github.com/lerrybe/react-draggable-selector#readme",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -75,9 +79,5 @@
     "storybook": "^7.2.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
-  },
-  "bugs": {
-    "url": "https://github.com/lerrybe/react-draggable-selector/issues"
-  },
-  "homepage": "https://github.com/lerrybe/react-draggable-selector#readme"
+  }
 }
