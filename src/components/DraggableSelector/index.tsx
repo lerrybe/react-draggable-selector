@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import Selector from './Selector';
 import {
+  getStrTime,
   getTimeSlotRecord,
   getTimeSlotMatrix,
   getTimeSlotMatrixByDay,
@@ -14,13 +15,13 @@ import { TimeSlot, TimeSlotRecord } from '../../types/timeInfo';
 
 export interface DraggableSelectorProps {
   /*
-   * The start time of each day. Assign the value in `string`. e.g. `09:00`, `14:00`
+   * The start time of each day. Assign the value in `number`. e.g. `9`, `14`
    */
-  minTime: string;
+  minTime: number;
   /*
-   * The end time of each day. Assign the value in `string`. e.g. `09:00`, `22:00`
+   * The end time of each day. Assign the value in `number`. e.g. `8`, `22`
    */
-  maxTime: string;
+  maxTime: number;
   /*
    * The dates selected. Assign the value in `Date[]`. e.g. `[new Date('2021-01-01'), new Date('2021-01-02')]`
    */
@@ -228,8 +229,8 @@ export default function DraggableSelector({
       hoveredSlotColor={hoveredSlotColor}
       slotsContainerBorder={slotsContainerBorder}
       slotsContainerBorderRadius={slotsContainerBorderRadius}
-      minTime={minTime}
-      maxTime={maxTime}
+      minTime={getStrTime(minTime)}
+      maxTime={getStrTime(maxTime)}
       timeUnit={timeUnit}
       dateFormat={dateFormat}
       timeFormat={timeFormat}

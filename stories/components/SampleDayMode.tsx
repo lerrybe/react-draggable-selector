@@ -81,8 +81,8 @@ export default function SampleDayMode({
 }) {
   type TimeUnit = 5 | 10 | 15 | 20 | 30 | 60;
   const today = new Date();
-  const [maxTime, setMaxTime] = useState<string>('19:00');
   const [minTime, setMinTime] = useState<string>('11:00');
+  const [maxTime, setMaxTime] = useState<string>('19:00');
   const [timeUnit, setTimeUnit] = useState<TimeUnit>(30);
   const [dates, setDates] = useState<Date[]>([
     new Date(today.getFullYear(), today.getMonth(), today.getDate()),
@@ -102,8 +102,8 @@ export default function SampleDayMode({
         </TitleContainer>
         <DraggableSelector
           dates={dates}
-          maxTime={maxTime}
-          minTime={minTime}
+          minTime={Number(minTime.split(':')[0])}
+          maxTime={Number(maxTime.split(':')[0])}
           timeSlots={selectedTimeSlots}
           setTimeSlots={setSelectedTimeSlots}
           mode={'day'}

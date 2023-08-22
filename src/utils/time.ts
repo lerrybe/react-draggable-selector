@@ -61,17 +61,24 @@ function isTimeBetween(start: TimeSlot, target: TimeSlot, end: TimeSlot): boolea
   return targetTime.isBetween(startTime, endTime, undefined, '[]');
 }
 
+export const getStrTime = (num: number) => {
+  return `${String(num).padStart(2, '0')}:00`;
+};
+
 export const getTimeSlotRecord = ({
   dates,
-  maxTime,
-  minTime,
+  minTime: numMinTime,
+  maxTime: numMaxTime,
   timeUnit,
 }: {
   dates?: Date[];
-  minTime?: string | null;
-  maxTime?: string | null;
+  minTime: number;
+  maxTime: number;
   timeUnit: 5 | 10 | 15 | 20 | 30 | 60;
 }) => {
+  const minTime = getStrTime(numMinTime);
+  const maxTime = getStrTime(numMaxTime);
+
   if (!dates || !minTime || !maxTime) return;
 
   const startHour = Number(minTime.split(':')[0]);
