@@ -1,27 +1,32 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 interface CalendarProps {
-  selectedDates: Date[];
-  setSelectedDates: (dates: Date[]) => void;
+  dates: Date[];
+  setDates: (dates: Date[]) => void;
 }
 
-function Calendar({ selectedDates, setSelectedDates }: CalendarProps) {
+function Calendar({ dates, setDates }: CalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const handleDateClick = (date: Date) => {
     const dateString = formatDateToString(date);
-    const dateIndex = selectedDates.findIndex(selectedDate =>
-      isSameDay(selectedDate, dateString),
-    );
+    const dateIndex = dates.findIndex(selectedDate => isSameDay(selectedDate, dateString));
     if (dateIndex !== -1) {
       // If the date is already selected, remove it from the array
-      selectedDates.splice(dateIndex, 1);
-      setSelectedDates([...selectedDates]);
+      dates.splice(dateIndex, 1);
+      setDates(getUniqueAndSortedDates([...dates]));
     } else {
       // If the date is not selected, add it to the array
-      setSelectedDates([...selectedDates, date]);
+      setDates(getUniqueAndSortedDates([...dates, date]));
     }
+  };
+
+  const getUniqueAndSortedDates = (dates: Date[]) => {
+    const uniqueDates = Array.from(new Set(dates.map(date => date.getTime()))).map(time => new Date(time));
+    return uniqueDates.sort((a, b) => {
+      return a.getTime() - b.getTime();
+    });
   };
 
   const formatDateToString = (date: Date) => {
@@ -55,9 +60,7 @@ function Calendar({ selectedDates, setSelectedDates }: CalendarProps) {
     while (currentDate <= endDate) {
       const day = new Date(currentDate);
       const isCurrentMonth = currentDate.getMonth() === currentMonth.getMonth();
-      const isSelected = selectedDates.some(selectedDate =>
-        isSameDay(selectedDate, formatDateToString(day)),
-      );
+      const isSelected = dates.some(selectedDate => isSameDay(selectedDate, formatDateToString(day)));
       calendar.push({
         day: currentDate.getDate(),
         date: day,
