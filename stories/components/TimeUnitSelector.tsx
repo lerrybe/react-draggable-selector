@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 type TimeUnit = 5 | 10 | 15 | 20 | 30 | 60;
 
@@ -16,9 +16,7 @@ function TimeUnitSelector({ timeUnit, setTimeUnit }: TimeUnitSelectorProps) {
     <TimeUnitSelectorContainer>
       <label>Time Unit</label>
       <DropdownContainer>
-        <DropdownButton onClick={() => setIsTimeUnitOpen(!isTimeUnitOpen)}>
-          {timeUnit}
-        </DropdownButton>
+        <DropdownButton onClick={() => setIsTimeUnitOpen(!isTimeUnitOpen)}>{timeUnit}</DropdownButton>
         {isTimeUnitOpen && (
           <DropdownList>
             {timeUnits.map((unit: TimeUnit) => {

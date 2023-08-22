@@ -1,85 +1,73 @@
 import { useCallback, useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled from '@emotion/styled';
 
 interface TimeSelectorProps {
-  endTime: string;
-  startTime: string;
-  setEndTime: (time: string) => void;
-  setStartTime: (time: string) => void;
-  timeUnit: 5 | 10 | 15 | 20 | 30 | 60;
+  minTime: string;
+  maxTime: string;
+  setMinTime: (time: string) => void;
+  setMaxTime: (time: string) => void;
 }
 
-function TimeSelector({
-  timeUnit,
-  endTime,
-  startTime,
-  setEndTime,
-  setStartTime,
-}: TimeSelectorProps) {
-  const [endTimes, setEndTimes] = useState<string[]>([]);
-  const [startTimes, setStartTimes] = useState<string[]>([]);
-  const [isEndTimeOpen, setIsEndTimeOpen] = useState(false);
-  const [isStartTimeOpen, setIsStartTimeOpen] = useState(false);
+function TimeSelector({ minTime, maxTime, setMaxTime, setMinTime }: TimeSelectorProps) {
+  const [minTimes, setMinTimes] = useState<string[]>([]);
+  const [maxTimes, setMaxTimes] = useState<string[]>([]);
+  const [isMinTimeOpen, setIsMinTimeOpen] = useState(false);
+  const [isMaxTimeOpen, setIsMaxTimeOpen] = useState(false);
 
   const generateTimes = useCallback(() => {
     const times: string[] = [];
     for (let hour = 0; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += timeUnit) {
+      for (let minute = 0; minute < 60; minute += 60) {
         const formattedHour = hour.toString().padStart(2, '0');
         const formattedMinute = minute.toString().padStart(2, '0');
         times.push(`${formattedHour}:${formattedMinute}`);
       }
     }
     return times;
-  }, [timeUnit]);
+  }, []);
 
-  const handleStartTimeChange = useCallback(
+  const handleMinTimeChange = useCallback(
     (time: string) => {
-      setStartTime(time);
-      const filteredEndTimes = startTimes.filter(t => t > time);
-      setEndTimes(filteredEndTimes);
-      setEndTime(filteredEndTimes[0]);
-      setIsStartTimeOpen(false);
-      setIsStartTimeOpen(false);
+      setMinTime(time);
+      const filteredMaxTimes = minTimes.filter(t => t > time);
+      setMaxTimes(filteredMaxTimes);
+      setMaxTime(filteredMaxTimes[0]);
+      setIsMinTimeOpen(false);
     },
-    [startTimes, timeUnit, setIsStartTimeOpen],
+    [minTimes, setMaxTime, setMinTime],
   );
 
-  const handleEndTimeChange = useCallback(
+  const handleMaxTimeChange = useCallback(
     (time: string) => {
-      setEndTime(time);
-      setIsEndTimeOpen(false);
+      setMaxTime(time);
+      setIsMinTimeOpen(false);
+      setIsMaxTimeOpen(false);
     },
-    [timeUnit],
+    [setMaxTime],
   );
 
   useEffect(() => {
     const times = generateTimes();
-    setStartTimes(times);
-    setEndTimes(times.filter(t => t > startTime));
-  }, [timeUnit, startTime, startTimes.length]);
+    setMinTimes(times);
+    setMaxTimes(times.filter(t => t > minTime));
+  }, [generateTimes, maxTime, maxTimes.length, minTime]);
 
   useEffect(() => {
-    setStartTime('11:00');
-    setEndTime('18:30');
-    setIsEndTimeOpen(false);
-    setIsStartTimeOpen(false);
-  }, [timeUnit]);
+    setMinTime('11:00');
+    setMaxTime('19:00');
+    setIsMaxTimeOpen(false);
+    setIsMinTimeOpen(false);
+  }, [setMaxTime, setMinTime]);
 
   return (
     <TimeSelectorContainer>
       <label>Start</label>
       <DropdownContainer>
-        <DropdownButton onClick={() => setIsStartTimeOpen(!isStartTimeOpen)}>
-          {startTime}
-        </DropdownButton>
-        {isStartTimeOpen && (
+        <DropdownButton onClick={() => setIsMinTimeOpen(!isMinTimeOpen)}>{minTime}</DropdownButton>
+        {isMinTimeOpen && (
           <DropdownList>
-            {startTimes.map((time, index) => (
-              <DropdownListItem
-                key={index}
-                onClick={() => handleStartTimeChange(time)}
-              >
+            {minTimes.map((time, index) => (
+              <DropdownListItem key={index} onClick={() => handleMinTimeChange(time)}>
                 {time}
               </DropdownListItem>
             ))}
@@ -89,16 +77,11 @@ function TimeSelector({
 
       <label>End</label>
       <DropdownContainer>
-        <DropdownButton onClick={() => setIsEndTimeOpen(!isEndTimeOpen)}>
-          {endTime}
-        </DropdownButton>
-        {isEndTimeOpen && (
+        <DropdownButton onClick={() => setIsMaxTimeOpen(!isMaxTimeOpen)}>{maxTime}</DropdownButton>
+        {isMaxTimeOpen && (
           <DropdownList>
-            {endTimes.map((time, index) => (
-              <DropdownListItem
-                key={index}
-                onClick={() => handleEndTimeChange(time)}
-              >
+            {maxTimes.map((time, index) => (
+              <DropdownListItem key={index} onClick={() => handleMaxTimeChange(time)}>
                 {time}
               </DropdownListItem>
             ))}
