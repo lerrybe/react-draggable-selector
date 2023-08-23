@@ -1,0 +1,1 @@
+{"version":3,"file":"timeInfo.d.ts","sourceRoot":"","sources":["../../src/types/timeInfo.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,QAAQ;IACvB,GAAG,EAAE,MAAM,CAAC;IACZ,IAAI,EAAE,MAAM,CAAC;IACb,OAAO,EAAE,MAAM,CAAC;IAChB,OAAO,EAAE,MAAM,CAAC;CACjB;AAED,MAAM,MAAM,cAAc,GAAG,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,MAAM,EAAE,QAAQ,CAAC,CAAC,CAAC"}

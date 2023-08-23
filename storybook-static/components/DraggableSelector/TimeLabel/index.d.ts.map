@@ -1,0 +1,1 @@
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../src/components/DraggableSelector/TimeLabel/index.tsx"],"names":[],"mappings":"AAGA,OAAO,EAAE,QAAQ,EAAE,MAAM,yBAAyB,CAAC;AAEnD,UAAU,cAAc;IACtB,UAAU,EAAE,MAAM,CAAC;IACnB,UAAU,EAAE,MAAM,CAAC;IACnB,SAAS,CAAC,EAAE,QAAQ,EAAE,CAAC;CACxB;AAED,QAAA,MAAM,SAAS,0CAA2C,cAAc,4CAqBvE,CAAC;AAEF,eAAe,SAAS,CAAC"}
