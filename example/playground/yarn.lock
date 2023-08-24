@@ -1785,10 +1785,10 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-draggable-selector@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/react-draggable-selector/-/react-draggable-selector-2.0.1.tgz#56b7852d5c6bb83c5b781c945bfe3d783a760b47"
-  integrity sha512-YnvlyamPBJmfwKWZvIwnjkR7DV1zCVsj1CLBnJVF15ZL1hSdxLCYMUXWJrIEYTv5HJp5OJL+jRkY9YPogqfQiA==
+react-draggable-selector@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-draggable-selector/-/react-draggable-selector-2.1.1.tgz#e97c34fc4cd64630952434ded8038aa293f62206"
+  integrity sha512-BkC0w6d428uPr6EryeYTtLxrAllhQIQRjVImQpJVrUhpi4P1SmaWDVwz7Qk0kqU13SJ98NL3LaML5TGffMrYrg==
   dependencies:
     "@emotion/react" "^11.11.1"
     "@emotion/styled" "^11.11.0"
