@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import * as S from './styles';
 
@@ -134,7 +134,7 @@ export default function Selector({
   }, [mode, minTime, maxTime, timeUnit]);
 
   /* Remove timeSlots if date is not in the selectedDates */
-  useEffect(() => {
+  useLayoutEffect(() => {
     const filteredTimeSlots = getFilteredTimeSlotsByDate(selectedDates, selectedTimeSlots);
     setSelectedTimeSlots(filteredTimeSlots);
     setDragEventStates(prev => ({

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 
 import Selector from './Selector';
 import {
@@ -143,13 +143,13 @@ export default function DraggableSelector({
   }, [mode]);
 
   /* 🧹 Cleanup timeSlots & selectedTimeSlots when mode, minTime, maxTime, timeUnit is changed */
-  useEffect(() => {
+  useLayoutEffect(() => {
     setTimeSlots([]);
     setSelectedTimeSlots([]);
   }, [mode, minTime, maxTime, timeUnit]);
 
   /* Initialize timeSlotMatrix when mode, dates, minTime, maxTime, timeUnit is changed */
-  useEffect(() => {
+  useLayoutEffect(() => {
     const targetDates = mode === 'day' ? datesForDayMode : dates;
     const record = getTimeSlotRecord({
       minTime,
@@ -180,7 +180,7 @@ export default function DraggableSelector({
   }, [mode, dates, minTime, maxTime, timeUnit]);
 
   /* (🧪 Reprocessing) SET TIME SLOTS for USER DATA */
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (mode === 'date') {
       setTimeSlots([...selectedTimeSlots]);
     } else {
@@ -199,13 +199,13 @@ export default function DraggableSelector({
       setTimeSlots(updatedTimeSlots);
     }
   }, [selectedTimeSlots, cachedMatrix]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (mode === 'day') {
       const updatedTimeSlots = getFilteredTimeSlotsByDate(dates, timeSlots);
       setTimeSlots(updatedTimeSlots);
     }
   }, [dates]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updatedCachedMatrixByDay = getTimeSlotMatrixByDay(cachedMatrix);
     if (updatedCachedMatrixByDay) {
       setCachedMatrixByDay(updatedCachedMatrixByDay);
