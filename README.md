@@ -10,7 +10,7 @@ React-Draggable-Selector is a react component that allows users to easily select
 This package is for react applications, and uses [@emotion](https://emotion.sh/docs/introduction) for styling and [dayjs](https://www.npmjs.com/package/dayjs) for date and time management. Its main advantages are its intuitive drag-to-select functionality. You can select a time zone by day of the week or by date. Let's get started!
 
 # Live example & Document 
-[Go to Document](https://64d1f2641de7b9e923f3c9d6-iebuvlnift.chromatic.com/?path=/docs/intro-quickstart--docs)
+[Go Live Example](https://react-draggable-selector.vercel.app/)
 
 You can learn how to use it directly in the document.
 

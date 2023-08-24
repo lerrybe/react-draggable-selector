@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/lerrybe/react-draggable-selector/issues"
   },
-  "homepage": "https://github.com/lerrybe/react-draggable-selector#readme",
+  "homepage": "https://react-draggable-selector.vercel.app/",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
